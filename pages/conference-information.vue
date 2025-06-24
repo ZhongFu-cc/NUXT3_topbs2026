@@ -1,7 +1,7 @@
 <template>
     <div class="common-section">
         <Banner />
-        <!-- <div class="main-section">
+        <div class="main-section">
             <div class="meeting-info">
                 <Title title="研討會資訊"></Title>
                 <div class="meeting-info-box">
@@ -20,9 +20,14 @@
                 <h1 class="title">Agenda</h1>
                 <div class="agenda-info-box">
                     <img src="../assets/img/2024-TICBCS-agenda.png" alt="">
-                    <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
+                    <!-- <div class="download"> -->
+                        <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
                         TICBCS 議程下載
                     </a>
+                    <a href="https://lihi2.com/StUJt" target="_blank" download class="agenda-download">
+                        TICBCS 手冊下載
+                    </a>
+                    <!-- </div> -->
                 </div>
             </div>
 
@@ -36,8 +41,8 @@
                         frameborder="0"></iframe>
                 </div>
             </div>
-        </div> -->
-        <h1 class="temp">議程確認中</h1>
+        </div>
+        <!-- <h1 class="temp">議程確認中</h1> -->
 
     </div>
 </template>
@@ -136,7 +141,7 @@ import Banner from '@/components/layout/Banner.vue';
             border: 1px solid black;
             border-radius: 0.3rem;
             text-align: center;
-            width: 50%;
+            width: 70%;
             font-size: 1.5rem;
 
             @media screen and (max-width: 768px) {
@@ -218,5 +223,6 @@ import Banner from '@/components/layout/Banner.vue';
             }
         }
     }
+
 }
 </style>

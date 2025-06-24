@@ -8,7 +8,7 @@
                     <ul>
                         <h1 class="title">研討會申請之會議學分(申請中)</h1>
                         <li>(1)台灣乳房醫學會 <span class="score">14分</span></li>
-                        <li>(2)台灣外科醫學會 <span class="score">審查中</span></li>
+                        <li>(2)台灣外科醫學會 <span class="score">3分</span></li>
                         <li>(3)社團法人臨床藥學會 藥師<span class="score">13.4分</span></li>
                         <li>(4)台灣專科護理師學會
                             <p>(1)專科護理師 <span class="score">13.4分</span></p>
@@ -27,6 +27,7 @@
             
             <el-divider></el-divider>
             <Title title="研討會報名"></Title>
+            <p class="reminder">現場報名須繳$300工本費</p>
             <div class="title-section">
             </div>
             <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
@@ -813,6 +814,13 @@ onMounted(() => {
                 height: auto;
             }
         }
+    }
+
+    .reminder {
+        text-align: center;
+        font-size: 1.2rem;
+        color: #D86C7C;
+        margin: 1rem auto;
     }
 }
 </style>

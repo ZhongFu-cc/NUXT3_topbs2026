@@ -10,14 +10,17 @@
             </div>
             <div class="english">
                 <p>
-                    "Bubble tea Is not ust one of lalwan's Iconic shacks, Its place or orioin Is In the lalchunc
+                    "Bubble tea" is not just one of Taiwan's iconic snacks, its place of origin is in the Taichung
                     area. The name "bubble tea" also phonetically implies cherishing the breasts!</p>
-                <p>TICBCS is dedicated to bringing together breast cancer experts and scholars from around the world to
-                    discuss the latest research findingsand clinical applications in breast cancer
+                <p> TICBCS is dedicated to bringing together breast cancer experts and scholars from around
+                    the world to discuss the latest research findings and clinical applications in breast cancer
                     prevention and treatment.</p>
-                <p>Additionally, TICBCS aims to cultivate the local region of Taichung and eventually become one of
-                    Taiwan's reoresentative breast cancer-related conterences</p>
+                <p> Additionally, TICBCS aims to cultivate the local region of Taichung and eventually become
+                    one of Taiwan's representative breast cancer-related conferences.
+                </p>
             </div>
+
+
 
             <div class="image-section">
                 <img src="../assets/img/bubble_tea_hello.png" alt="Bubble Tea" />
