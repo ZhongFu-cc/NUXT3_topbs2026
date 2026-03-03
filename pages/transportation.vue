@@ -2,18 +2,19 @@
     <div class="transportation-section">
         <Banner />
         <div class="main-box">
-            <p class="title"><span class="conference-location">會議地點</span> 中國醫藥大學水湳校區</p>
+            <p class="title"><span class="conference-location">會議地點</span> 台中國際會展中心</p>
             <div class="map-box">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3639.807528415075!2d120.66119900000001!3d24.178482!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346916320ec920ed%3A0xc60ae710ee7eef57!2zNDA35Y-w54Gj5Y-w5Lit5biC5YyX5bGv5Y2A57aT6LK_6Lev5LiA5q61MTAw6Jmf!5e0!3m2!1szh-TW!2sus!4v1744600773772!5m2!1szh-TW!2sus"
-                    frameborder="0"></iframe>
-                <div class="location-info-box">
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3639.3742506591266!2d120.64870461089562!3d24.193668878280345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3469173875c5e6d5%3A0x7571e722f78acf23!2z6Ie65Lit5ZyL6Zqb5pyD5bGV5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1772522489602!5m2!1szh-TW!2stw"
+                    width="600" height="450" style="border:0;" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <!-- <div class="location-info-box">
                     <p>台中市北屯區經貿路一段100號</p>
                     <p>No. 100, Sec. 1, Jingmao Rd., Beitun Dist., Taichung City 406040, Taiwan</p>
-                </div>
+                </div> -->
             </div>
 
-            <div class="transpotation-item-box">
+            <!-- <div class="transpotation-item-box">
                 <div class="item-title">
                     <div class="image-box">
                         <img src="../assets/img/icon/transpotation1.svg" alt="">
@@ -21,12 +22,6 @@
                     <h1><span>台中高鐵站></span> <span>中國醫藥大學水湳校區</span></h1>
                 </div>
                 <ul class="decimal-list">
-                    <!-- <li>高鐵快捷公車(直達推薦)
-                        <p>起訖站: 高鐵台中站 ➡ 中國醫藥大學 ➡ 台中公園</p>
-                        <p>下車站點: 「中國醫藥大學站」(靠近兒童醫院或中山室)</p>
-                        <p>步行距離: 約 1 ~ 2 分鐘即可抵達校區</p>
-                        <p>優點 : 直達校區，無需轉乘，最為方便</p>
-                    </li> -->
 
                     <li>捷運
                         <p>步驟一: 從高鐵台中站搭乘台中捷運綠線 (往北屯總站方向)</p>
@@ -168,9 +163,10 @@
                     <li>創研26停車場(平面)​
                         <ul>
                             <li>汽車每半小時10(收費時間8:00-20:00，金額無上限)​</li>
-                        </ul></li>
+                        </ul>
+                    </li>
                 </ul>
-            </div>
+            </div> -->
 
 
         </div>
@@ -188,7 +184,7 @@ import Banner from '@/components/layout/Banner.vue';
 .main-box {
     width: 60%;
     margin: 0 auto;
-    color: #424384;
+    color: $main-color;
 
     @media screen and (max-width: 768px) {
         width: 80%;
@@ -202,7 +198,7 @@ import Banner from '@/components/layout/Banner.vue';
         text-align: start;
 
         .conference-location {
-            color: #424384;
+            color: $main-color;
             font-size: 2rem;
         }
     }
@@ -232,7 +228,7 @@ import Banner from '@/components/layout/Banner.vue';
                 text-align: start;
                 font-size: 1.5rem;
                 line-height: 1.5rem;
-                color: #424384;
+                color: $main-color;
             }
         }
 
@@ -275,7 +271,7 @@ import Banner from '@/components/layout/Banner.vue';
                 font-weight: bold;
                 font-size: 2.5rem;
                 margin-right: 1rem;
-                color: #424384;
+                color: $main-color;
                 position: relative;
 
                 @media screen and (max-width: 768px) {
@@ -310,7 +306,7 @@ import Banner from '@/components/layout/Banner.vue';
                 text-align: start;
 
                 a {
-                    color: #1C4587
+                    color: $main-color;
                 }
 
                 &.link {
@@ -324,7 +320,7 @@ import Banner from '@/components/layout/Banner.vue';
         }
 
         .bus {
-            color: #424384;
+            color: $main-color;
             text-decoration: underline;
             cursor: pointer;
 

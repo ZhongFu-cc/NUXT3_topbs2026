@@ -190,7 +190,9 @@ onMounted(() => {
         width: 100%;
         height: 6.5rem;
         padding: 0.5rem 0;
-        border-bottom: 8px solid #D27DA6;
+        // FIXME
+        border-bottom: 8px solid #915aa1;
+
 
         @media screen and (max-width: 1920px) {
             height: 4.5rem;
@@ -306,7 +308,7 @@ onMounted(() => {
                 &:hover {
                     cursor: pointer;
                     color: white;
-                    background-color: #424384;
+                    background-color: #915aa1;
                 }
             }
 
