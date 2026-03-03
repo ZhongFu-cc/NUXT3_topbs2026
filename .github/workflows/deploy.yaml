@@ -1,0 +1,68 @@
+name: Deploy
+# 觸發條件
+on:
+  push:
+    branches: main
+
+# 工作流程
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+    
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies and Build
+        working-directory: ./ 
+        run: |
+          npm install
+          npm run build
+
+      - name: Stop pm2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.GCP_VM_HOST }}
+          port: 22
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 更改要更停止 ecosystem.config.js 的位置
+            cd /home/user/action-test
+            # pm2 stop ecosystem.config.js
+            rm -fr .output
+
+      - name: Sync Dis Files to AlmaLinux VM
+        uses: burnett01/rsync-deployments@v8
+        with:
+          remote_host: ${{ secrets.GCP_VM_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          path: ".output"
+          # 設置 remote path
+          remote_path: "/home/user/action-test/.output"
+          debug: true
+          
+          switches: "-avz"
+          # switches: "-avz --delete" 新增可以移除舊檔
+          
+
+      - name: Start pm2
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.GCP_VM_HOST }}
+          port: 22
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/user/action-test
+            ls
+            # pm2 start ecosystem.config.js
+        
+  
+    
