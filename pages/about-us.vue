@@ -9,7 +9,8 @@
                 </div>
                 <div class="welcome-content">
                     <p>各位嘉賓、學界專家及同仁&nbsp;:</p>
-                    <p>歡迎您蒞臨台中國際乳癌研討會。本研討會源自中華民國乳癌教育暨防治學會所辦之國際研討會，並在歷任理事長不懈努力下逐步奠定基礎。近年來，藉由中國醫藥大學附設醫院以及中國醫藥大學洪明奇校長的鼎力支持，本會已躋身為中部地區具代表性的重要國際乳癌研討會&nbsp;!</p>
+                    <p>歡迎您蒞臨台中國際乳癌研討會。本研討會源自中華民國乳癌教育暨防治學會所辦之國際研討會，並在歷任理事長不懈努力下逐步奠定基礎。近年來，藉由中國醫藥大學附設醫院以及中國醫藥大學洪明奇校長的鼎力支持，本會已躋身為中部地區具代表性的重要國際乳癌研討會&nbsp;!
+                    </p>
                     <p>台中國際乳癌研討會著重於基礎醫學研究與臨床治療新知，邀請國內外重量級學者分享頂尖研究與實務經驗，並針對真實世界的醫療運作議題展開深入討論。同時，今年度另設護理師與個管師工作坊，旨在提升醫療團隊之合作運作效率，促進跨領域交流與學習&nbsp;。
                     </p>
                     <p>我們期盼藉由此次盛會，能夠架構研究與臨床間之溝通橋樑，共同引領未來研發與創新，進一步提升乳癌患者之福祉。謹此誠摯歡迎各位嘉賓共襄盛舉，攜手創造更光明的明天。</p>
@@ -52,6 +53,9 @@
                     <el-text class="logo-name">中華民國外科醫學會</el-text>
                 </div>
             </div>
+
+            <h1 class="title">協辦單位</h1>
+
         </div>
     </section>
 </template>
@@ -81,6 +85,7 @@ import Banner from '@/components/layout/Banner.vue';
         display: flex;
         gap: 2rem;
         margin-top: 3.5rem;
+
         @media screen and (max-width: 768px) {
             flex-direction: column;
         }
@@ -88,13 +93,14 @@ import Banner from '@/components/layout/Banner.vue';
         .image-box {
             flex: 1;
             border-radius: 10px;
+
             img {
                 border-radius: 10px;
                 overflow: hidden;
                 object-fit: cover;
-                width:100%;
+                width: 100%;
             }
-            
+
         }
 
         .welcome-content {
@@ -116,7 +122,7 @@ import Banner from '@/components/layout/Banner.vue';
 
             @media screen and (max-width: 768px) {
                 font-size: 1.5rem;
-                
+
             }
         }
     }
@@ -134,6 +140,7 @@ import Banner from '@/components/layout/Banner.vue';
             width: calc(100%/3 - 2rem);
             display: flex;
             flex-direction: column;
+
             @media screen and (max-width: 426px) {
                 width: 100%;
             }
