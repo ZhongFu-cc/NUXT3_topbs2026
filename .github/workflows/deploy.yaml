@@ -17,6 +17,13 @@ jobs:
         with:
           node-version: '20'
 
+      - name: Build and Replace Env
+        run: |
+          export NUXT_PUBLIC_API_BASE=${{ secrets.NUXT_PUBLIC_API_BASE }}
+          export NUXT_PUBLIC_DOMAIN=${{ secrets.NUXT_PUBLIC_DOMAIN }}
+         
+          envsubst < .env.production > .env
+          cat .env
       - name: Install dependencies and Build
         working-directory: ./ 
         run: |

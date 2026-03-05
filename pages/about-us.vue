@@ -53,6 +53,9 @@
                     <el-text class="logo-name">中華民國外科醫學會</el-text>
                 </div>
             </div>
+
+            <h1 class="title">協辦單位</h1>
+
         </div>
     </section>
 </template>
