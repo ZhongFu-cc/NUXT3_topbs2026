@@ -32,8 +32,8 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             # 更改要更停止 ecosystem.config.js 的位置
-            cd /home/user/action-test
-            # pm2 stop ecosystem.config.js
+            cd /home/user/front-end
+            pm2 stop ecosystem.config.js
             rm -fr .output
 
       - name: Sync Dis Files to AlmaLinux VM
@@ -45,7 +45,7 @@ jobs:
 
           path: ".output"
           # 設置 remote path
-          remote_path: "/home/user/action-test/.output"
+          remote_path: "/home/user/front-end/.output"
           debug: true
           
           switches: "-avz"
@@ -60,9 +60,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /home/user/action-test
+            cd /home/user/front-end
             ls
-            # pm2 start ecosystem.config.js
+            pm2 start ecosystem.config.js
         
   
     
