@@ -6,11 +6,11 @@
                 <Title title="研討會資訊"></Title>
                 <div class="meeting-info-box">
                     <div>
-                        <p><span class="title">會議時間:</span>2025年06月13日(六)，上午08:00 - 下午17:50
+                        <p><span class="title">會議時間:</span>2026年06月28日(六)，上午08:00 - 下午17:50
                         </p>
                         <p class="time">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            2025年06月14日(日)，上午08:00 - 下午12:10</p>
+                            2026年06月29日(日)，上午08:00 - 下午12:10</p>
                     </div>
                     <p><span class="title">會議地點:</span>台中國際會展中心</p>
                 </div>
