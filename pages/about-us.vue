@@ -67,7 +67,7 @@ import Banner from '@/components/layout/Banner.vue';
     .main-section {
         width: 60%;
         margin: 0 auto;
-        color: #424384;
+        color: $main-color;
 
         @media screen and (max-width: 1024px) {
             width: 80%;
@@ -104,7 +104,7 @@ import Banner from '@/components/layout/Banner.vue';
         }
 
         .welcome-content {
-            color: #424384;
+            color: $main-color;
             flex: 1;
             padding: 0 20px;
             font-size: 1.5rem;
@@ -146,7 +146,7 @@ import Banner from '@/components/layout/Banner.vue';
             }
 
             .logo-name {
-                color: #42458A;
+                color: $main-color;
                 font-size: 1rem;
                 text-align: center;
             }
@@ -167,7 +167,7 @@ import Banner from '@/components/layout/Banner.vue';
             }
 
             .logo-name {
-                color: #42458A;
+                color: $main-color;
                 font-size: 1.2rem;
                 text-align: center;
             }

@@ -1,18 +1,61 @@
 
-// 定義這個是為了排除,TS類型推斷時造成的編碼時報錯
-// 將這個接口,跟著封裝到$fetch中,之後在獲取result.data....之後不管多深的層次,在編碼時都不報錯
-interface RetrunData {
-    // 根據你的數據結構定義相應的字段
-    code: {},
-    data: {
-        // 使用索引签名，表示 data 字段可以是任意 key 的 string 类型
-        // 裡面的Value可以是string any undefined
-        [key: string]: string | any | undefined
-    },
-    msg: {}
+interface ReturnData {
+    code: number
+    data: Record<string, any>
+    msg: string
 }
 
-//如果真的不知道數據長怎麼,可以這樣寫,我覺得這種寫法在不知道內部長怎樣時更好
+export default {
+    config() {
+        return useRuntimeConfig()
+    },
+
+    auth() {
+        return localStorage.getItem('Authorization-member')
+    },
+
+    createOptions(method: string, options: any = {}) {
+        return {
+            baseURL: this.config().public.apiBase,
+            method,
+            headers: {
+                'Authorization-member': this.auth() || '',
+            },
+            onResponseError({ response }: { response: any }) {  // 加上型別
+                console.error(response)
+
+                // 401為沒token時的錯誤
+                if (response.status !== 401) {
+                    ElMessage.error(response._data.msg)
+                }
+
+            },
+            ...options,
+        }
+    },
+
+    get<T = ReturnData>(url: string, options = {}) {
+        return $fetch<T>(url, this.createOptions('get', options))
+    },
+
+    post<T = ReturnData>(url: string, options = {}) {
+        return $fetch<T>(url, this.createOptions('post', options))
+    },
+
+    put<T = ReturnData>(url: string, options = {}) {
+        return $fetch<T>(url, this.createOptions('put', options))
+    },
+
+    delete<T = ReturnData>(url: string, options = {}) {
+        return $fetch<T>(url, this.createOptions('delete', options))
+    },
+}
+
+/** 
+
+
+// 定義這個是為了排除,TS類型推斷時造成的編碼時報錯
+// 將這個接口,跟著封裝到$fetch中,之後在獲取result.data....之後不管多深的層次,在編碼時都不報錯
 //且code 應該是number , msg 應該是string
 interface ReturnData2 {
     // 根據你的數據結構定義相應的字段
@@ -31,7 +74,6 @@ interface ReturnData2 {
 export default {
     //獲取運行時的環境變量
     config() {
-        console.log(useRuntimeConfig())
         return useRuntimeConfig()
     },
 
@@ -60,6 +102,7 @@ export default {
                 'Authorization-member': localStorage.getItem('Authorization-member') || ''
             },
             ...options,
+            // timeout: 60000
         })
     },
     //put方法,新增泛型且預設返回類型
@@ -87,3 +130,6 @@ export default {
 
 }
 
+
+
+*/

@@ -89,7 +89,7 @@ onMounted(() => {
     }
 
     .content {
-      
+
         display: flex;
 
         @media screen and (max-width: 768px) {
@@ -115,12 +115,12 @@ onMounted(() => {
             flex-direction: column;
             justify-content: center;
             gap: 3rem;
-            color: #424384;
+            color: $main-color;
 
             // @media screen and (max-width: 1920px) {
             //     font-size: 1.2rem;
             //     gap: 3rem;
-                
+
             // }
 
             @media screen and (max-width: 1920px) {
@@ -136,7 +136,7 @@ onMounted(() => {
             @media screen and (max-width: 768px) {
                 font-size: 1.5rem;
                 gap: 1rem;
-                
+
             }
         }
 

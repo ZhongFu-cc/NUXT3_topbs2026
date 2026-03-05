@@ -6,39 +6,40 @@
                 <Title title="研討會資訊"></Title>
                 <div class="meeting-info-box">
                     <div>
-                        <p><span class="title">會議時間:</span>2025年06月28日(六)，上午08:00 - 下午17:50
+                        <p><span class="title">會議時間:</span>2025年06月13日(六)，上午08:00 - 下午17:50
                         </p>
                         <p class="time">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            2025年06月29日(日)，上午08:00 - 下午12:10</p>
+                            2025年06月14日(日)，上午08:00 - 下午12:10</p>
                     </div>
-                    <p><span class="title">會議地點:</span>中國醫藥大學水湳校區 卓越大樓B2 國際會議廳 (406台中市北屯區經貿路一段100號)</p>
+                    <p><span class="title">會議地點:</span>台中國際會展中心</p>
                 </div>
             </div>
 
             <div class="agenda-info">
                 <h1 class="title">Agenda</h1>
                 <div class="agenda-info-box">
-                    <img src="../assets/img/2024-TICBCS-agenda.png" alt="">
+                    <!-- <img src="../assets/img/2024-TICBCS-agenda.png" alt=""> -->
                     <!-- <div class="download"> -->
-                        <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
+                    <!-- <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
                         TICBCS 議程下載
                     </a>
                     <a href="https://lihi2.com/StUJt" target="_blank" download class="agenda-download">
                         TICBCS 手冊下載
-                    </a>
+                    </a> -->
                     <!-- </div> -->
                 </div>
             </div>
 
             <el-divider />
             <div class="location">
-                <h1 class="title">會議地點: <span class="location-info">中國醫藥大學水湳校區 卓越大樓B2 國際會議廳 (406台中市北屯區經貿路一段100號)</span>
+                <h1 class="title">會議地點: <span class="location-info">台中國際會展中心</span>
                 </h1>
                 <div class="location-info-box">
                     <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3639.807528415075!2d120.66119900000001!3d24.178482!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x346916320ec920ed%3A0xc60ae710ee7eef57!2zNDA35Y-w54Gj5Y-w5Lit5biC5YyX5bGv5Y2A57aT6LK_6Lev5LiA5q61MTAw6Jmf!5e0!3m2!1szh-TW!2sus!4v1744600773772!5m2!1szh-TW!2sus"
-                        frameborder="0"></iframe>
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3639.3742506591266!2d120.64870461089562!3d24.193668878280345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3469173875c5e6d5%3A0x7571e722f78acf23!2z6Ie65Lit5ZyL6Zqb5pyD5bGV5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1772522489602!5m2!1szh-TW!2stw"
+                        width="600" height="450" style="border:0;" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
             </div>
         </div>
@@ -61,7 +62,7 @@ import Banner from '@/components/layout/Banner.vue';
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
-    color: #424384;
+    color: $main-color;
 
     .temp {
         font-size: 2.5rem;
@@ -77,7 +78,7 @@ import Banner from '@/components/layout/Banner.vue';
         font-size: 2.5rem;
         font-weight: bold;
         margin: 0rem 0 1rem 0;
-        color: #424384;
+        color: $main-color;
     }
 
     .meeting-info {
