@@ -2,101 +2,102 @@
     <div>
         <main class="common-section">
             <Banner />
-           <div class="main-section">
-            <div class="credit-box">
-                <div class="credit-point-box">
-                    <ul>
-                        <h1 class="title">研討會申請之會議學分(申請中)</h1>
-                        <li>(1)台灣乳房醫學會 <span class="score">14分</span></li>
-                        <li>(2)台灣外科醫學會 <span class="score">3分</span></li>
-                        <li>(3)社團法人臨床藥學會 藥師<span class="score">13.4分</span></li>
-                        <li>(4)台灣專科護理師學會
-                            <p>(1)專科護理師 <span class="score">13.4分</span></p>
-                            <p>(2)護理師 <span class="score">13.4分</span></p>
-                        </li>
-                        <li>(5)中華民國癌症醫學會
-                            <p>(1)腫瘤內科 <span class="score">3分</span></p>
-                            <p>(2)腫瘤外科 <span class="score">3分</span></p>
-                        </li>
-                    </ul>
-                </div>
-                <div class="image-box">
-                    <img src="../assets/img/bubble_tea_no-problem.png" alt="">
-                </div>
-            </div>
-            
-            <el-divider></el-divider>
-            <Title title="研討會報名"></Title>
-            <p class="reminder">現場報名須繳$300工本費</p>
-            <div class="title-section">
-            </div>
-            <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
-                require-asterisk-position="right" :show-message="true" :scroll-to-error="true" >
-
-                <div class="main-form">
-                    <div class="left-seciton">
-                        <el-form-item v-if="attendeeType === '2'" :label="formLabel.chineseName" :prop="'chineseName'">
-                            <el-input v-model="formData.chineseName"></el-input>
-                        </el-form-item>
-
-                        <el-form-item class="email required" :label="formLabel.email" prop="email">
-                            <el-input v-model="formData.email" :placeholder="formLabel.email2"
-                                :prefixIcon="Message"></el-input>
-                        </el-form-item>
-
-                        <el-form-item class="required" :label="formLabel.affiliation" prop="affiliation">
-                            <el-input v-model="formData.affiliation"></el-input>
-                        </el-form-item>
-                        <el-form-item class="required" :label="formLabel.jobTitle" prop="jobTitle">
-                            <el-input v-model="formData.jobTitle"></el-input>
-                        </el-form-item>
-
+            <div class="main-section">
+                <div class="credit-box">
+                    <div class="credit-point-box">
+                        <ul>
+                            <h1 class="title">研討會申請之會議學分(申請中)</h1>
+                            <li>(1)台灣乳房醫學會 <span class="score">14分</span></li>
+                            <li>(2)台灣外科醫學會 <span class="score">3分</span></li>
+                            <li>(3)社團法人臨床藥學會 藥師<span class="score">13.4分</span></li>
+                            <li>(4)台灣專科護理師學會
+                                <p>(1)專科護理師 <span class="score">13.4分</span></p>
+                                <p>(2)護理師 <span class="score">13.4分</span></p>
+                            </li>
+                            <li>(5)中華民國癌症醫學會
+                                <p>(1)腫瘤內科 <span class="score">3分</span></p>
+                                <p>(2)腫瘤外科 <span class="score">3分</span></p>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="right-section">
-                        <el-form-item :label="formLabel.idCard" prop="idCard">
-                            <el-input v-model="formData.idCard"></el-input>
-                        </el-form-item>
+                    <div class="image-box">
+                        <img src="../assets/img/bubble_tea_no-problem.png" alt="">
+                    </div>
+                </div>
 
+                <el-divider></el-divider>
+                <Title title="研討會報名"></Title>
+                <p class="reminder">現場報名須繳$300工本費</p>
+                <div class="title-section">
+                </div>
+                <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
+                    require-asterisk-position="right" :show-message="true" :scroll-to-error="true">
 
-                        <div class="member-phone required">
-                            <el-form-item class="country-code" :label="formLabel.countryCode" prop="countryCode">
-                                <div class="country-code-inner">
-                                    <el-input :disabled="attendeeType === '2'" v-model="formData.countryCode"
-                                        placeholder="Country Code"></el-input>
-                                    <span>-</span>
-                                </div>
+                    <div class="main-form">
+                        <div class="left-seciton">
+                            <el-form-item v-if="attendeeType === '2'" :label="formLabel.chineseName"
+                                :prop="'chineseName'">
+                                <el-input v-model="formData.chineseName"></el-input>
                             </el-form-item>
-                            <el-form-item :class="'domestic-phone-num'" :label="formLabel.phoneNum" prop="phoneNum">
-                                <el-input v-model="formData.phoneNum"></el-input>
+
+                            <el-form-item class="email required" :label="formLabel.email" prop="email">
+                                <el-input v-model="formData.email" :placeholder="formLabel.email2"
+                                    :prefixIcon="Message"></el-input>
                             </el-form-item>
+
+                            <el-form-item class="required" :label="formLabel.affiliation" prop="affiliation">
+                                <el-input v-model="formData.affiliation"></el-input>
+                            </el-form-item>
+                            <el-form-item class="required" :label="formLabel.jobTitle" prop="jobTitle">
+                                <el-input v-model="formData.jobTitle"></el-input>
+                            </el-form-item>
+
                         </div>
+                        <div class="right-section">
+                            <el-form-item :label="formLabel.idCard" prop="idCard">
+                                <el-input v-model="formData.idCard"></el-input>
+                            </el-form-item>
 
-                        <el-form-item :label="formLabel.food">
-                            <el-radio-group v-model="formData.food">
-                                <el-radio value="葷">{{ formLabel.foodRadio1 }}</el-radio>
-                                <el-radio value="素">{{ formLabel.foodRadio2 }}</el-radio>
-                            </el-radio-group>
-                        </el-form-item>
-                        <el-form-item :label="formLabel.foodTaboo">
-                            <el-input v-model="formData.foodTaboo"></el-input>
-                        </el-form-item>
 
+                            <div class="member-phone required">
+                                <el-form-item class="country-code" :label="formLabel.countryCode" prop="countryCode">
+                                    <div class="country-code-inner">
+                                        <el-input :disabled="attendeeType === '2'" v-model="formData.countryCode"
+                                            placeholder="Country Code"></el-input>
+                                        <span>-</span>
+                                    </div>
+                                </el-form-item>
+                                <el-form-item :class="'domestic-phone-num'" :label="formLabel.phoneNum" prop="phoneNum">
+                                    <el-input v-model="formData.phoneNum"></el-input>
+                                </el-form-item>
+                            </div>
+
+                            <el-form-item :label="formLabel.food">
+                                <el-radio-group v-model="formData.food">
+                                    <el-radio value="葷">{{ formLabel.foodRadio1 }}</el-radio>
+                                    <el-radio value="素">{{ formLabel.foodRadio2 }}</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                            <el-form-item :label="formLabel.foodTaboo">
+                                <el-input v-model="formData.foodTaboo"></el-input>
+                            </el-form-item>
+
+                        </div>
                     </div>
-                </div>
-                <el-form-item class="captcha" prop="captcha">
-                    <el-input v-model="formData.verificationCode" placeholder="Captcha"></el-input>
-                    <div class="captcha-img">
-                        <img :src="captchaData.image" alt="captcha">
-                        <el-button class="refresh-btn" @click="getCaptcha"><el-icon>
-                                <ElIconRefreshRight />
-                            </el-icon></el-button>
-                    </div>
-                </el-form-item>
-                <el-form-item class="submit-btn">
-                    <el-button type="primary" disabled @click="submit(form)">Submit</el-button>
-                </el-form-item>
-            </el-form>
-           </div>
+                    <el-form-item class="captcha" prop="captcha">
+                        <el-input v-model="formData.verificationCode" placeholder="Captcha"></el-input>
+                        <div class="captcha-img">
+                            <img :src="captchaData.image" alt="captcha">
+                            <el-button class="refresh-btn" @click="getCaptcha"><el-icon>
+                                    <ElIconRefreshRight />
+                                </el-icon></el-button>
+                        </div>
+                    </el-form-item>
+                    <el-form-item class="submit-btn">
+                        <el-button type="primary" disabled @click="submit(form)">Submit</el-button>
+                    </el-form-item>
+                </el-form>
+            </div>
         </main>
 
     </div>
@@ -488,7 +489,7 @@ onMounted(() => {
         .title {
             font-size: 2.5rem;
             font-weight: 600;
-            color: #424384;
+            color: $main-color;
 
         }
     }
@@ -501,7 +502,8 @@ onMounted(() => {
         h1 {
             font-size: 2.5rem;
             font-weight: 600;
-            color: #424384;        }
+            color: $main-color;
+        }
     }
 
     .form {
@@ -739,7 +741,7 @@ onMounted(() => {
 
         @media screen and (max-width: 768px) {
             flex-direction: column;
-            
+
             gap: 2rem;
 
         }
@@ -749,6 +751,7 @@ onMounted(() => {
             align-items: center;
             gap: 2rem;
         }
+
         .credit-point-box {
             justify-content: center;
             align-items: flex-start;
@@ -757,7 +760,7 @@ onMounted(() => {
             gap: 0.5rem;
             font-weight: bold;
             font-size: 1.5rem;
-            color: #424384;
+            color: $main-color;
 
             @media screen and (max-width: 768px) {
                 width: 100%;
@@ -766,7 +769,7 @@ onMounted(() => {
 
 
             ul {
-                list-style-type:none;
+                list-style-type: none;
                 display: flex;
                 flex-direction: column;
                 gap: 0.5rem;
@@ -784,12 +787,12 @@ onMounted(() => {
                 font-size: 2.5rem;
                 font-weight: 700;
                 margin: 0rem 0 1rem 0;
-                color: #424384;
+                color: $main-color;
 
-              
+
             }
 
-          
+
             .score {
                 color: #D27DA6;
             }

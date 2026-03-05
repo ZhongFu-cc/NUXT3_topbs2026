@@ -6,7 +6,8 @@
                 <img :src="item.imageUrl" alt="">
             </div>
             <div class="travel-info-box">
-                <h1 class="title"><span class="type" :class="item.type === '鄰近景點'? '' : 'first'">{{ item.type }}</span>{{ item.title }}</h1>
+                <h1 class="title"><span class="type" :class="item.type === '鄰近景點' ? '' : 'first'">{{ item.type
+                }}</span>{{ item.title }}</h1>
                 <p v-html="item.content"></p>
                 <a class="link" :href="item.link" target="_blank">See More</a>
             </div>
@@ -84,13 +85,13 @@ const travelItemList = [
 
         @media screen and (max-width: 1440px) {
             width: 90%;
-            
+
         }
 
         @media screen and (max-width: 1024px) {
             flex-direction: column;
             width: 70%;
-            
+
         }
 
         .image-box {
@@ -115,7 +116,7 @@ const travelItemList = [
             flex: 1;
             display: flex;
             flex-direction: column;
-            color: #424384;
+            color: $main-color;
             font-size: 1.3rem;
             gap: 1rem;
             line-height: 2.5rem;
@@ -132,7 +133,7 @@ const travelItemList = [
                 margin-right: 1rem;
 
                 &.first {
-                    background-color: #424384;
+                    background-color: $main-color;
                 }
 
             }
@@ -143,7 +144,7 @@ const travelItemList = [
 
             .link {
                 align-self: flex-end;
-                color: #424384;
+                color: $main-color;
                 position: relative;
                 font-style: italic;
                 font-weight: bold;
@@ -155,7 +156,7 @@ const travelItemList = [
                     bottom: 0.5rem;
                     width: 100%;
                     height: 2px;
-                    background-color: #424384;
+                    background-color: $main-color;
                 }
             }
         }

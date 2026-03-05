@@ -59,7 +59,7 @@ import Banner from '@/components/layout/Banner.vue';
         gap: 4rem;
         font-size: 1.5rem;
         line-height: 1.5rem;
-        color: #434485;
+        color: $main-color;
 
         @media screen and (max-width: 768px) {
             font-size: 1.2rem;

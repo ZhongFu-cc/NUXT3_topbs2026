@@ -28,7 +28,7 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8', //預設,不設置也行
       viewport: 'width=device-width, initial-scale=1',  //預設,不設置也行
-      title: 'TICBCS 2025',
+      title: 'TICBCS 2026',
       meta: [
         { name: 'keyword', content: "TICBCS" },
         { name: 'description', content: "" }
@@ -103,5 +103,5 @@ export default defineNuxtConfig({
       ]
     }
   },
-  
+
 })
