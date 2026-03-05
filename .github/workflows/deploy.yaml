@@ -25,9 +25,7 @@ jobs:
           export NUXT_PUBLIC_API_BASE='${{ secrets.NUXT_PUBLIC_API_BASE }}'
           export NUXT_PUBLIC_DOMAIN='${{ secrets.NUXT_PUBLIC_DOMAIN }}'
           envsubst < .env.production > .env
-      - name: Install dependencies and Build
-        working-directory: ./ 
-        run: |
+
           npm install
           npm run build
 
