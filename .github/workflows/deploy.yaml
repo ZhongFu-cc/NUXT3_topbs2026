@@ -53,9 +53,8 @@ jobs:
           path: ".output"
           # 設置 remote path
           remote_path: "/home/user/front-end"
-          debug: true
-          
-          switches: "-avz"
+          debug: true          
+          switches: "-avz --delete --include='.output/***' --include='.env' --include='ecosystem.config.js' --exclude='*'"
           # switches: "-avz --delete" 新增可以移除舊檔
           
 
@@ -69,7 +68,6 @@ jobs:
           script: |
             cd /home/user/front-end
             ls
-            pm2 start ecosystem.config.js
-        
+            pm2 restart ecosystem.config.js --update-env || pm2 start ecosystem.config.js --update-env        
   
     
