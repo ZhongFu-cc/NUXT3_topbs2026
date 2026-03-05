@@ -6,11 +6,11 @@
                 <Title title="研討會資訊"></Title>
                 <div class="meeting-info-box">
                     <div>
-                        <p><span class="title">會議時間:</span>2025年06月28日(六)，上午08:00 - 下午17:50
+                        <p><span class="title">會議時間:</span>2026年06月28日(六)，上午08:00 - 下午17:50
                         </p>
                         <p class="time">
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            2025年06月29日(日)，上午08:00 - 下午12:10</p>
+                            2026年06月29日(日)，上午08:00 - 下午12:10</p>
                     </div>
                     <p><span class="title">會議地點:</span>中國醫藥大學水湳校區 卓越大樓B2 國際會議廳 (406台中市北屯區經貿路一段100號)</p>
                 </div>
@@ -21,7 +21,7 @@
                 <div class="agenda-info-box">
                     <img src="../assets/img/2024-TICBCS-agenda.png" alt="">
                     <!-- <div class="download"> -->
-                        <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
+                    <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
                         TICBCS 議程下載
                     </a>
                     <a href="https://lihi2.com/StUJt" target="_blank" download class="agenda-download">
