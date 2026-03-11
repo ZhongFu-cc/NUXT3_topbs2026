@@ -34,8 +34,7 @@
                 <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
                     :class="activeClass('seminarRegistration')">註冊資訊</nuxt-link>
 
-                <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
-                    :class="activeClass('seminarRegistration')">投稿資訊</nuxt-link>
+                <nuxt-link class="menu-item" to="/" @click="setActiveItem('')" :class="activeClass('')">投稿資訊</nuxt-link>
 
 
                 <nuxt-link class="menu-item" to="/transportation" @click="setActiveItem('transportation')"
