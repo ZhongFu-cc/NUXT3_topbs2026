@@ -12,7 +12,7 @@
     </main>
 
     <!-- 共用的Footer -->
-     <Bottom/>
+    <!-- <Bottom/> -->
     <Footer ref="footerRef"></Footer>
   </div>
 

@@ -15,7 +15,7 @@
             <div class="logo-container" v-if="!isActive">
                 <nuxt-link class="logo-link" to="/" @click="setActiveItem('')">
                     <div class="logo-image-box">
-                        <img class="logo" src="/img/logo.png" alt="TICBCS Logo" />
+                        <img class="logo" src="/img/logo.png" alt="TOPBS Logo" />
                     </div>
                 </nuxt-link>
             </div>
@@ -34,17 +34,21 @@
                 <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
                     :class="activeClass('seminarRegistration')">註冊資訊</nuxt-link>
 
+                <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
+                    :class="activeClass('seminarRegistration')">投稿資訊</nuxt-link>
+
+
                 <nuxt-link class="menu-item" to="/transportation" @click="setActiveItem('transportation')"
                     :class="activeClass('transportation')">交通資訊</nuxt-link>
 
 
                 <div class="item-box">
-                    <nuxt-link class="menu-item" to="/travel" @click="setActiveItem('travel')"
-                        :class="activeClass('travel')">旅遊資訊</nuxt-link>
+                    <!-- <nuxt-link class="menu-item" to="/travel" @click="setActiveItem('travel')"
+                        :class="activeClass('travel')">旅遊資訊</nuxt-link> -->
                     <nuxt-link class="menu-item" to="/sponsor-list" @click="setActiveItem('sponsorList')"
                         :class="activeClass('sponsorList')">贊助廠商</nuxt-link>
-                    <nuxt-link class="menu-item" to="/mascot" @click="setActiveItem('mascot')"
-                        :class="activeClass('mascot')">吉祥物專區</nuxt-link>
+                    <!-- <nuxt-link class="menu-item" to="/mascot" @click="setActiveItem('mascot')"
+                        :class="activeClass('mascot')">吉祥物專區</nuxt-link> -->
                     <div class="gallery-box menu-item" @click="toggleGallerySubMenu">
                         Gallery
                         <el-icon>
@@ -191,7 +195,7 @@ onMounted(() => {
         height: 6.5rem;
         padding: 0.5rem 0;
         // FIXME
-        border-bottom: 8px solid #915aa1;
+        border-bottom: 8px solid $main-color;
 
 
         @media screen and (max-width: 1920px) {
@@ -207,7 +211,7 @@ onMounted(() => {
 
         // Logo區域
         .logo-container {
-            width: 30%;
+            width: 10%;
             height: 100%;
 
             .logo-link {
@@ -308,7 +312,7 @@ onMounted(() => {
                 &:hover {
                     cursor: pointer;
                     color: white;
-                    background-color: #915aa1;
+                    background-color: $main-color;
                 }
             }
 

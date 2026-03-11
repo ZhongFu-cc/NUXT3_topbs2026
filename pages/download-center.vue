@@ -1,7 +1,7 @@
 <template>
     <div>
         <main class="common-section">
-            <Breadcrumbs firstRoute="TICBCS"secoundRoute="Download Center"></Breadcrumbs>
+            <Breadcrumbs firstRoute="TOPBS" secoundRoute="Download Center"></Breadcrumbs>
             <Title title="Download Center"></Title>
         </main>
 
@@ -21,9 +21,11 @@ import Title from '@/components/layout/Title.vue';
         font-size: 2.5rem;
         color: $main-color;
     }
+
     .content {
         margin: 1rem auto;
         text-align: center;
+
         h1 {
             font-size: 2rem;
         }

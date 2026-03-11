@@ -5,20 +5,22 @@
             <h1 class="title">Welcome Message</h1>
             <div class="welcome-box">
                 <div class="image-box">
-                    <img src="../assets/img/president3.jpg" alt="">
+                    <img src="../assets/img/YeHsiangTang.jpg" alt="">
                 </div>
                 <div class="welcome-content">
-                    <p>各位嘉賓、學界專家及同仁&nbsp;:</p>
-                    <p>歡迎您蒞臨台中國際乳癌研討會。本研討會源自中華民國乳癌教育暨防治學會所辦之國際研討會，並在歷任理事長不懈努力下逐步奠定基礎。近年來，藉由中國醫藥大學附設醫院以及中國醫藥大學洪明奇校長的鼎力支持，本會已躋身為中部地區具代表性的重要國際乳癌研討會&nbsp;!
+                    <p>各位會員與醫界先進您好：&nbsp;:</p>
+                    <p>歡迎蒞臨台灣乳房腫瘤手術暨重建醫學會年會。整形乳房外科的發展，一直致力於在腫瘤治療安全與術後外觀重建之間取得平衡，使患者在抗癌過程中，不僅能獲得有效的治療，也能維持自信與良好的生活品質。隨著醫療科技進步與跨專科合作日益成熟，透過持續的學術交流與臨床經驗分享，已成為推動醫療品質精進的重要力量。&nbsp;
                     </p>
-                    <p>台中國際乳癌研討會著重於基礎醫學研究與臨床治療新知，邀請國內外重量級學者分享頂尖研究與實務經驗，並針對真實世界的醫療運作議題展開深入討論。同時，今年度另設護理師與個管師工作坊，旨在提升醫療團隊之合作運作效率，促進跨領域交流與學習&nbsp;。
+                    <p>本次年會以 “Escalation With Wellness; De-Escalation In Precision”
+                        為核心主題，象徵當代乳癌治療策略的重要轉變。在需要積極治療的領域，我們透過整合醫療與重建技術的進步，強化患者的身心健康與整體照護品質；同時，在精準醫療與臨床證據的支持下，逐步發展更精準且適度的治療策略，以避免過度治療，讓醫療決策更貼近個別患者的需求&nbsp;。
                     </p>
-                    <p>我們期盼藉由此次盛會，能夠架構研究與臨床間之溝通橋樑，共同引領未來研發與創新，進一步提升乳癌患者之福祉。謹此誠摯歡迎各位嘉賓共襄盛舉，攜手創造更光明的明天。</p>
-                    <p>台中國際乳癌研討會&nbsp;&nbsp; 敬上</p>
+                    <p>本次年會將透過專題演講、臨床案例討論與實務經驗分享，聚焦乳癌治療、腫瘤整形手術技術、重建策略及多專科整合照護，期望提供一個深度交流與學術激盪的平台，促進國內乳房外科領域持續精進與發展。</p>
+                    <p>誠摯期待與各位齊聚交流，共同為提升乳癌患者的照護品質與未來發展努力。</p>
+                    <p>台灣乳房腫瘤手術暨重建醫學會敬上</p>
                 </div>
             </div>
 
-            <h1 class="title">主辦單位</h1>
+            <!-- <h1 class="title">主辦單位</h1>
 
             <div class="image-box">
                 <div class="logo-box">
@@ -54,7 +56,7 @@
                 </div>
             </div>
 
-            <h1 class="title">協辦單位</h1>
+            <h1 class="title">協辦單位</h1> -->
 
         </div>
     </section>
@@ -84,14 +86,15 @@ import Banner from '@/components/layout/Banner.vue';
     .welcome-box {
         display: flex;
         gap: 2rem;
-        margin-top: 3.5rem;
+        margin: 3.5rem 0;
 
         @media screen and (max-width: 768px) {
             flex-direction: column;
         }
 
         .image-box {
-            flex: 1;
+            flex: 0.5;
+            height: 80%;
             border-radius: 10px;
 
             img {

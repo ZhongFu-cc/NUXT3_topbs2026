@@ -3,7 +3,7 @@
         <main class="common-section">
             <Banner />
             <div class="main-section">
-                <div class="credit-box">
+                <!-- <div class="credit-box">
                     <div class="credit-point-box">
                         <ul>
                             <h1 class="title">研討會申請之會議學分(申請中)</h1>
@@ -23,14 +23,13 @@
                     <div class="image-box">
                         <img src="../assets/img/bubble_tea_no-problem.png" alt="">
                     </div>
-                </div>
+                </div> -->
 
                 <el-divider></el-divider>
                 <Title title="研討會報名"></Title>
-                <p class="reminder">現場報名須繳$300工本費</p>
                 <div class="title-section">
                 </div>
-                <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
+                <!-- <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
                     require-asterisk-position="right" :show-message="true" :scroll-to-error="true">
 
                     <div class="main-form">
@@ -72,9 +71,9 @@
                                 <el-input v-model="formData.jobTitle"></el-input>
                             </el-form-item>
 
-                            <!-- <el-form-item :label="formLabel.idCard" prop="idCard">
+                            <el-form-item :label="formLabel.idCard" prop="idCard">
                                 <el-input v-model="formData.idCard"></el-input>
-                            </el-form-item> -->
+                            </el-form-item>
 
 
                             <div class="member-phone required">
@@ -114,7 +113,7 @@
                     <el-form-item class="submit-btn">
                         <el-button type="primary" disabled @click="submit(form)">Submit</el-button>
                     </el-form-item>
-                </el-form>
+                </el-form> -->
             </div>
         </main>
 

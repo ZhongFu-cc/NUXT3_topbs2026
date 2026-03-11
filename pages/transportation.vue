@@ -2,10 +2,10 @@
     <div class="transportation-section">
         <Banner />
         <div class="main-box">
-            <p class="title"><span class="conference-location">會議地點</span> 台中國際會展中心</p>
+            <p class="title"><span class="conference-location">會議地點</span> 台北國際會議中心</p>
             <div class="map-box">
                 <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3639.3742506591266!2d120.64870461089562!3d24.193668878280345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3469173875c5e6d5%3A0x7571e722f78acf23!2z6Ie65Lit5ZyL6Zqb5pyD5bGV5Lit5b-D!5e0!3m2!1szh-TW!2stw!4v1772522489602!5m2!1szh-TW!2stw"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.0165568738175!2d121.55831637537649!3d25.033512177816775!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442abb61ab3d33f%3A0xab0d0f7ac395bff4!2z5Y-w5YyX5ZyL6Zqb5pyD6K2w5Lit5b-DKFRJQ0Mp!5e0!3m2!1szh-TW!2stw!4v1773211259473!5m2!1szh-TW!2stw"
                     width="600" height="450" style="border:0;" loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"></iframe>
                 <!-- <div class="location-info-box">
@@ -205,6 +205,7 @@ import Banner from '@/components/layout/Banner.vue';
 
     .map-box {
         width: 100%;
+        margin-bottom: 5rem;
 
         iframe {
             width: 100%;

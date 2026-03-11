@@ -39,16 +39,19 @@ const menu = reactive([
     { title: '首頁', path: '/', isActive: false },
     { title: '關於我們', path: '/about-us', isActive: false },
     { title: '會議資訊', path: '/conference-information', isActive: false },
-    { title: '註冊資訊', path: '/seminar-registration',isActive: false },
-    { title: '交通資訊', path: '/transportation',isActive: false },
-    { title: '旅遊資訊', path: '/travel',isActive: false },
-    { title: '贊助廠商', path: '/sponsor-list',isActive: false },
-    { title: '吉祥物專區', path: '/mascot',isActive: false },
-    { title: 'Gallery', path: '/gallery', isActive: false, submenu: [
-        { title: '2023 Gallery', path: '/gallery/2023' },
-        { title: '2024 Gallery', path: '/gallery/2024' },
-        { title: '2025 Gallery', path: '/gallery/2025' },
-    ]}
+    { title: '註冊資訊', path: '/seminar-registration', isActive: false },
+    { title: '投稿資訊', path: '/', isActive: false },
+    { title: '交通資訊', path: '/transportation', isActive: false },
+    // { title: '旅遊資訊', path: '/travel',isActive: false },
+    { title: '贊助廠商', path: '/sponsor-list', isActive: false },
+    // { title: '吉祥物專區', path: '/mascot',isActive: false },
+    {
+        title: 'Gallery', path: '/gallery', isActive: false, submenu: [
+            { title: '2023 Gallery', path: '/gallery/2023' },
+            { title: '2024 Gallery', path: '/gallery/2024' },
+            { title: '2025 Gallery', path: '/gallery/2025' },
+        ]
+    }
 
 ])
 
@@ -104,7 +107,6 @@ const logout = async () => {
 
 </script>
 <style lang="scss" scoped>
-
 .mobile-menu {
     background-color: black;
     height: 100vh;
@@ -157,9 +159,11 @@ const logout = async () => {
 
         .submenu {
             padding-left: 1rem;
+
             li {
                 list-style: none;
             }
+
             // overflow: hidden;
             // max-height: 0px;
             // transition: 0.5s;
