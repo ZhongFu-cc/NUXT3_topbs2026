@@ -1,0 +1,10 @@
+{
+  "extends": "../.nuxt/tsconfig.server.json",
+  //這邊需要將../.nuxt/tsconfig.server.json 內的 exclude全部複製過來, 因為只有寫exclude : ["../ecosystem.config.js"] 他會覆蓋自動生成的
+  "exclude": [
+    "../node_modules",
+    "../node_modules/nuxt/node_modules",
+    "../dist",
+    "../ecosystem.config.js"
+  ]
+}

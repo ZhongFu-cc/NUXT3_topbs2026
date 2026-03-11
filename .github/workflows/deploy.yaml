@@ -1,0 +1,77 @@
+on:
+  push:
+    branches: 
+      - '**'
+
+# 工作流程
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+    
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build and Replace Env
+        run: |
+          # 使用 sed 直接修改檔案內容
+          sed -i "s|__NUXT_PUBLIC_API_BASE__|${{ secrets.NUXT_PUBLIC_API_BASE }}|g" ecosystem.config.js
+          sed -i "s|__NUXT_PUBLIC_DOMAIN__|${{ secrets.NUXT_PUBLIC_DOMAIN }}|g" ecosystem.config.js
+          
+          # 順便也處理 .env 檔案以防萬一
+          export NUXT_PUBLIC_API_BASE='${{ secrets.NUXT_PUBLIC_API_BASE }}'
+          export NUXT_PUBLIC_DOMAIN='${{ secrets.NUXT_PUBLIC_DOMAIN }}'
+          envsubst < .env.production > .env
+
+          npm ci
+          npm run build
+
+      - name: Stop pm2
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.GCP_VM_HOST }}
+          port: 22
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # 更改要更停止 ecosystem.config.js 的位置
+            cd /home/user/front-end
+            pm2 stop ecosystem.config.js
+            rm -fr .output
+
+      - name: Sync Dis Files to AlmaLinux VM
+        if: github.ref == 'refs/heads/main'
+        uses: burnett01/rsync-deployments@v8
+        with:
+          remote_host: ${{ secrets.GCP_VM_HOST }}
+          remote_user: ${{ secrets.SSH_USER }}
+          remote_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+          path: ".output"
+        # 設置 remote path
+          remote_path: "/home/user/front-end"
+          debug: true          
+          switches: "-avz --delete --include='.output/***' --include='.env' --include='ecosystem.config.js' --exclude='*'"
+          # switches: "-avz --delete" 新增可以移除舊檔
+          
+
+      - name: Start pm2
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.GCP_VM_HOST }}
+          port: 22
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /home/user/front-end
+            ls
+            pm2 delete ecosystem.config.js || true
+            pm2 start ecosystem.config.js
+            pm2 save 
+
