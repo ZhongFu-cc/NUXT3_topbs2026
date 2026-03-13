@@ -25,84 +25,109 @@
                     </div>
                 </div> -->
 
-                <el-divider></el-divider>
+                <!-- <el-divider></el-divider> -->
                 <Title title="研討會報名"></Title>
                 <div class="title-section">
                 </div>
-                <!-- <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
-                    require-asterisk-position="right" :show-message="true" :scroll-to-error="true">
+                <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
+                    require-asterisk-position="right" :show-message="true" :scroll-to-error="true"
+                    :validate-on-rule-change="false">
 
                     <div class="main-form">
                         <div class="left-seciton">
-                            <el-form-item v-if="attendeeType === '2'" :label="formLabel.chineseName"
-                                :prop="'chineseName'">
+                            <el-form-item :label="t.country" prop="country">
+                                <el-select v-model="formData.country" placeholder="Select Country" filterable>
+                                    <el-option v-for="country in countryList" :key="country" :label="country"
+                                        :value="country"></el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item :label="t.chineseName" :prop="'chineseName'">
                                 <el-input v-model="formData.chineseName"></el-input>
                             </el-form-item>
 
                             <div class="member-name">
-                                <el-form-item class="first-name" required :label="formLabel.firstName">
-                                    <el-input v-model="formData.firstName"
-                                        :placeholder="formLabel.firstName"></el-input>
+                                <el-form-item class="first-name" required :label="t.firstName" prop="firstName">
+                                    <el-input v-model="formData.firstName" :placeholder="t.firstName"></el-input>
                                 </el-form-item>
-                                <el-form-item class="last-name" required :label="formLabel.lastName">
-                                    <el-input v-model="formData.lastName" :placeholder="formLabel.lastName"></el-input>
+                                <el-form-item class="last-name" required :label="t.lastName" prop="lastName">
+                                    <el-input v-model="formData.lastName" :placeholder="t.lastName"></el-input>
                                 </el-form-item>
 
                             </div>
 
-                            <el-form-item class="email required" :label="formLabel.email" prop="email">
-                                <el-input v-model="formData.email" :placeholder="formLabel.email2"
+                            <el-form-item class="email required" :label="t.email" prop="email">
+                                <el-input v-model="formData.email" :placeholder="t.email2"
                                     :prefixIcon="Message"></el-input>
                             </el-form-item>
 
-                            <el-form-item class="email required" :label="formLabel.email2" required prop="confirmEmail">
-                                <el-input v-model="formData.confirmEmail" :placeholder="formLabel.email2"
+                            <el-form-item class="email required" :label="t.email2" required prop="confirmEmail">
+                                <el-input v-model="formData.confirmEmail" :placeholder="t.email2"
                                     :prefixIcon="Message"></el-input>
                             </el-form-item>
 
-                            <el-form-item class="required" :label="formLabel.affiliation" prop="affiliation">
-                                <el-input v-model="formData.affiliation"></el-input>
+                            <el-form-item :label="t.password" prop="password">
+                                <el-input v-model="formData.password" type="password"></el-input>
                             </el-form-item>
+
+                            <el-form-item :label="t.confirmPassword" prop="confirmPassword">
+                                <el-input v-model="formData.confirmPassword" type="password"></el-input>
+                            </el-form-item>
+
 
 
                         </div>
                         <div class="right-section">
-                            <el-form-item class="required" :label="formLabel.jobTitle" prop="jobTitle">
+                            <el-form-item class="required" :label="t.affiliation" prop="affiliation">
+                                <el-input v-model="formData.affiliation"></el-input>
+                            </el-form-item>
+                            <el-form-item class="required" :label="t.jobTitle" prop="jobTitle">
                                 <el-input v-model="formData.jobTitle"></el-input>
                             </el-form-item>
-
-                            <el-form-item :label="formLabel.idCard" prop="idCard">
+                            <!-- 
+                            <el-form-item :label="t.idCard" prop="idCard">
                                 <el-input v-model="formData.idCard"></el-input>
+                            </el-form-item> -->
+
+                            <el-form-item :label="t.remitAccountLast5" prop="remitAccountLast5">
+                                <el-input minlength="5" maxlength="5" v-model="formData.remitAccountLast5"></el-input>
                             </el-form-item>
 
 
                             <div class="member-phone required">
-                                <el-form-item class="country-code" :label="formLabel.countryCode" prop="countryCode">
+                                <el-form-item class="country-code" :label="t.phoneNum" prop="countryCode">
                                     <div class="country-code-inner">
-                                        <el-input :disabled="attendeeType === '2'" v-model="formData.countryCode"
-                                            placeholder="Country Code"></el-input>
+                                        <el-input :disabled="formData.country === 'Taiwan'"
+                                            v-model="formData.countryCode" placeholder="Country Code"></el-input>
                                         <span>-</span>
                                     </div>
                                 </el-form-item>
-                                <el-form-item :class="'domestic-phone-num'" :label="formLabel.phoneNum" prop="phoneNum">
+                                <el-form-item :class="'domestic-phone-num'" :label="t.phoneNum" prop="phoneNum">
                                     <el-input v-model="formData.phoneNum"></el-input>
                                 </el-form-item>
                             </div>
 
-                            <el-form-item :label="formLabel.food">
+                            <el-form-item :label="t.food">
                                 <el-radio-group v-model="formData.food">
-                                    <el-radio value="葷">{{ formLabel.foodRadio1 }}</el-radio>
-                                    <el-radio value="素">{{ formLabel.foodRadio2 }}</el-radio>
+                                    <el-radio value="葷">{{ t.foodRadio1 }}</el-radio>
+                                    <el-radio value="素">{{ t.foodRadio2 }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
-                            <el-form-item :label="formLabel.foodTaboo">
+                            <el-form-item :label="t.foodTaboo">
                                 <el-input v-model="formData.foodTaboo"></el-input>
+                            </el-form-item>
+
+                            <el-form-item :label="t.category" prop="category">
+                                <el-select v-model="formData.category" placeholder="Select Category">
+                                    <el-option :label="t.category1" :value="1"></el-option>
+                                    <el-option :label="t.category2" :value="2"></el-option>
+                                    <el-option :label="t.category3" :value="3"></el-option>
+                                </el-select>
                             </el-form-item>
 
                         </div>
                     </div>
                     <el-form-item class="captcha" prop="captcha">
-                        <el-input v-model="formData.verificationCode" placeholder="Captcha"></el-input>
+                        <el-input v-model="formData.verificationCode" :placeholder="t.captcha"></el-input>
                         <div class="captcha-img">
                             <img :src="captchaData.image" alt="captcha">
                             <el-button class="refresh-btn" @click="getCaptcha"><el-icon>
@@ -113,7 +138,7 @@
                     <el-form-item class="submit-btn">
                         <el-button type="primary" disabled @click="submit(form)">Submit</el-button>
                     </el-form-item>
-                </el-form> -->
+                </el-form>
             </div>
         </main>
 
@@ -124,25 +149,33 @@
 
 import type { FormInstance, FormRules } from 'element-plus'
 import { Lock, Message } from '@element-plus/icons-vue'
+import { useLang } from '@/composables/useLang'
 
 import Banner from '@/components/layout/Banner.vue';
 import Title from '@/components/layout/Title.vue';
 
+import countries from '@/assets/data/countries.json'
 
 
+
+const countryList = ref(countries);
 
 const router = useRouter()
 
 const attendeeType = '2';
 
+const { t, locale, setLocale } = useLang()
+
 /**-------------------------------匯款帳號末5碼校驗----------------------------- */
 
 
 const validateRemitAccount = (rule: any, value: string, callback: any) => {
-    if (formData.country === 'Taiwan' && !value) {
-        callback(new Error('請輸入匯款帳號末5碼'))
-    } else if (formData.country === 'Taiwan' && value.length !== 5) {
-        callback(new Error('匯款帳號末5碼必須為5碼'))
+    if (!value) {
+        callback(new Error(t.value.remitAccountLast5Validate))
+    } else if (value.length !== 5) {
+        callback(new Error(t.value.remitAccountLast5Validate2))
+    } else if (!/^\d{5}$/.test(value)) {
+        callback(new Error(t.value.remitAccountLast5Validate2))
     }
     else {
         callback()
@@ -240,110 +273,13 @@ const captchaData = reactive({
 
 
 const getCaptcha = async () => {
-    console.log('getCaptcha')
     let res = await CSRrequest.get('/member/captcha')
     console.log(res)
     Object.assign(captchaData, res.data)
     formData.verificationKey = captchaData.key
 }
 
-/**---------------------- */
-const formLabel = reactive({
-    title: 'Title',
-    firstName: 'First Name',
-    lastName: 'Last Name',
-    email: 'ID: Primary E-mail',
-    email2: 'Confirm E-mail',
-    password: 'Password',
-    confirmPassword: 'Confirm Password',
-    chineseName: 'Chinese Name',
-    affiliation: 'Affiliation',
-    jobTitle: 'Job Title',
-    country: 'Country',
-    remitAccountLast5: 'Remit Account Last 5 Number',
-    countryCode: 'Phone',
-    idCard: 'Passport Number',
-    phoneNum: 'Phone Number',
-    receipt: 'Receipt',
-    category: 'Category',
-    food: 'Food Preference',
-    foodTaboo: 'Dietary restrictions',
-    foodRadio1: 'Non-Vegetarian',
-    foodRadio2: 'Vegetarian',
-    verificationCode: 'Verification Code',
-    titleValidate: 'Please select a title',
-    firstNameValidate: 'Please input your first name',
-    lastNameValidate: 'Please input your last name',
-    chineseNameValidate: 'Please input your Chinese name',
-    emailValidate: 'Please input your email',
-    emailValidate2: 'Please input correct email',
-    confirmEmail: 'Please input your email again',
-    confirmEmailValidate: 'The two email do not match',
-    passwordValidate: 'Please input your password',
-    confirmPasswordValidate: 'Please input your password again',
-    confirmPasswordValidate2: 'The two passwords do not match',
-    affiliationValidate: 'Please input your affiliation',
-    jobTitleValidate: 'Please input your job title',
-    idCardValidate: 'Please input your passport number',
-    idCardValidate2: 'Please input correct passport number',
-    countryValidate: 'Please select a country',
-    countryCodeValidate: '',
-    phoneNumValidate: 'Please input your phone number',
-    categoryValidate: 'Please select a category',
-    remitAccountLast5Validate: 'Please input your remit account last 5 number',
-    category1: 'Member',
-    category2: 'Others(Trainee/Nurse/Reasearcher)',
-    category3: 'Non-member'
-})
 
-watch(() => attendeeType, (value) => {
-    if (value === '2') {
-        formLabel.title = '稱謂'
-        formLabel.firstName = '英文名'
-        formLabel.lastName = '英文姓氏'
-        formLabel.chineseName = '中文姓名'
-        formLabel.email = '電子信箱'
-        formLabel.email2 = '電子信箱確認'
-        formLabel.password = '密碼'
-        formLabel.confirmPassword = '確認密碼'
-        formLabel.affiliation = '所屬機構'
-        formLabel.jobTitle = '職稱'
-        formLabel.idCard = '身分證字號'
-        formLabel.country = '國家'
-        formLabel.remitAccountLast5 = '匯款帳號末五碼'
-        formLabel.countryCode = '聯絡電話'
-        formLabel.phoneNum = '手機號碼'
-        formLabel.receipt = '發票抬頭'
-        formLabel.category = '類別'
-        formLabel.food = '餐食偏好'
-        formLabel.foodTaboo = '餐食禁忌'
-        formLabel.foodRadio1 = '葷食'
-        formLabel.foodRadio2 = '素食'
-        formLabel.titleValidate = '請選擇稱謂'
-        formLabel.firstNameValidate = '請輸入英文名'
-        formLabel.lastNameValidate = '請輸入英文姓氏'
-        formLabel.chineseNameValidate = '請輸入中文姓名'
-        formLabel.emailValidate = '請輸入電子信箱'
-        formLabel.emailValidate2 = '請輸入正確格式的電子信箱'
-        formLabel.confirmEmail = '請再次輸入電子信箱'
-        formLabel.confirmEmailValidate = '兩次電子信箱不相符'
-        formLabel.passwordValidate = '請輸入密碼'
-        formLabel.confirmPasswordValidate = '請再次輸入密碼'
-        formLabel.confirmPasswordValidate2 = '兩次密碼不相符'
-        formLabel.affiliationValidate = '請輸入所屬機構'
-        formLabel.jobTitleValidate = '請輸入職稱'
-        formLabel.idCardValidate = '請輸入身分證字號'
-        formLabel.idCardValidate2 = '請輸入正確格式的身分證字號'
-        formLabel.countryValidate = '請選擇國家'
-        formLabel.countryCodeValidate = '請輸入國碼'
-        formLabel.phoneNumValidate = '請輸入手機號碼'
-        formLabel.categoryValidate = '請選擇類別'
-        formLabel.remitAccountLast5Validate = '請輸入匯款帳號末五碼'
-        formLabel.category1 = '會員(台灣乳房腫瘤手術暨重建醫學會)'
-        formLabel.category2 = '其他(包含護理人員、住院醫師、研究人員、學生... 等)'
-        formLabel.category3 = '非會員'
-    }
-}, { immediate: true })
 
 
 
@@ -403,32 +339,31 @@ const formData = reactive<formData>({
     verificationKey: ''
 })
 
+/**---------------------- */
+
+watch(() => formData.country, (value) => {
+    value === 'Taiwan' ? setLocale('zh') : setLocale('en')
+}, { immediate: true })
+
 const cleanCategoryExtra = (item: any) => {
     item.categoryExtra = ''
 }
 
-watch(() => attendeeType, (value) => {
-    if (value === '2') {
-        formData.country = 'Taiwan';
-        formData.countryCode = '886';
-    }
-}, { immediate: true })
 
 const vaildConfirmPassword = (rule: any, value: string, callback: any) => {
 
     if (!value) {
-        callback(new Error(formLabel.confirmPasswordValidate))
+        callback(new Error(t.value.confirmPasswordValidate))
     } else if (value !== formData.password) {
-        callback(new Error(formLabel.confirmPasswordValidate2))
+        callback(new Error(t.value.confirmPasswordValidate2))
     } else {
         callback()
     }
 }
 
 const validCategoryExtra = (rule: any, value: string, callback: any) => {
-    if (attendeeType == '2') callback()
     if (formData.category === 1 && !value) {
-        callback(new Error('Please select a category'))
+        callback(new Error(t.value.categoryValidate))
     } else {
         callback()
     }
@@ -437,34 +372,34 @@ const validCategoryExtra = (rule: any, value: string, callback: any) => {
 const checkEmail = (rule: any, value: string, callback: any) => {
     console.log('checkEmail', value, formData.email)
     if (!value) {
-        callback(new Error(formLabel.confirmEmail))
+        callback(new Error(t.value.confirmEmail))
     } else if (value !== formData.email) {
-        callback(new Error(formLabel.confirmEmailValidate))
+        callback(new Error(t.value.confirmEmailValidate))
     } else {
         callback()
     }
 }
 
 
-const formRules = reactive<FormRules>({
-    title: [{ required: true, message: formLabel.titleValidate, trigger: 'change' }],
-    firstName: [{ required: true, message: formLabel.firstNameValidate, trigger: 'blur' }],
-    lastName: [{ required: true, message: formLabel.lastNameValidate, trigger: 'blur' }],
-    email: [{ required: true, message: formLabel.emailValidate, trigger: 'blur' }, { type: 'email', message: formLabel.emailValidate2, trigger: 'blur' }],
+const formRules = computed<FormRules>(() => ({
+    title: [{ required: true, message: t.value.titleValidate, trigger: 'change' }],
+    firstName: [{ required: true, message: t.value.firstNameValidate, trigger: 'blur' }],
+    lastName: [{ required: true, message: t.value.lastNameValidate, trigger: 'blur' }],
+    email: [{ required: true, message: t.value.emailValidate, trigger: 'blur' }, { type: 'email', message: t.value.emailValidate2, trigger: 'blur' }],
     confirmEmail: [{ validator: checkEmail, trigger: 'blur' }],
-    password: [{ required: true, message: formLabel.passwordValidate, trigger: 'blur' }],
-    chineseName: [{ required: true, message: formLabel.chineseNameValidate, trigger: 'blur' }],
-    confirmPassword: [{ validator: vaildConfirmPassword, trigger: 'blur' }],
-    affiliation: [{ required: true, message: formLabel.affiliationValidate, trigger: 'blur' }],
-    jobTitle: [{ required: true, message: formLabel.jobTitleValidate, trigger: 'blur' }],
+    password: [{ required: true, message: t.value.passwordValidate, trigger: 'blur' }],
+    chineseName: [{ required: formData.country === 'Taiwan', message: t.value.chineseNameValidate, trigger: 'blur' }],
+    confirmPassword: [{ required: true, validator: vaildConfirmPassword, trigger: 'blur' }],
+    affiliation: [{ required: true, message: t.value.affiliationValidate, trigger: 'blur' }],
+    jobTitle: [{ required: true, message: t.value.jobTitleValidate, trigger: 'blur' }],
     idCard: [{ required: true, validator: checkCkDigit, trigger: 'blur' }],
-    country: [{ required: true, message: formLabel.countryValidate, trigger: 'change' }],
-    countryCode: [{ required: true, message: formLabel.countryCodeValidate, trigger: 'blur' }],
-    phoneNum: [{ required: true, message: formLabel.phoneNumValidate, trigger: 'blur' }],
-    category: [{ required: true, message: formLabel.categoryValidate, trigger: 'change' }],
-    remitAccountLast5: [{ validator: validateRemitAccount, trigger: 'blur' }],
+    country: [{ required: true, message: t.value.countryValidate, trigger: 'change' }],
+    countryCode: [{ required: true, message: t.value.countryCodeValidate, trigger: 'blur' }],
+    phoneNum: [{ required: true, message: t.value.phoneNumValidate, trigger: 'blur' }],
+    category: [{ required: true, message: t.value.categoryValidate, trigger: 'change' }],
+    remitAccountLast5: [{ required: true, validator: validateRemitAccount, trigger: 'blur' }],
     categoryExtra: [{ validator: validCategoryExtra, trigger: 'change' }],
-})
+}))
 
 
 
@@ -473,8 +408,6 @@ const submit = async (formEl: FormInstance | undefined) => {
     // console.log(valid)
     formEl.validate(async (valid) => {
         if (valid) {
-            console.log('submit', formData)
-            console.log(formEl)
             formData.phone = formData.countryCode + '-' + formData.phoneNum
             let res = await CSRrequest.post('/member', {
                 body: formData

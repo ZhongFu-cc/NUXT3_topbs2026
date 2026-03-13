@@ -123,6 +123,7 @@
 
 // 偵測滾輪位置，更換 menu 背景色
 const isScroll = ref(false)
+
 function handleScroll() {
     let scrollPositionY = window.scrollY
     if (scrollPositionY > 0) {
@@ -131,6 +132,7 @@ function handleScroll() {
         isScroll.value = false
     }
 }
+
 
 const isOpen = ref(false)
 const toggleMenu = () => {
@@ -191,7 +193,12 @@ const emits = defineEmits(['openMenu']);
 
 /**================================================================ */
 onMounted(() => {
+    handleScroll() // 初始化時檢查滾輪位置
     window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
 })
 
 </script>
