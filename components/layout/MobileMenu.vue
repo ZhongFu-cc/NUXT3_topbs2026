@@ -11,7 +11,7 @@
                         <el-icon class="arrow" :class="{ 'is-active': item.isActive }">
                             <ElIconArrowDown />
                         </el-icon>
-                        <ul class="submenu" :class="{ 'is-open': item.isActive }">
+                        <ul v-if="item.isActive" class="submenu" :class="{ 'is-open': item.isActive }">
                             <li v-for="subItem in item.submenu" :key="subItem.path">
                                 <nuxt-link class="sub-menu-item" :to="subItem.path" @click="handleClick(subItem.path)"
                                     :class="activeClass(subItem.path)">{{ subItem.title }}</nuxt-link>
@@ -40,7 +40,14 @@ const menu = reactive([
     { title: '關於我們', path: '/about-us', isActive: false },
     { title: '會議資訊', path: '/conference-information', isActive: false },
     { title: '註冊資訊', path: '/seminar-registration', isActive: false },
-    { title: '投稿資訊', path: '/', isActive: false },
+    {
+        title: '投稿資訊', path: '/', isActive: false, submenu: [
+            { title: '投稿指南', path: '/' },
+            { title: '摘要', path: '/' },
+            { title: '投稿獎項', path: '/' },
+            { title: '發表指南', path: '/' },
+        ]
+    },
     { title: '交通資訊', path: '/transportation', isActive: false },
     // { title: '旅遊資訊', path: '/travel',isActive: false },
     { title: '贊助廠商', path: '/sponsor-list', isActive: false },
@@ -60,6 +67,7 @@ const activeItem = ref('')
 const setActiveItem = (item: any) => {
     item.isActive = !item.isActive
     activeItem.value = item.title
+    console.log('activeItem', activeItem.value);
 }
 
 const activeClass = (item: string) => {
@@ -164,25 +172,7 @@ const logout = async () => {
                 list-style: none;
             }
 
-            // overflow: hidden;
-            // max-height: 0px;
-            // transition: 0.5s;
-            // font-size: 16px;
 
-            // a {
-            //     font-size: 1.2rem;
-            //     font-weight: bold;
-            //     display: block;
-            //     color: $main-content-color;
-            //     padding: 0.5rem 0;
-            // }
-
-            &.is-open {
-                // overflow: auto !important;
-                // max-height: none !important;
-                // margin-left: 15vw;
-                // font-size: 16px;
-            }
         }
     }
 }

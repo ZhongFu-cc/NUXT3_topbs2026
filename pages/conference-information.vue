@@ -17,7 +17,7 @@
             </div>
 
             <div class="agenda-info">
-                <h1 class="title">Agenda</h1>
+                <!-- <h1 class="title">Agenda</h1> -->
                 <div class="agenda-info-box">
                     <!-- <img src="../assets/img/2024-TICBCS-agenda.png" alt=""> -->
                     <!-- <div class="download"> -->
@@ -31,7 +31,7 @@
                 </div>
             </div>
 
-            <el-divider />
+            <!-- <el-divider /> -->
             <div class="location">
                 <h1 class="title">會議地點: <span class="location-info">台北國際會議中心(TICC)</span>
                 </h1>

@@ -34,8 +34,23 @@
                 <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
                     :class="activeClass('seminarRegistration')">註冊資訊</nuxt-link>
 
-                <nuxt-link class="menu-item" to="/" @click="setActiveItem('')" :class="activeClass('')">投稿資訊</nuxt-link>
-
+                <div class="submenu-box menu-item" @click="openSubMenuFunc('abstract')">
+                    投稿資訊
+                    <el-icon>
+                        <ElIconArrowDown />
+                    </el-icon>
+                    <div class="gallery-sub-menu" :class="openedSubMenu == 'abstract' ? 'is-open' : ''"
+                        v-if="openedSubMenu == 'abstract'">
+                        <nuxt-link class="sub-menu-item" to="/" @click="setActiveItem('abstractGuideline')"
+                            :class="activeClass('abstractGuideline')">投稿指南</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/" @click="setActiveItem('abstractSubmission')"
+                            :class="activeClass('abstractSubmission')">摘要提交</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/" @click="setActiveItem('abstractAwards')"
+                            :class="activeClass('abstractAwards')">投稿獎項</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/" @click="setActiveItem('abstractPresentation')"
+                            :class="activeClass('abstractPresentation')">發表指南</nuxt-link>
+                    </div>
+                </div>
 
                 <nuxt-link class="menu-item" to="/transportation" @click="setActiveItem('transportation')"
                     :class="activeClass('transportation')">交通資訊</nuxt-link>
@@ -48,12 +63,12 @@
                         :class="activeClass('sponsorList')">贊助廠商</nuxt-link>
                     <!-- <nuxt-link class="menu-item" to="/mascot" @click="setActiveItem('mascot')"
                         :class="activeClass('mascot')">吉祥物專區</nuxt-link> -->
-                    <div class="gallery-box menu-item" @click="toggleGallerySubMenu">
+                    <div class="gallery-box menu-item" @click="openSubMenuFunc('gallery')">
                         Gallery
                         <el-icon>
                             <ElIconArrowDown />
                         </el-icon>
-                        <div class="gallery-sub-menu" v-if="gallerySubMenuIsOpen">
+                        <div class="gallery-sub-menu" v-if="openedSubMenu == 'gallery'">
                             <nuxt-link class="sub-menu-item" to="/gallery/2023" @click="setActiveItem('gallery')"
                                 :class="activeClass('gallery')">Gallery 2023</nuxt-link>
                             <nuxt-link class="sub-menu-item" to="/gallery/2024" @click="setActiveItem('gallery2024')"
@@ -61,8 +76,6 @@
                             <nuxt-link class="sub-menu-item" to="/gallery/2025" @click="setActiveItem('gallery2025')"
                                 :class="activeClass('gallery2025')">Gallery 2025</nuxt-link>
                         </div>
-                        <!-- <nuxt-link class="menu-item" to="/gallery" @click="setActiveItem('gallery')"
-                            :class="activeClass('gallery')">Gallery</nuxt-link> -->
                     </div>
 
                 </div>
@@ -79,13 +92,13 @@
                         <nuxt-link class="sub-menu-item" to="/mascot" @click="setActiveItem('mascot')"
                             :class="activeClass('mascot')">吉祥物專區</nuxt-link>
 
-                        <div class="gallery-box sub-menu-item" @click="toggleGallerySubMenu"
+                        <div class="gallery-box sub-menu-item" @click="openSubMenuFunc('gallery')"
                             :class="activeClass('gallery')">
                             Gallery
                             <el-icon>
                                 <ElIconArrowDown />
                             </el-icon>
-                            <div class="gallery-sub-menu" v-if="gallerySubMenuIsOpen">
+                            <div class="gallery-sub-menu" v-if="openedSubMenu == 'gallery'">
                                 <nuxt-link class="sub-menu-item" to="/gallery/2023" @click="setActiveItem('gallery')"
                                     :class="activeClass('gallery')">Gallery 2023</nuxt-link>
                                 <nuxt-link class="sub-menu-item" to="/gallery/2024"
@@ -95,8 +108,6 @@
                                     @click="setActiveItem('gallery2025')" :class="activeClass('gallery2025')">Gallery
                                     2025</nuxt-link>
                             </div>
-                            <!-- <nuxt-link class="menu-item" to="/gallery" @click="setActiveItem('gallery')"
-                            :class="activeClass('gallery')">Gallery</nuxt-link> -->
                         </div>
                     </div>
                 </div>
@@ -124,11 +135,16 @@ function handleScroll() {
 const isOpen = ref(false)
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
+    openedSubMenu.value = ""
 }
 
-const gallerySubMenuIsOpen = ref(false)
-const toggleGallerySubMenu = () => {
-    gallerySubMenuIsOpen.value = !gallerySubMenuIsOpen.value
+const openedSubMenu = ref("")
+const openSubMenuFunc = (subMenuItem: string) => {
+    openedSubMenu.value = subMenuItem === openedSubMenu.value ? "" : subMenuItem;
+    if (openedSubMenu.value !== 'gallery') {
+        isOpen.value = false
+    }
+    // gallerySubMenuIsOpen.value = !gallerySubMenuIsOpen.value
 }
 
 const activeItem = ref('')
@@ -194,7 +210,7 @@ onMounted(() => {
         height: 6.5rem;
         padding: 0.5rem 0;
         // FIXME
-        border-bottom: 8px solid $main-color;
+        border-bottom: 8px solid #e8d0dd;
 
 
         @media screen and (max-width: 1920px) {
@@ -357,6 +373,56 @@ onMounted(() => {
                         color: white;
 
                         &:active {
+                            color: #FF5529;
+                        }
+                    }
+                }
+            }
+
+            .submenu-box {
+                color: #59413C;
+                text-decoration: none;
+                position: relative;
+
+                .gallery-sub-menu {
+                    display: flex;
+                    flex-direction: column;
+                    position: absolute;
+                    gap: 1rem;
+                    top: 3rem;
+                    right: -0.5rem;
+                    background-color: black;
+                    width: 10rem;
+                    padding: 1rem 1.5rem;
+                    border-radius: 0.5rem;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                    z-index: 1000;
+
+                    @media screen and (max-width: 800px) {
+                        width: 8rem;
+
+
+                        &:hover {
+                            cursor: pointer;
+                            color: white;
+                            background-color: black !important;
+                        }
+
+                    }
+
+
+                    .active {
+                        color: #FF5529;
+                    }
+
+                    .sub-menu-item {
+                        color: white;
+
+                        &:active {
+                            color: #FF5529;
+                        }
+
+                        &:hover {
                             color: #FF5529;
                         }
                     }
