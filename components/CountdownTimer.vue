@@ -127,7 +127,7 @@ onUnmounted(() => {
 
     .note {
         font-size: 2.5rem;
-        font-family: 'ArphicNewArtist';
+        // font-family: 'ArphicNewArtist';
 
         @media screen and (max-width: 1536px) {
             font-size: 2.5rem;
@@ -151,7 +151,7 @@ onUnmounted(() => {
         font-size: 3.5rem;
         display: flex;
         gap: 4rem;
-        font-family: 'ArphicNewArtist';
+        // font-family: 'ArphicNewArtist';
         align-self: flex-end;
 
         @media screen and (max-width: 1536px) {
@@ -192,7 +192,7 @@ onUnmounted(() => {
             .time-number {
                 font-size: 4rem;
                 font-weight: bold;
-                font-family: 'ArphicNewArtist';
+                // font-family: 'ArphicNewArtist';
                 text-shadow: 4px 4px 4px rgba(0, 0, 0, 0.5);
 
                 @media screen and (max-width: 1536px) {

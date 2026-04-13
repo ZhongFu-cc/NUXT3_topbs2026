@@ -165,6 +165,10 @@ onMounted(() => {
 
             li {
                 list-style: none;
+
+                .sub-menu-item {
+                    color: white;
+                }
             }
 
 
