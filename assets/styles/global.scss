@@ -30,6 +30,7 @@ $main-hover-bg: #E6EFD3;
 $main-hover-text: #363838;
 $main-hover-btn-bg: #C5CEB6;
 $main-hover-btn-text: #363838;
+$main-text-color:rgb(17, 17, 17);
 
 $sub-color: #F49E19;
 $sub-hover-bg: #F8C882;
@@ -288,4 +289,10 @@ $common-title-letter-spacing: 0.1rem;
 	flex: 1 1 auto;
 	margin-left: 72px;
 	margin-right: 72px;
+}
+
+@font-face {
+	font-family: 'ArphicNewArtist';
+	/* / 代表 public 根目錄 */
+	src: url('/fonts/123.ttf') format('truetype');
 }

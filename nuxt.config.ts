@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     //可被客戶端公開訪問
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
-      domain: process.env.NUXT_PUBLIC_DOMAIN
+      domain: process.env.NUXT_PUBLIC_DOMAIN,
+      minio: process.env.NUXT_PUBLIC_MINIO_BASE
     }
   },
 
@@ -84,7 +85,9 @@ export default defineNuxtConfig({
   },
   //使用模塊,Element Plus
   modules: [
-    '@element-plus/nuxt'
+    '@element-plus/nuxt',
+    '@nuxt/image',
+    '@nuxtjs/i18n'
   ],
   //這是一個配置項,如果有報錯是暫時的,安裝完依賴,重開Vscode, 以及npm run dev跑一次
   elementPlus: {
@@ -103,5 +106,16 @@ export default defineNuxtConfig({
       ]
     }
   },
+
+  i18n: {
+    lazy: true,
+    langDir: 'i18n/locales',
+    locales: [
+      { code: 'zh', language: 'zh-TW', file: 'zh-TW.json' },
+      { code: 'en', language: 'en-US', file: 'en-US.json' }
+    ],
+    defaultLocale: 'en',
+    vueI18n: './i18n.config.ts'
+  }
 
 })

@@ -27,6 +27,16 @@ export default {
                 // 401為沒token時的錯誤
                 if (response.status !== 401) {
                     ElMessage.error(response._data.msg)
+                } else {
+                    localStorage.removeItem('Authorization-member')
+                    useAuth().isLogin.value = false
+                    useRouter().push('/login')
+
+                    const path = useRoute().path
+
+                    if (path !== '/login') {
+                        ElMessage.error('Please log in first')
+                    }
                 }
 
             },

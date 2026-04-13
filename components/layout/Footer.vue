@@ -1,8 +1,8 @@
 <template>
     <footer class="footer-section">
         <div class="footer-box">
-            <p>台灣乳房腫瘤手術暨重建醫學會</p>
-            <!-- <p>聯絡我們: twbc.prevention@gmail.com</p> -->
+            <p>Taiwan Oncoplastic Breast Surgery Symposium</p>
+            <p>Contact us: topbs106@gmail.com</p>
         </div>
     </footer>
 </template>

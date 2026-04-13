@@ -23,8 +23,8 @@
 
 
             <div class="image-section">
-                <img src="../assets/img/bubble_tea_hello.png" alt="Bubble Tea" />
-                <img src="../assets/img/bubble_tea_lay.png" alt="Bubble Tea" />
+                <img src="@/assets/img/bubble_tea_hello.png" alt="Bubble Tea" />
+                <img src="@/assets/img/bubble_tea_lay.png" alt="Bubble Tea" />
 
             </div>
         </div>

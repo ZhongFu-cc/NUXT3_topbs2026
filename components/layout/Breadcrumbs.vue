@@ -2,9 +2,9 @@
     <div class="breadcrumbs">
         <div class="temp-box"></div>
         <el-breadcrumb class="breadcrumb" :separator-icon="ArrowRight">
-            <el-breadcrumb-item :to="{ path: '/' }">Home</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ props.firstRoute }}</el-breadcrumb-item>
-            <el-breadcrumb-item>{{ props.secoundRoute }}</el-breadcrumb-item>
+            <el-breadcrumb-item :to="{ path: '/' }">{{ $t('home') }}</el-breadcrumb-item>
+            <el-breadcrumb-item v-if="props.firstRoute">{{ props.firstRoute }}</el-breadcrumb-item>
+            <el-breadcrumb-item v-if="props.secoundRoute">{{ props.secoundRoute }}</el-breadcrumb-item>
         </el-breadcrumb>
     </div>
 </template>
@@ -12,8 +12,8 @@
 import { ArrowRight } from '@element-plus/icons-vue'
 
 const props = defineProps<{
-    firstRoute: string,
-    secoundRoute: string
+    firstRoute: string | undefined,
+    secoundRoute: string | undefined
 }>();
 
 

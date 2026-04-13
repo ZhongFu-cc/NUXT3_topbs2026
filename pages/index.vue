@@ -4,7 +4,19 @@
 
         <div class="main-section">
             <div class="content">
+                <CountdownTimer :target-date="eventDate"></CountdownTimer>
 
+                <div class="info-section">
+                    <div class="link-section">
+                        <QuickLinks></QuickLinks>
+                    </div>
+                    <div class="news-section">
+                        <News></News>
+                    </div>
+                    <div class="date-section">
+                        <KeyDate></KeyDate>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -12,8 +24,21 @@
 </template>
 <script lang="ts" setup>
 import Banner from '@/components/layout/Banner.vue';
-import Breadcrumbs from '@/components/layout/Breadcrumbs.vue';
-import Title from '~/components/layout/Title.vue';
+import CountdownTimer from '@/components/CountdownTimer.vue';
+import News from '@/components/home/News.vue';
+import QuickLinks from '@/components/home/QuickLinks.vue';
+import KeyDate from '@/components/home/KeyDate.vue';
+import { useI18n } from 'vue-i18n';
+
+useSeoMeta({
+    title: 'TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society',
+    description: 'Welcome to the TOPBS 2026 (Taiwan Oncoplastic Breast Surgery Society) Conference 2026, held in Taipei from November 14-15, 2026. Explore the latest advancements in sustainable perfect form and safety, bringing together global experts for exchange and collaboration.',
+    keywords: 'Home,TOPBS,TOPBS 2026,2026 TOPBS'
+})
+
+const { locale, setLocale, t } = useI18n();
+
+const eventDate = new Date('2026-11-14T00:00:00');
 
 const carousel = ref();
 
@@ -28,7 +53,6 @@ const next = () => {
 
 
 onMounted(() => {
-    console.log(carousel.value);
 });
 
 </script>
@@ -38,19 +62,20 @@ onMounted(() => {
     min-height: 60vw;
 
     .main-section {
-        width: 60%;
+        width: 100%;
         margin-inline: auto;
 
         @media screen and (max-width: 1024px) {
-            width: 80%;
+            // width: 80%;
         }
     }
 
     .content {
 
         display: flex;
+        flex-direction: column;
 
-        @media screen and (max-width: 768px) {
+        @media screen and (max-width: 1024px) {
             flex-direction: column;
         }
 
@@ -100,15 +125,15 @@ onMounted(() => {
 
     }
 
-    .news-section {
-        min-height: 15rem;
-        background-color: #D9D5E4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 2.5rem;
-        color: #424384;
-    }
+    // .news-section {
+    //     min-height: 15rem;
+    //     background-color: #D9D5E4;
+    //     display: flex;
+    //     justify-content: center;
+    //     align-items: center;
+    //     font-size: 2.5rem;
+    //     color: #B62D66;
+    // }
 
     .carousel-section {
         display: flex;
@@ -171,6 +196,47 @@ onMounted(() => {
 
             }
         }
+
+    }
+
+    .info-section {
+        display: flex;
+        width: 75%;
+        gap: 3rem;
+        margin: 2rem auto;
+
+        .link-section {
+            width: 25%;
+        }
+
+        .news-section {
+            width: 35%;
+        }
+
+        .date-section {
+            width: 40%;
+        }
+
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+
+            .link-section {
+                width: 80%;
+            }
+
+            .news-section {
+                width: 80%;
+            }
+
+            .date-section {
+                width: 80%;
+            }
+
+
+        }
+
 
     }
 }

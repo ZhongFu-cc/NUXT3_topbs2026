@@ -1,21 +1,38 @@
 <template>
     <main class="common-section">
         <Banner />
-        <Breadcrumbs :first-route="'Member'" :secound-route="'Member login'" />
-        <Title :title="'Member Login'" />
-        <!-- <div class="main-section">
-            <el-form class="login-form" ref="formRef" :model="loginInfo" :rules="formRule">
-                <el-form-item class="login-input" prop="email">
-                    <el-input v-model="loginInfo.email" placeholder="Email">
+        <Breadcrumbs first-route="Member" secound-route="login" />
+        <Title title="Member Login" />
+        <div class="main-section">
+            <el-form class="login-form" ref="formRef" :model="loginInfo" :rules="formRule"
+                :label-position="formatLabelPosition">
+                <div class="nationality-select">
+                    <el-button :class="{ active: attendeeType === 0 }" @click="attendeeType = 0">
+                        國內與會者 Domestic Attendee
+                    </el-button>
+                    <el-button :class="{ active: attendeeType === 1 }" @click="attendeeType = 1">Oversea
+                        Attendee</el-button>
+                </div>
+
+                <el-form-item v-if="attendeeType === 1" class="login-input" prop="account">
+                    <el-input v-model="loginInfo.account" placeholder="Email">
                         <template #prefix>
-                            <img src="../assets/img/email.svg" alt="">
+                            <img src="@/assets/img/email.svg" alt="">
+                        </template>
+                    </el-input>
+                </el-form-item>
+
+                <el-form-item v-if="attendeeType === 0" class="login-input" prop="account">
+                    <el-input v-model="loginInfo.account" placeholder="身分證字號">
+                        <template #prefix>
+                            <img src="@/assets/img/passport.svg" alt="">
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item class="login-input" prop="password">
                     <el-input v-model="loginInfo.password" type="password" placeholder="Password" :show-password="true">
                         <template #prefix>
-                            <img src="../assets/img/lock.svg" alt="">
+                            <img src="@/assets/img/lock.svg" alt="">
                         </template>
                     </el-input>
                 </el-form-item>
@@ -35,11 +52,11 @@
                 </el-form-item>
                 <div class="btn-section">
                     <nuxt-link :to="'retrieve-password'">Retrieve password</nuxt-link>
-                    <span>/</span>
-                    <nuxt-link :to="'registration-fee'">Sign up</nuxt-link>
+                    <span>&nbsp /</span>
+                    <nuxt-link :to="'seminar-registration'">Sign up</nuxt-link>
                 </div>
             </el-form>
-        </div> -->
+        </div>
     </main>
 </template>
 <script lang="ts" setup>
@@ -48,11 +65,21 @@ import Banner from '@/components/layout/Banner.vue';
 import Breadcrumbs from '@/components/layout/Breadcrumbs.vue';
 import Title from '@/components/layout/Title.vue';
 
+useSeoMeta({
+    title: 'Member Login - TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society',
+    description: 'Member login page for the TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society. Sign in to access your account, retrieve your password, or register for the conference.',
+    keywords: 'Login,Sign In,TOPBS,TOPBS 2026,2026 TOPBS'
+})
+
+
 const router = useRouter();
 
 const captcha = reactive<any>({
 
 });
+
+const attendeeType = ref(0);
+
 const getCaptcha = async () => {
     let res = await CSRrequest.get('/member/captcha');
     Object.assign(captcha, res.data);
@@ -60,7 +87,8 @@ const getCaptcha = async () => {
 };
 
 const loginInfo = reactive<any>({
-    email: '',
+    // email: '',
+    account: '',
     password: '',
     verificationKey: '',
     verificationCode: ''
@@ -69,9 +97,8 @@ const loginInfo = reactive<any>({
 const formRef = ref<FormInstance>();
 
 const formRule = reactive<FormRules>({
-    email: [
-        { required: true, message: 'Please input email', trigger: 'blur' },
-        { type: 'email', message: 'Please input correct email', trigger: 'blur' }
+    account: [
+        { required: true, message: 'Please input account', trigger: 'blur' },
     ],
     password: [
         { required: true, message: 'Please input password', trigger: 'blur' },
@@ -82,11 +109,22 @@ const formRule = reactive<FormRules>({
 });
 
 
+const formatLabelPosition = ref<'top' | 'left' | 'right'>('top'); // 預設為 'top'
+const setFormLabelPosotion = () => {
+    if (window.innerWidth < 1024) {
+        formatLabelPosition.value = 'top'; // 當視窗寬度小於 1024px 時，設置為 'top'
+    } else {
+        formatLabelPosition.value = 'left'; // 否則設置為 'left'
+    }
+}
+
+
 const login = async (formEl: FormInstance | undefined) => {
     if (!formEl) return;
     formEl.validate(async (valid) => {
         if (valid) {
-            let res = await CSRrequest.post('/member/login', {
+            const url = attendeeType.value === 1 ? '/member/login-foreign' : '/member/login-local';
+            let res = await CSRrequest.post(url, {
                 body: loginInfo
             })
             if (res.code === 500) {
@@ -94,20 +132,47 @@ const login = async (formEl: FormInstance | undefined) => {
                 getCaptcha();
             }
             if (res.data.isLogin) {
-                localStorage.setItem(res.data.tokenName, 'Bearer ' + res.data.tokenValue);
                 router.push('/member-center')
+                localStorage.setItem(res.data.tokenName, 'Bearer ' + res.data.tokenValue);
                 formEl.resetFields();
+                useAuth().checkLoginState();
             }
         } else {
             ElMessage.error('Please input correct information');
-            return false;
         }
     });
 
 }
 
+const memberInfo = reactive<any>({});
+
+const getMemberInfo = async () => {
+    let res = await CSRrequest.get('/member/getMemberInfo');
+    if (res.code === 10002 || res.code === 401) {
+        localStorage.removeItem('Authorization-member');
+        router.push('/login');
+    } else {
+        router.push('/member-center');
+    }
+}
+
+const listenKeydown = (event: KeyboardEvent) => {
+    if (event.key === 'Enter') {
+        login(formRef.value);
+    }
+}
+
 onMounted(() => {
+    getMemberInfo();
     getCaptcha();
+    setFormLabelPosotion();
+    window.addEventListener('keydown', listenKeydown);
+    window.addEventListener('resize', setFormLabelPosotion);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('keydown', listenKeydown);
+    window.removeEventListener('resize', setFormLabelPosotion);
 });
 
 
@@ -117,14 +182,13 @@ onMounted(() => {
     font-family: $common-section-font-family;
 
     .main-section {
-        // background: url('assets/img/topbs_background-image.jpg') no-repeat center center;
+        background: url('assets/img/topbs_background-image.jpg') no-repeat center center;
         display: flex;
         justify-content: center;
         align-items: center;
         padding: 1rem 0;
 
         .login-form {
-            width: 30%;
             padding: 1rem 3rem;
             display: flex;
             flex-direction: column;
@@ -137,6 +201,48 @@ onMounted(() => {
             :deep(.el-form-item) {
                 margin-bottom: 1rem;
                 border: none;
+            }
+
+            .nationality-select {
+                display: flex;
+                justify-content: center;
+                // align-items: center;
+                align-items: stretch;
+                gap: 1rem;
+                margin-bottom: 1rem;
+
+                .el-button+.el-button {
+                    margin-left: 0;
+                }
+
+                @media screen and (max-width: 1024px) {
+                    flex-direction: column;
+                }
+
+                .el-button {
+                    border: 1px solid #D86C7C;
+                    background-color: #fff;
+                    color: #D86C7C;
+                    border-radius: 12px;
+                    // width: 15rem;
+                    flex:1;
+                    height: 2.75rem;
+                    font-weight: 600;
+                    transition: all 0.25s ease-in-out;
+
+                    &:hover {
+                        cursor: pointer;
+                        background-color: #fdf0f2;
+                        transform: translateY(-1px);
+                    }
+
+                    &.active {
+                        border-color: #D86C7C;
+                        background-color: #D86C7C;
+                        color: #fff;
+                        box-shadow: 0 4px 12px rgba(216, 108, 124, 0.25);
+                    }
+                }
             }
 
             .login-input {
@@ -154,7 +260,7 @@ onMounted(() => {
                 }
 
                 :deep(.el-input__prefix) {
-                    width: 8%;
+                    width: 2rem;
 
                     img {
                         width: 100%;
@@ -168,6 +274,7 @@ onMounted(() => {
                 justify-content: center;
                 align-items: center;
                 margin: 1rem 0;
+
 
                 @media screen and (max-width: 1024px) {
                     flex-direction: column;
@@ -198,6 +305,9 @@ onMounted(() => {
                         &:hover {
                             background-color: white;
                             color: #D86C7C;
+                            cursor: pointer;
+                            scale: 1.05;
+                            transition: all 0.3s ease-in-out;
                         }
                     }
 
@@ -225,6 +335,12 @@ onMounted(() => {
                     border: none;
                     border-radius: 10px;
                     width: 40%;
+
+                    &:hover {
+                        cursor: pointer;
+                        scale: 1.05;
+                        transition: all 0.3s ease-in-out;
+                    }
                 }
             }
 
@@ -234,8 +350,12 @@ onMounted(() => {
                 margin-top: 1rem;
 
                 a {
+                    filter: brightness(1);
+                    transition: filter 0.3s ease-in-out;
+
                     &:hover {
-                      cursor: pointer;
+                        cursor: pointer;
+                        filter: brightness(1.8);
                     }
                 }
             }

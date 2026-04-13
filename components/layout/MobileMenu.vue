@@ -11,13 +11,19 @@
                         <el-icon class="arrow" :class="{ 'is-active': item.isActive }">
                             <ElIconArrowDown />
                         </el-icon>
-                        <ul class="submenu" :class="{ 'is-open': item.isActive }">
+                        <ul v-if="item.isActive" class="submenu" :class="{ 'is-open': item.isActive }">
                             <li v-for="subItem in item.submenu" :key="subItem.path">
                                 <nuxt-link class="sub-menu-item" :to="subItem.path" @click="handleClick(subItem.path)"
                                     :class="activeClass(subItem.path)">{{ subItem.title }}</nuxt-link>
                             </li>
                         </ul>
                     </li>
+                </div>
+                <div class="auth-box">
+                    <nuxt-link v-if="!isLogin" class="menu-item" @click="mobileLogin()" :class="activeClass('login')">{{
+                        $t('login') }}</nuxt-link>
+                    <nuxt-link v-if="isLogin" class="menu-item" @click="mobileLogout()"
+                        :class="activeClass('registrationFee')">{{ $t('logout') }}</nuxt-link>
                 </div>
             </ol>
         </div>
@@ -27,7 +33,8 @@
 </template>
 <script lang="ts" setup>
 
-
+const { isLogin, checkLoginState, logout } = useAuth();
+const { t } = useI18n();
 
 const emits = defineEmits(['closeMenu']);
 
@@ -36,15 +43,22 @@ const closeMenu = () => {
 }
 
 const menu = reactive([
-    { title: '首頁', path: '/', isActive: false },
-    { title: '關於我們', path: '/about-us', isActive: false },
-    { title: '會議資訊', path: '/conference-information', isActive: false },
-    { title: '註冊資訊', path: '/seminar-registration', isActive: false },
-    { title: '投稿資訊', path: '/', isActive: false },
-    { title: '交通資訊', path: '/transportation', isActive: false },
-    // { title: '旅遊資訊', path: '/travel',isActive: false },
-    { title: '贊助廠商', path: '/sponsor-list', isActive: false },
-    // { title: '吉祥物專區', path: '/mascot',isActive: false },
+    { title: t('home'), path: '/', isActive: false },
+    { title: t('aboutUs'), path: '/about-us', isActive: false },
+    { title: t('conferenceInformation'), path: '/conference-information', isActive: false },
+    { title: t('registration'), path: '/seminar-registration', isActive: false },
+    {
+        title: t('abstract'), path: '/', isActive: false, submenu: [
+            { title: t('submissionGuidelines'), path: '/submission-guidelines' },
+            { title: t('abstractSubmission'), path: '/abstract-submission' },
+            { title: t('award'), path: '/award' },
+            { title: t('presentationGuidelines'), path: '/presentation-guidelines' },
+        ]
+    },
+    { title: t('transportation'), path: '/transportation', isActive: false },
+    // { title: t('travel'), path: '/travel',isActive: false },
+    { title: t('sponsorList'), path: '/sponsor-list', isActive: false },
+    // { title: t('mascot'), path: '/mascot',isActive: false },
     {
         title: 'Gallery', path: '/gallery', isActive: false, submenu: [
             { title: '2023 Gallery', path: '/gallery/2023' },
@@ -52,7 +66,6 @@ const menu = reactive([
             { title: '2025 Gallery', path: '/gallery/2025' },
         ]
     }
-
 ])
 
 
@@ -60,6 +73,7 @@ const activeItem = ref('')
 const setActiveItem = (item: any) => {
     item.isActive = !item.isActive
     activeItem.value = item.title
+    console.log('activeItem', activeItem.value);
 }
 
 const activeClass = (item: string) => {
@@ -74,35 +88,24 @@ const handleClick = (path: string) => {
     closeMenu()
 }
 
-
-
-const headToLogin = () => {
-    closeMenu();
-    let url = isLogin.value ? '/member-center' : '/login';
-    router.push(url);
-}
-
-const isLogin = ref(false);
-const validateLogin = () => {
-    let res = localStorage.getItem('Authorization-member');
-    if (res) {
-        isLogin.value = true;
-    }
-}
-
 router.beforeEach(async (to, from, next) => {
-    validateLogin();
     next();
 });
 
-const logout = async () => {
-    let res = await CSRrequest.post('/member/logout');
-    if (res.code === 200) {
-        localStorage.removeItem('Authorization-member');
-        isLogin.value = false;
-        router.push('/login');
-    }
+const mobileLogin = () => {
+    router.push('/login')
+    closeMenu()
 }
+
+const mobileLogout = () => {
+    logout();
+    closeMenu();
+}
+
+onMounted(() => {
+    checkLoginState();
+})
+
 
 
 </script>
@@ -110,7 +113,7 @@ const logout = async () => {
 .mobile-menu {
     background-color: black;
     height: 100vh;
-    width: 60%;
+    width: 80%;
     position: fixed;
     top: 0rem;
     left: 0rem;
@@ -152,7 +155,7 @@ const logout = async () => {
             }
 
             &.active {
-                color: #FF5529;
+                color: $main-color;
                 border-radius: 10px;
             }
         }
@@ -164,26 +167,20 @@ const logout = async () => {
                 list-style: none;
             }
 
-            // overflow: hidden;
-            // max-height: 0px;
-            // transition: 0.5s;
-            // font-size: 16px;
 
-            // a {
-            //     font-size: 1.2rem;
-            //     font-weight: bold;
-            //     display: block;
-            //     color: $main-content-color;
-            //     padding: 0.5rem 0;
-            // }
-
-            &.is-open {
-                // overflow: auto !important;
-                // max-height: none !important;
-                // margin-left: 15vw;
-                // font-size: 16px;
-            }
         }
+    }
+
+    .auth-box {
+        margin-top: 1rem;
+    }
+
+    .menu-item {
+        color: white;
+        font-size: 1.3rem;
+        font-weight: bold;
+        padding: 1rem;
+        margin-top: 1rem;
     }
 }
 
@@ -191,7 +188,7 @@ const logout = async () => {
     background-color: #F0F0F0;
     opacity: 0.5;
     height: 100vh;
-    width: 40%;
+    width: 20%;
     position: fixed;
     top: 0rem;
     right: 0rem;

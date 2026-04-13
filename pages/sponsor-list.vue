@@ -1,8 +1,8 @@
 <template>
     <div class="common-section">
-        <!-- <Title title="贊助廠商"></Title> -->
         <Banner></Banner>
-        <h1 class="title">感謝下列廠商熱情贊助!!</h1>
+        <!-- <Title title="贊助廠商"></Title> -->
+        <!-- <h1 class="title">感謝下列廠商熱情贊助!!</h1> -->
         <!-- <img src="../assets/img/sponsor_list.png" alt=""> -->
         <!-- <div class="image-section">
             <div v-for="(group, groupIndex) in groupedImages" :key="groupIndex" class="image-group">
@@ -18,14 +18,18 @@
 </template>
 <script lang="ts" setup>
 import Title from '@/components/layout/Title.vue';
+import Breadcrumbs from '@/components/layout/Breadcrumbs.vue';
 import Banner from '@/components/layout/Banner.vue';
 
+useSeoMeta({
+    title: 'Sponsors - TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society',
+    description: 'Explore the list of sponsors for the TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society. This page is currently under construction, but stay tuned for updates showcasing the esteemed sponsors who support and contribute to the success of the conference.',
+    keywords: 'Sponsors,TOPBS Sponsors,TOPBS,TOPBS 2026,2026 TOPBS '
+})
+
 const modules = import.meta.glob('../assets/img/ticbcs_sponsor_logo/*.{png,jpg,jpeg,svg}', { eager: true, as: 'url' });
-
 const sponsorImages = ref<string[]>(Object.values(modules));
-
 const groupedImages = ref<string[][]>([]);
-
 
 watch(sponsorImages, (newValue) => {
     sponsorImages.value.forEach((image, index) => {

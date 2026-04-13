@@ -13,7 +13,7 @@
                 <el-form-item>
                     <el-input v-model="retrieveInfo.email" placeholder="Email" type="email">
                         <template #prefix>
-                            <img src="../assets/img/email.svg" alt="">
+                            <img src="@/assets/img/email.svg" alt="">
                         </template>
                     </el-input>
                 </el-form-item>

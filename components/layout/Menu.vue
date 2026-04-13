@@ -1,16 +1,28 @@
 <template>
     <section class="top-section">
         <div class="menu-container" :class="[{ 'menu-section-scroll': isScroll }, { 'is-active': isActive }]">
-
-            <div class="hamburger-icon">
-                <div class="container">
-                    <div class="hamburger" :class="{ 'is-active': isActive }" id="hamburger-1" @click="openMenu">
-                        <span class="line" :class="{ 'is-scroll': isScroll }"></span>
-                        <span class="line" :class="{ 'is-scroll': isScroll }"></span>
-                        <span class="line" :class="{ 'is-scroll': isScroll }"></span>
+            <div class="mobile-menu">
+                <div class="hamburger-icon">
+                    <div class="container">
+                        <div class="hamburger" :class="{ 'is-active': isActive }" id="hamburger-1" @click="openMenu">
+                            <span class="line" :class="{ 'is-scroll': isScroll }"></span>
+                            <span class="line" :class="{ 'is-scroll': isScroll }"></span>
+                            <span class="line" :class="{ 'is-scroll': isScroll }"></span>
+                        </div>
                     </div>
                 </div>
+
+                <div class="mobile-member-center">
+                    <nuxt-link v-if="!isLogin" class="menu-item" to="/login" :class="activeClass('login')">
+                        <img src="/img/user.svg" alt="">
+                    </nuxt-link>
+                    <nuxt-link v-if="isLogin" class="menu-item" to="/member-center"
+                        :class="activeClass('registrationFee')">
+                        <img src="/img/user.svg" alt="">
+                    </nuxt-link>
+                </div>
             </div>
+
 
             <div class="logo-container" v-if="!isActive">
                 <nuxt-link class="logo-link" to="/" @click="setActiveItem('')">
@@ -22,38 +34,53 @@
 
             <div class="menu-box">
                 <nuxt-link class="menu-item" to="/about-us" @click="setActiveItem('aboutUs')"
-                    :class="activeClass('aboutUs')">關於我們</nuxt-link>
+                    :class="activeClass('aboutUs')">{{ $t('aboutUs') }}</nuxt-link>
 
                 <nuxt-link class="menu-item" to="/conference-information"
-                    @click="setActiveItem('conferenceInformation')"
-                    :class="activeClass('conferenceInformation')">會議資訊</nuxt-link>
+                    @click="setActiveItem('conferenceInformation')" :class="activeClass('conferenceInformation')">{{
+                        $t('conferenceInformation') }}</nuxt-link>
 
                 <!-- <nuxt-link class="menu-item" to="/" @click="setActiveItem('invitedSpeaker')"
                     :class="activeClass('invitedSpeaker')">受邀講者</nuxt-link> -->
 
                 <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
-                    :class="activeClass('seminarRegistration')">註冊資訊</nuxt-link>
+                    :class="activeClass('seminarRegistration')">{{ $t('registration') }}</nuxt-link>
 
-                <nuxt-link class="menu-item" to="/" @click="setActiveItem('')" :class="activeClass('')">投稿資訊</nuxt-link>
+                <div class="submenu-box menu-item" @click="openSubMenuFunc('abstract')">
+                    {{ $t('abstract') }}
+                    <el-icon>
+                        <ElIconArrowDown />
+                    </el-icon>
+                    <div class="gallery-sub-menu" :class="openedSubMenu == 'abstract' ? 'is-open' : ''"
+                        v-if="openedSubMenu == 'abstract'">
+                        <nuxt-link class="sub-menu-item" to="/submission-guidelines"
+                            @click="setActiveItem('abstractGuideline')" :class="activeClass('abstractGuideline')">{{
+                                $t('submissionGuidelines') }}</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/abstract-submission"
+                            @click="setActiveItem('abstractSubmission')" :class="activeClass('abstractSubmission')">{{
+                                $t('abstractSubmission') }}</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/award" @click="setActiveItem('abstractAwards')"
+                            :class="activeClass('abstractAwards')">{{ $t('award') }}</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/presentation-guidelines"
+                            @click="setActiveItem('abstractPresentation')"
+                            :class="activeClass('abstractPresentation')">{{ $t('presentationGuidelines') }}</nuxt-link>
+                    </div>
+                </div>
 
 
-                <nuxt-link class="menu-item" to="/transportation" @click="setActiveItem('transportation')"
-                    :class="activeClass('transportation')">交通資訊</nuxt-link>
 
 
                 <div class="item-box">
-                    <!-- <nuxt-link class="menu-item" to="/travel" @click="setActiveItem('travel')"
-                        :class="activeClass('travel')">旅遊資訊</nuxt-link> -->
+                    <nuxt-link class="menu-item" to="/transportation" @click="setActiveItem('transportation')"
+                        :class="activeClass('transportation')">{{ $t('transportation') }}</nuxt-link>
                     <nuxt-link class="menu-item" to="/sponsor-list" @click="setActiveItem('sponsorList')"
-                        :class="activeClass('sponsorList')">贊助廠商</nuxt-link>
-                    <!-- <nuxt-link class="menu-item" to="/mascot" @click="setActiveItem('mascot')"
-                        :class="activeClass('mascot')">吉祥物專區</nuxt-link> -->
-                    <div class="gallery-box menu-item" @click="toggleGallerySubMenu">
+                        :class="activeClass('sponsorList')">{{ $t('sponsorList') }}</nuxt-link>
+                    <div class="gallery-box menu-item" @click="openSubMenuFunc('gallery')">
                         Gallery
                         <el-icon>
                             <ElIconArrowDown />
                         </el-icon>
-                        <div class="gallery-sub-menu" v-if="gallerySubMenuIsOpen">
+                        <div class="gallery-sub-menu" v-if="openedSubMenu == 'gallery'">
                             <nuxt-link class="sub-menu-item" to="/gallery/2023" @click="setActiveItem('gallery')"
                                 :class="activeClass('gallery')">Gallery 2023</nuxt-link>
                             <nuxt-link class="sub-menu-item" to="/gallery/2024" @click="setActiveItem('gallery2024')"
@@ -61,31 +88,26 @@
                             <nuxt-link class="sub-menu-item" to="/gallery/2025" @click="setActiveItem('gallery2025')"
                                 :class="activeClass('gallery2025')">Gallery 2025</nuxt-link>
                         </div>
-                        <!-- <nuxt-link class="menu-item" to="/gallery" @click="setActiveItem('gallery')"
-                            :class="activeClass('gallery')">Gallery</nuxt-link> -->
                     </div>
 
                 </div>
 
                 <div class="sub-menu-box">
-                    <div class="sub-menu-title" @click="toggleMenu">查看更多<el-icon>
+                    <div class="sub-menu-title" @click="toggleMenu">{{ $t('seeMore') }}<el-icon>
                             <ElIconArrowDown />
                         </el-icon></div>
                     <div class="sub-menu-item-box" v-if="isOpen">
-                        <nuxt-link class="sub-menu-item" to="/travel" @click="setActiveItem('travel')"
-                            :class="activeClass('travel')">旅遊資訊</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/transportation" @click="setActiveItem('transportation')"
+                            :class="activeClass('transportation')">{{ $t('transportation') }}</nuxt-link>
                         <nuxt-link class="sub-menu-item" to="/sponsor-list" @click="setActiveItem('sponsorList')"
-                            :class="activeClass('sponsorList')">贊助廠商</nuxt-link>
-                        <nuxt-link class="sub-menu-item" to="/mascot" @click="setActiveItem('mascot')"
-                            :class="activeClass('mascot')">吉祥物專區</nuxt-link>
-
-                        <div class="gallery-box sub-menu-item" @click="toggleGallerySubMenu"
+                            :class="activeClass('sponsorList')">{{ $t('sponsorList') }}</nuxt-link>
+                        <div class="gallery-box sub-menu-item" @click="openSubMenuFunc('gallery')"
                             :class="activeClass('gallery')">
                             Gallery
                             <el-icon>
                                 <ElIconArrowDown />
                             </el-icon>
-                            <div class="gallery-sub-menu" v-if="gallerySubMenuIsOpen">
+                            <div class="gallery-sub-menu" v-if="openedSubMenu == 'gallery'">
                                 <nuxt-link class="sub-menu-item" to="/gallery/2023" @click="setActiveItem('gallery')"
                                     :class="activeClass('gallery')">Gallery 2023</nuxt-link>
                                 <nuxt-link class="sub-menu-item" to="/gallery/2024"
@@ -95,11 +117,25 @@
                                     @click="setActiveItem('gallery2025')" :class="activeClass('gallery2025')">Gallery
                                     2025</nuxt-link>
                             </div>
-                            <!-- <nuxt-link class="menu-item" to="/gallery" @click="setActiveItem('gallery')"
-                            :class="activeClass('gallery')">Gallery</nuxt-link> -->
                         </div>
                     </div>
                 </div>
+
+                <div class="submenu-box menu-item" v-if="isLogin" @click="openSubMenuFunc('member')">
+                    {{ $t('member') }}
+                    <el-icon>
+                        <ElIconArrowDown />
+                    </el-icon>
+                    <div class="gallery-sub-menu" :class="openedSubMenu == 'member' ? 'is-open' : ''"
+                        v-if="openedSubMenu == 'member'">
+                        <nuxt-link class="sub-menu-item" to="/member-center" @click="setActiveItem('memberCenter')">{{
+                            $t('memberCenter') }}</nuxt-link>
+                        <nuxt-link class="sub-menu-item" @click="logout">{{ $t('logout') }}</nuxt-link>
+
+                    </div>
+                </div>
+                <nuxt-link v-if="!isLogin" class="menu-item" to="/login" :class="activeClass('login')">{{ $t('login')
+                }}</nuxt-link>
 
             </div>
 
@@ -110,8 +146,14 @@
 
 <script lang="ts" setup>
 
+import { useI18n } from 'vue-i18n'
+
+
+
 // 偵測滾輪位置，更換 menu 背景色
 const isScroll = ref(false)
+const { locale, setLocale } = useI18n()
+
 function handleScroll() {
     let scrollPositionY = window.scrollY
     if (scrollPositionY > 0) {
@@ -121,14 +163,20 @@ function handleScroll() {
     }
 }
 
+
 const isOpen = ref(false)
 const toggleMenu = () => {
     isOpen.value = !isOpen.value
+    openedSubMenu.value = ""
 }
 
-const gallerySubMenuIsOpen = ref(false)
-const toggleGallerySubMenu = () => {
-    gallerySubMenuIsOpen.value = !gallerySubMenuIsOpen.value
+const openedSubMenu = ref("")
+const openSubMenuFunc = (subMenuItem: string) => {
+    openedSubMenu.value = subMenuItem === openedSubMenu.value ? "" : subMenuItem;
+    if (openedSubMenu.value !== 'gallery') {
+        isOpen.value = false
+    }
+    // gallerySubMenuIsOpen.value = !gallerySubMenuIsOpen.value
 }
 
 const activeItem = ref('')
@@ -167,15 +215,17 @@ const closeMenu = () => {
 
 const emits = defineEmits(['openMenu']);
 
-
-
-
-
-
-
 /**================================================================ */
+const { isLogin, checkLoginState, logout } = useAuth();
+
 onMounted(() => {
+    handleScroll() // 初始化時檢查滾輪位置
     window.addEventListener('scroll', handleScroll)
+    checkLoginState();
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
 })
 
 </script>
@@ -194,14 +244,17 @@ onMounted(() => {
         height: 6.5rem;
         padding: 0.5rem 0;
         // FIXME
-        border-bottom: 8px solid $main-color;
+        border-bottom: 8px solid #e8d0dd;
 
 
         @media screen and (max-width: 1920px) {
             height: 4.5rem;
         }
 
-        @media screen and (max-width: 1024px) {}
+        @media screen and (max-width: 1536px) {
+            gap: 2rem;
+            // justify-content: center;
+        }
 
         @media screen and (max-width: 469px) {
             padding-left: 2rem;
@@ -227,15 +280,19 @@ onMounted(() => {
                     .logo {
                         width: 100%;
                         height: 100%;
-                        object-fit: content;
+                        object-fit: contain;
                         object-position: center center;
+                    }
+
+                    @media screen and (max-width: 1536px) {
+                        width: 80%;
                     }
 
                     @media screen and (max-width: 1024px) {
                         width: 70%;
                     }
 
-                    @media screen and (max-width: 524px) {
+                    @media screen and (max-width: 768px) {
                         display: none;
                     }
                 }
@@ -258,7 +315,7 @@ onMounted(() => {
                 gap: 0.5rem;
             }
 
-            @media screen and (max-width: 524px) {
+            @media screen and (max-width: 768px) {
                 display: none;
             }
 
@@ -296,12 +353,14 @@ onMounted(() => {
                     padding: 0.1rem;
                 }
 
-                @media screen and (max-width: 1439px) {
+                @media screen and (max-width: 1560px) {
                     font-size: 1rem;
                 }
 
                 @media screen and (max-width: 1024px) {
-                    justify-items: flex-end;
+                    // justify-items: flex-end;
+                    padding: 0;
+                    gap: 0.2rem;
                 }
 
                 @media screen and (max-width: 870px) {
@@ -350,14 +409,64 @@ onMounted(() => {
                     z-index: 1000;
 
                     .active {
-                        color: #FF5529;
+                        color: $main-color;
                     }
 
                     .sub-menu-item {
                         color: white;
 
                         &:active {
-                            color: #FF5529;
+                            color: $main-color;
+                        }
+                    }
+                }
+            }
+
+            .submenu-box {
+                color: #59413C;
+                text-decoration: none;
+                position: relative;
+
+                .gallery-sub-menu {
+                    display: flex;
+                    flex-direction: column;
+                    position: absolute;
+                    gap: 1rem;
+                    top: 3rem;
+                    right: -0.5rem;
+                    background-color: black;
+                    width: 10rem;
+                    padding: 1rem 1.5rem;
+                    border-radius: 0.5rem;
+                    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+                    z-index: 1000;
+
+                    @media screen and (max-width: 800px) {
+                        width: 8rem;
+
+
+                        &:hover {
+                            cursor: pointer;
+                            color: white;
+                            background-color: black !important;
+                        }
+
+                    }
+
+
+                    .active {
+                        color: $main-color;
+                    }
+
+                    .sub-menu-item {
+                        color: white;
+
+                        &:active {
+                            color: $main-color;
+                        }
+
+                        &:hover {
+                            color: $main-color;
                         }
                     }
                 }
@@ -408,18 +517,18 @@ onMounted(() => {
 
 
                     .active {
-                        color: #FF5529;
+                        color: $main-color;
                     }
 
                     .sub-menu-item {
                         color: white;
 
                         &:active {
-                            color: #FF5529;
+                            color: $main-color;
                         }
 
                         &:hover {
-                            color: #FF5529;
+                            color: $main-color;
                         }
                     }
                 }
@@ -448,13 +557,13 @@ onMounted(() => {
 
                 &:hover {
                     cursor: pointer;
-                    color: #FF5529;
+                    color: $main-color;
                     background-color: black
                 }
             }
 
             .active {
-                color: #FF5529;
+                color: $main-color;
             }
 
             .sub-menu-box {
@@ -464,7 +573,7 @@ onMounted(() => {
 
                 .sub-menu-item-box {
                     .active {
-                        color: #FF5529 !important;
+                        color: $main-color !important;
                     }
                 }
 
@@ -528,10 +637,48 @@ onMounted(() => {
             border-radius: 3px;
         }
 
-        @media screen and (max-width: 524px) {
+        @media screen and (max-width: 768px) {
             display: block;
         }
 
+    }
+}
+
+.mobile-menu {
+
+    width: 100%;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+
+    @media screen and (max-width: 768px) {
+        display: flex;
+        gap: 1rem;
+        // margin-left: auto;
+    }
+}
+
+.mobile-member-center {
+    display: none;
+
+    @media screen and (max-width: 768px) {
+        display: flex;
+        gap: 1rem;
+        // margin-left: auto;
+    }
+
+    .menu-item {
+        color: white;
+        margin-top: 5px;
+
+        img {
+            width: 1.5rem;
+        }
+
+        &:hover {
+            color: $main-color;
+        }
     }
 }
 </style>
