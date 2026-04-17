@@ -97,7 +97,12 @@ const getMemberInfo = async () => {
         Object.assign(memberInfo, res.data)
         getOrderStatus()
     } else {
-        ElMessage.error("Please login first")
+        ElNotification.error({
+            title: 'Failed',
+            message: 'Please login first',
+            type: 'error',
+            duration: 3000,
+        });
         router.push("/login")
     }
 }
@@ -111,13 +116,22 @@ const getOrderStatus = async () => {
             if ((item.itemsSummary === 'Group Registration Fee' || item.itemsSummary === 'Registration Fee') && item.status === 2) {
                 console.log('paid')
             } else {
-                console.log('not paid')
-                ElMessage.error("Please pay the registration fee first")
+                ElNotification.error({
+                    title: 'Failed',
+                    message: 'Please pay the registration fee first',
+                    type: 'error',
+                    duration: 3000,
+                });
                 router.push("/member-center")
             }
         })
     } else {
-        ElMessage.error("Please login first")
+        ElNotification.error({
+            title: 'Failed',
+            message: 'Please login first',
+            type: 'error',
+            duration: 3000,
+        });
         router.push("/login")
     }
 

@@ -182,12 +182,23 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs.vue'
 
         margin: 2% auto;
 
+        @media screen and (max-width: 1024px) {
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
         .hotel-card {
             width: 32%;
+            display: flex;
             border-radius: 1.5rem;
             border-color: #DD6777;
             border-width: 0 1px 1px 1px;
             box-shadow: 8px 8px 4px 0px rgba(0, 0, 0, 0.5);
+
+            @media screen and (max-width: 1024px) {
+                width: 80%;
+            }
 
             img {
                 width: 100%;

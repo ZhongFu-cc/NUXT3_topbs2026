@@ -35,7 +35,12 @@ export default {
                     const path = useRoute().path
 
                     if (path !== '/login') {
-                        ElMessage.error('Please log in first')
+                        ElNotification.error({
+                            title: 'Unauthorized',
+                            message: 'Please log in first',
+                            type: 'error',
+                            duration: 3000,
+                        })
                     }
                 }
 

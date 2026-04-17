@@ -1,16 +1,16 @@
 <template>
     <div>
         <main class="common-section">
-            <!-- <Banner />
+            <Banner />
 
-            <Breadcrumbs firstRoute="Registration" secoundRoute="Registration Fee"></Breadcrumbs> -->
+            <Breadcrumbs firstRoute="Registration" secoundRoute="Registration Fee"></Breadcrumbs>
 
-            <!-- <Title :title="'Registration Fee'"></Title> -->
+            <Title :title="'Registration Fee'"></Title>
             <table class="personal-registration-table">
                 <thead>
                     <tr class="personal-row-1">
                         <th class="category-col" :rowspan="2" :colspan="2">Category</th>
-                        <th :colspan="3">Only Physical</th>
+                        <th :colspan="2">Only Physical</th>
                     </tr>
                     <tr class="personal-row-2">
                         <th>
@@ -18,13 +18,13 @@
                             <p>(before Sep 30, 2026)</p>
                         </th>
                         <th>
-                            <p>Regular</p>
-                            <p>(Oct 1 - Nov 13, 2026)</p>
+                            <p>Onsite</p>
+                            <p>(Oct 1 - Nov 15, 2026)</p>
                         </th>
-                        <th>
+                        <!-- <th>
                             <p>Onsite</p>
                             <p>(Nov 14 - Nov 15, 2026)</p>
-                        </th>
+                        </th> -->
                     </tr>
                 </thead>
                 <tbody>
@@ -35,119 +35,126 @@
                             <p class="category-item">Company</p>
                         </td>
                         <td>Non-member</td>
-                        <td>TWD 1000</td>
-                        <td>TWD 1500</td>
-                        <td>TWD 2000</td>
+                        <td>USD 400</td>
+                        <td>USD 500</td>
+                        <!-- <td>USD 2000</td> -->
                     </tr>
                     <tr class="personal-row-4">
                         <td>Member</td>
-                        <td>TWD 700</td>
-                        <td>TWD 1000</td>
-                        <td>TWD 1500</td>
+                        <td>USD 300</td>
+                        <td>USD 400</td>
+                        <!-- <td>USD 1500</td> -->
                     </tr>
                     <tr class="personal-row-5">
                         <td :colspan="2">
                             <p class="category-item">Trainee/Nurse/Researcher</p>
                         </td>
-                        <td>TWD 600</td>
-                        <td>TWD 1200</td>
-                        <td>TWD 1800</td>
+                        <td>USD 150</td>
+                        <td>USD 200</td>
+                        <!-- <td>USD 1800</td> -->
 
                     </tr>
                 </tbody>
             </table>
-            <!-- <p class="tips">*The prices are listed in USD. According to the financial regulations in Taiwan, the actual
+            <p class="tips">*Members include those from the following societies: JBCS, JOPBS, KBCS, and HKSBS.</p>
+            <p class="tips">*The prices are listed in USD. According to the financial regulations in Taiwan, the actual
                 credit card payment will be charged in TWD or your local currency. It may be a little different from the
                 price listed above. </p>
             <p class="tips">*Online registration and payment are available until 11/7.
             </p>
-            <p class="tips">*Late registration will only be accepted on-site on 11/15 and 11/16.</p> -->
-            <!-- <div class="btn-section"> <nuxt-link class="register-btn" to="/online-registration">Register Now
-                    </nuxt-link>
-            </div> -->
-            <!-- <div class="shadow-divider"></div>
+            <p class="tips">*Late registration will only be accepted on-site on 11/14 and 11/15.</p>
+            <div class="btn-section"> <nuxt-link class="register-btn" to="/seminar-registration">Register Now
+                </nuxt-link>
+            </div>
+            <div class="shadow-divider"></div>
 
-            <Title :title="'Group Registration'"></Title> -->
+            <Title :title="'Group Registration'"></Title>
 
-            <!-- <table class="group-registration-table">
-                <tr class="group-row-1">
-                    <th>
-                        <p>Minimum Number of Persons</p>
-                        <p>Required for Group Registration</p>
-                        <p>(Foreigners ONLY: Professor, Physician and Company)</p>
-                    </th>
-                    <th>
-                        <p>Benefit</p>
-                    </th>
-                    <th>
-                        <p>Payment</p>
-                        <p>Method</p>
-                    </th>
-                    <th>
-                        <p>Deadline</p>
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        <p>5 persons</p>
-                    </td>
-                    <td>
-                        <p>10% Discount</p>
-                    </td>
-                    <td>
-                        <p>Credit card</p>
-                    </td>
-                    <td>
-                        <p>9/30</p>
-                    </td>
-                </tr>
-            </table> -->
-            <!-- <table class="mobile-group-registration-table">
-                <tr>
-                    <td>
-                        <p>Minimum Number of Persons</p>
-                        <p>Required for Group Registration</p>
-                        <p>(Foreigners ONLY: Professor, Physician and Company)</p>
-                    </td>
-                    <td>
-                        <p>5 persons</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Benefit</p>
-                    </td>
-                    <td>
-                        <p>10% Discount</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Payment</p>
-                        <p>Method</p>
-                    </td>
-                    <td>
-                        <p>Credit card</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <p>Deadline</p>
-                    </td>
-                    <td>
-                        <p>9/30</p>
-                    </td>
-                </tr>
-            </table> -->
+            <table class="group-registration-table">
+                <thead>
+                    <tr class="group-row-1">
+                        <th>
+                            <p>Minimum Number of Persons</p>
+                            <p>Required for Group Registration</p>
+                            <p>(Foreigners ONLY: Professor, Physician and Company)</p>
+                        </th>
+                        <th>
+                            <p>Benefit</p>
+                        </th>
+                        <th>
+                            <p>Payment</p>
+                            <p>Method</p>
+                        </th>
+                        <th>
+                            <p>Deadline</p>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>5 persons</p>
+                        </td>
+                        <td>
+                            <p>10% Discount</p>
+                        </td>
+                        <td>
+                            <p>Credit card</p>
+                        </td>
+                        <td>
+                            <p>9/30</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="mobile-group-registration-table">
+                <tbody>
+                    <tr>
+                        <td>
+                            <p>Minimum Number of Persons</p>
+                            <p>Required for Group Registration</p>
+                            <p>(Foreigners ONLY: Professor, Physician and Company)</p>
+                        </td>
+                        <td>
+                            <p>5 persons</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Benefit</p>
+                        </td>
+                        <td>
+                            <p>10% Discount</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Payment</p>
+                            <p>Method</p>
+                        </td>
+                        <td>
+                            <p>Credit card</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p>Deadline</p>
+                        </td>
+                        <td>
+                            <p>9/30</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <!-- <p class="tips">*Please fill in the form completely</p>
-            <p class="tips">*The credit card transaction page will be given through email to the sender.</p>
+            <p class="tips">*Please fill in the form completely</p>
+            <!-- <p class="tips">*The credit card transaction page will be given through email to the sender.</p> -->
             <p class="tips">*Payment for group registration must be paid at once by one person.</p>
             <div class="btn-section"> <nuxt-link class="group-register-btn"
                     to="/registration-now/group-registration">Group Registration
                     Form</nuxt-link>
 
-            </div> -->
+            </div>
         </main>
 
     </div>
@@ -167,6 +174,7 @@ useSeoMeta({
 <style lang="scss" scoped>
 .common-section {
     font-family: $common-section-font-family;
+    margin-top: 6rem;
 
     .content {
         margin: 1rem auto;

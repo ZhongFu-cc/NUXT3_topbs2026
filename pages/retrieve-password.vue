@@ -55,11 +55,21 @@ const submit = async (formEl: FormInstance | undefined) => {
                 body: retrieveInfo
             });
             if (res.code === 200) {
-                ElMessage.success(res.msg);
+                ElNotification.success({
+                    title: 'Success',
+                    message: res.msg,
+                    type: 'success',
+                    duration: 3000,
+                });
                 formEl.resetFields();
                 router.push('/login');
             } else {
-                ElMessage.error(res.msg);
+                ElNotification.error({
+                    title: 'Failed',
+                    message: res.msg,
+                    type: 'error',
+                    duration: 3000,
+                });
             }
         }
     })

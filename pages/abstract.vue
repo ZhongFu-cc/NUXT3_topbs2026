@@ -27,16 +27,18 @@
                                 <span v-else-if="paper.status === 2" class="status-rejected">{{ $t('rejected') }}</span>
                             </td>
                             <td class="last-col">
-                                <el-button v-if="!isDisabled" link class="edit-btn" @click='headToEditPaper(paper)'>{{
-                                    $t('edit') }}</el-button>
-                                <el-button link class="see-more-btn" @click='toggleSeeMore(paper)'>{{ $t('view')
-                                }}</el-button>
-                                <el-button v-if="!isDisabled" link class="see-more-btn" @click='deletePaper(paper)'>{{
-                                    $t('delete') }}</el-button>
-                                <!-- <el-button v-if="isDisabled" link class="see-more-btn" @click='isClosed'>{{ $t('delete') }}</el-button> -->
-                                <el-button v-if="paper.status === 1" link class="see-more-btn"
-                                    :disabled="isUploadDisabled" @click="headToUploadFile(paper)">{{ $t('upload')
-                                    }}</el-button>
+                                <div class="action-wrapper">
+                                    <el-button v-if="!isDisabled && paper.status === 0" link class="edit-btn"
+                                        @click='headToEditPaper(paper)'>{{
+                                            $t('edit') }}</el-button>
+                                    <el-button link class="see-more-btn" @click='toggleSeeMore(paper)'>{{
+                                        $t('view') }}</el-button>
+                                    <el-button v-if="!isDisabled && paper.status === 0" link class="see-more-btn"
+                                        @click='deletePaper(paper)'>{{
+                                            $t('delete') }}</el-button>
+                                    <el-button v-if="paper.status === 1 && !isUploadDisabled" link class="see-more-btn"
+                                        @click="headToUploadFile(paper)">{{ $t('upload') }}</el-button>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -224,7 +226,7 @@ const isEvenOrOdd = (index: number) => {
 const dialogWidth = ref('65%')
 const isShowAll = ref(true);
 const setShowAll = () => {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1024) {
         isShowAll.value = false; // 當視窗寬度小於 1024px 時，設置為 'top'
         dialogWidth.value = '90%'
     } else {
@@ -257,29 +259,41 @@ const isDisabled = ref(false);
 
 
 const isClosed = () => {
-    ElMessage.error('The submission period has ended, can not be deleted');
+    ElNotification.warning({
+        title: 'Caution',
+        message: 'The submission period has ended, can not be deleted',
+        type: 'warning',
+        duration: 3000,
+    });
 }
 
 const headToSubmit = () => {
     if (isDisabled.value) {
         ElMessage.error('The submission period has ended, can not be submitted');
+        ElNotification.warning({
+            title: 'Caution',
+            message: 'The submission period has ended, can not be submitted',
+            type: 'warning',
+            duration: 3000,
+        });
     } else {
         router.push('/abstract-submission');
     }
 }
 
-const validateDateTime = async () => {
-    isDisabled.value = !(await useSetting().validateDateTime('abstractSubmissionEndTime'));
-
-}
 
 // 2026/04/07 新增
 
 // 默認關閉二階段上傳按鈕，只有在審核通過且在上傳時間內才會開啟
 const isUploadDisabled = ref(true);
-const validateUploadDateTime = async () => {
-    isUploadDisabled.value = !(await useSetting().isWithinSlideUploadPeriod());
-}
+const { setting } = useSetting();
+watch(() => setting.value, () => {
+    if (setting.value) {
+        console.log('setting changed in abstract.vue', setting.value);
+        isDisabled.value = !setting.value.isAbstractSubmissionOpen;
+        isUploadDisabled.value = !setting.value.isSlideUploadOpen;
+    }
+}, { immediate: true })
 
 
 
@@ -287,11 +301,9 @@ const validateUploadDateTime = async () => {
 onMounted(async () => {
     getMemberInfo();
     getPapperList();
-    window.addEventListener('resize', setShowAll);
-
     nextTick(() => {
-        validateDateTime();
-        validateUploadDateTime();
+        window.addEventListener('resize', setShowAll);
+        setShowAll();
     })
 })
 
@@ -325,7 +337,6 @@ onMounted(async () => {
             width: 90%;
             margin: 0 auto;
             font-size: 1rem;
-            // border-collapse: separate;
             border-spacing: 0;
 
             tr {
@@ -334,7 +345,6 @@ onMounted(async () => {
                     padding: 1rem;
                     text-align: left;
                     font-size: 1.3rem;
-                    // border-bottom: 1px solid #ccc;
                 }
 
                 td {
@@ -358,9 +368,28 @@ onMounted(async () => {
             }
 
             .last-col {
+                padding: 0;
                 border-top-right-radius: 5px;
                 border-bottom-right-radius: 5px;
-                display: flex;
+
+                .action-wrapper {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    height: 100%;
+                    min-height: 40px;
+                    gap: 0.5rem;
+
+                    background-color: inherit;
+                    border-top-right-radius: 5px;
+                    border-bottom-right-radius: 5px;
+                    padding: 0 10px;
+                }
+
+                .el-button {
+                    margin: 0;
+                    flex-shrink: 0;
+                }
             }
 
             .status-unreviewed {
@@ -466,13 +495,13 @@ onMounted(async () => {
 
 
 
-            @media screen and (max-width: 1023px) {
+            @media screen and (max-width: 1024px) {
                 font-size: 1rem;
 
                 tr {
 
                     th {
-                        font-size: 1.8rem;
+                        font-size: 1.3rem;
                         padding: 0.5rem;
                         text-align: left;
                     }

@@ -2,22 +2,27 @@
     <div>
         <main class="common-section">
             <Banner />
+            <Title title="Group Registration"></Title>
 
-            <div class="title-section">
-                <h1 class="title">Registration Now</h1>
-            </div>
+
             <el-form :model="returnData" class="form" ref="form" :rules="formRules" labelPosition="top"
                 require-asterisk-position="right" :show-message="true" :scroll-to-error="true">
+                <div class="registration-notice">
+                    Group registration data cannot be carried over to future annual meetings.
+                    <!-- {{ t.registrationReminder }} -->
+                </div>
+
                 <div class="member-list" v-for="(item, index) in returnData.groupMembers" :key="index">
                     <div class="top-section">
-                        <h1>Member {{ index + 1 }} : <span v-if="index === 0" class="tips">*The first on the list must
+                        <h1>Member {{ Number(index) + 1 }} : <span v-if="index === 0" class="tips">*The first on the
+                                list must
                                 be a main member</span></h1>
                         <el-button class="option-btn" v-if="returnData.groupMembers.length > 5"
-                            @click="removeMember(index)">
+                            @click="removeMember(Number(index))">
                             Remove
                         </el-button>
                     </div>
-                    <el-form-item class="member-title required" label="Title" :prop="'groupMembers.' + index + '.title'"
+                    <!-- <el-form-item class="member-title required" label="Title" :prop="'groupMembers.' + index + '.title'"
                         :rules="formRules.title" labelPosition="left" labelWidth="auto">
                         <el-radio-group v-model="item.title">
                             <el-radio value="Prof.">Prof.</el-radio>
@@ -25,9 +30,17 @@
                             <el-radio value="Mr.">Mr.</el-radio>
                             <el-radio value="Ms.">Ms.</el-radio>
                         </el-radio-group>
-                    </el-form-item>
+                    </el-form-item> -->
                     <div class="main-form">
                         <div class="left-seciton">
+                            <el-form-item class="required" label="Country" :prop="'groupMembers.' + index + '.country'"
+                                :rules="formRules.country">
+                                <el-select :disabled="attendeeType === '2'" v-model="item.country"
+                                    placeholder="Select a Country or Location" filterable @change="cleanRemitAccount">
+                                    <el-option v-for="item in countries" :key="item" :label="item"
+                                        :value="item"></el-option>
+                                </el-select>
+                            </el-form-item>
                             <div class="member-name">
                                 <el-form-item class="first-name required" label="First Name"
                                     :prop="'groupMembers.' + index + '.firstName'" :rules="formRules.firstName">
@@ -38,9 +51,17 @@
                                     <el-input v-model="item.lastName"></el-input>
                                 </el-form-item>
                             </div>
-                            <el-form-item class="email required" label="ID: Primary E-mail"
+                            <el-form-item label="Chinese Name" :prop="'groupMembers.' + index + '.chineseName'">
+                                <el-input v-model="item.chineseName"></el-input>
+                            </el-form-item>
+                            <el-form-item class="email required" label="Email"
                                 :prop="'groupMembers.' + index + '.email'" :rules="formRules.email">
                                 <el-input v-model="item.email" placeholder="E-mail" :prefixIcon="Message"></el-input>
+                            </el-form-item>
+                            <el-form-item class="email required" label="Confirm Email"
+                                :prop="'groupMembers.' + index + '.confirmEmail'" :rules="formRules.confirmEmail">
+                                <el-input v-model="item.confirmEmail" placeholder="E-mail"
+                                    :prefixIcon="Message"></el-input>
                             </el-form-item>
                             <el-form-item class="required" label="Password"
                                 :prop="'groupMembers.' + index + '.password'" :rules="formRules.password">
@@ -52,6 +73,13 @@
                                 <el-input v-model="item.confirmPassword" placeholder="Password" :prefixIcon="Lock"
                                     show-password></el-input>
                             </el-form-item>
+                            <el-form-item label="Passport" :prop="'groupMembers.' + index + '.idCard'">
+                                <el-input v-model="item.idCard" placeholder="Passport"></el-input>
+                            </el-form-item>
+
+
+                        </div>
+                        <div class="right-section">
                             <el-form-item class="required" label="Affiliation"
                                 :prop="'groupMembers.' + index + '.affiliation'" :rules="formRules.affiliation">
                                 <el-input v-model="item.affiliation"></el-input>
@@ -60,18 +88,8 @@
                                 :prop="'groupMembers.' + index + '.jobTitle'" :rules="formRules.jobTitle">
                                 <el-input v-model="item.jobTitle"></el-input>
                             </el-form-item>
-
-                        </div>
-                        <div class="right-section">
-                            <el-form-item class="required" label="Country" :prop="'groupMembers.' + index + '.country'"
-                                :rules="formRules.country">
-                                <el-select :disabled="attendeeType === '2'" v-model="item.country"
-                                    placeholder="Select a Country or Location" filterable @change="cleanRemitAccount">
-                                    <el-option v-for="item in countries" :key="item" :label="item"
-                                        :value="item"></el-option>
-                                </el-select>
-                            </el-form-item>
                             <div class="member-phone required">
+
                                 <el-form-item class="country-code" label="Mobile Phone"
                                     :prop="'groupMembers.' + index + '.countryCode'" :rules="formRules.countryCode">
                                     <div class="country-code-inner">
@@ -85,13 +103,32 @@
                                     <el-input v-model="item.phoneNum"></el-input>
                                 </el-form-item>
                             </div>
-                            <el-form-item class="category required" label="Category"
-                                :prop="'groupMembers.' + index + '.category'" :rules="formRules.category">
-                                <el-radio-group v-model="item.category">
-                                    <el-radio :value="1">Non-member</el-radio>
-                                    <el-radio :value="2">Member</el-radio>
-                                    <el-radio :value="3">Others(Trainee/Nurse/Reasearcher)</el-radio>
+                            <el-form-item label="Dietary Preference" prop="food">
+                                <el-radio-group v-model="item.food">
+                                    <el-radio value="葷">Non-Vegetarian</el-radio>
+                                    <el-radio value="素">Vegetarian</el-radio>
                                 </el-radio-group>
+                            </el-form-item>
+                            <el-form-item label="Dietary Restrictions" prop="foodTaboo">
+                                <el-input v-model="item.foodTaboo"></el-input>
+                            </el-form-item>
+
+                            <el-form-item label="Category" :prop="'groupMembers.' + index + '.category'">
+                                <el-select v-model="item.category">
+                                    <el-option label="Member" :value="1"></el-option>
+                                    <el-option label="Others(Trainee/Nurse/Researcher)" :value="2"></el-option>
+                                    <el-option label="Non-member" :value="3"></el-option>
+                                </el-select>
+                            </el-form-item>
+
+                            <el-form-item v-if="item.category === 1 && item.country !== 'Taiwan'"
+                                :prop="'groupMembers.' + index + '.categoryExtra'" label="Type of membership">
+                                <el-select v-model="item.categoryExtra" class="category-select">
+                                    <el-option label="JBCS" value="JBCS"></el-option>
+                                    <el-option label="JOPBS" value="JOPBS"></el-option>
+                                    <el-option label="KBCS" value="KBCS"></el-option>
+                                    <el-option label="HKSBS " value="HKSBS "></el-option>
+                                </el-select>
                             </el-form-item>
                         </div>
                     </div>
@@ -122,10 +159,11 @@ import { type FormInstance, type FormRules } from 'element-plus'
 import { Lock, Message } from '@element-plus/icons-vue'
 
 import Banner from '@/components/layout/Banner.vue';
+import Title from '@/components/layout/Title.vue';
 
 import countriesJson from '@/assets/data/countries.json'
 
-const countries = reactive(countriesJson);
+const countries = ref(countriesJson.filter((item: any) => item !== 'Taiwan').map((item: any) => item));
 
 
 
@@ -191,7 +229,12 @@ interface formData {
     phoneNum: string,
     category: number,
     verificationCode: string,
-    verificationKey: string
+    verificationKey: string,
+    chineseName?: string,
+    food?: string,
+    foodTaboo?: string,
+    categoryExtra?: string,
+    idCard?: string
 }
 
 const form = ref<FormInstance>()
@@ -212,7 +255,12 @@ const formData = reactive<formData>({
     phoneNum: '',
     category: 1,
     verificationCode: '',
-    verificationKey: ''
+    verificationKey: '',
+    chineseName: '',
+    food: '葷',
+    foodTaboo: '',
+    categoryExtra: '',
+    idCard: ''
 })
 
 const returnData = reactive<any>({
@@ -221,9 +269,35 @@ const returnData = reactive<any>({
     verificationKey: ''
 })
 
+// const testFormData = ref({
+//     title: 'Prof.',
+//     firstName: '12',
+//     lastName: '123',
+//     email: '',
+//     password: '123456',
+//     confirmPassword: '123456',
+//     affiliation: 'ZF',
+//     jobTitle: 'IT',
+//     country: 'Canada',
+//     remitAccountLast5: '',
+//     phone: '886',
+//     countryCode: '886',
+//     phoneNum: '123456777',
+//     category: 1,
+//     verificationCode: '',
+//     verificationKey: '',
+//     chineseName: '',
+//     food: '葷',
+//     foodTaboo: '',
+//     categoryExtra: '',
+//     idCard: ''
+// })
+
 const initMember = () => {
-    returnData.groupMembers =
-        Array.from({ length: 5 }, () => ({ ...formData }))
+    returnData.groupMembers = Array.from({ length: 5 }, () => ({ ...formData }))
+    // let index = 0;
+    // returnData.groupMembers =
+    //     Array.from({ length: 5 }, () => ({ ...testFormData.value, email: `test${index}@example.com`, confirmEmail: `test${index++}@example.com` }))
 }
 
 const addNewMember = () => {
@@ -257,6 +331,22 @@ const vaildConfirmPassword = (rule: any, value: string, callback: any) => {
     }
 }
 
+const vaildConfirmEmail = (rule: any, value: string, callback: any) => {
+    const match = rule.field.match(/^groupMembers\.(\d+)\.confirmEmail$/);
+    if (!match) {
+        return callback(new Error('Invalid field'));
+    }
+
+    const index = Number(match[1]); // 轉換為數字索引
+    if (!value) {
+        callback(new Error('Please input your email again'))
+    } else if (value !== returnData.groupMembers[index].email) {
+        callback(new Error('The two emails do not match'))
+    } else {
+        callback()
+    }
+}
+
 
 
 const formRules = reactive<FormRules>({
@@ -264,8 +354,9 @@ const formRules = reactive<FormRules>({
     firstName: [{ required: true, message: 'Please input your first name', trigger: 'blur' }],
     lastName: [{ required: true, message: 'Please input your last name', trigger: 'blur' }],
     email: [{ required: true, message: 'Please input your email', trigger: 'blur' }, { type: 'email', message: 'Please input correct email', trigger: 'blur' }],
+    confirmEmail: [{ required: true, validator: vaildConfirmEmail, trigger: 'blur' }],
     password: [{ required: true, message: 'Please input your password', trigger: 'blur' }],
-    confirmPassword: [{ validator: vaildConfirmPassword, trigger: 'blur' }],
+    confirmPassword: [{ required: true, validator: vaildConfirmPassword, trigger: 'blur' }],
     affiliation: [{ required: true, message: 'Please input your affiliation', trigger: 'blur' }],
     jobTitle: [{ required: true, message: 'Please input your job title', trigger: 'blur' }],
     country: [{ required: true, message: 'Please select a country', trigger: 'change' }],
@@ -296,6 +387,12 @@ const submit = async (formEl: FormInstance | undefined) => {
 
             if (res.code === 200) {
                 router.push('/login')
+                ElNotification({
+                    title: 'Success',
+                    message: 'Group registration successful!',
+                    type: 'success',
+                    duration: 5000
+                })
             }
 
             formEl.resetFields()
@@ -306,6 +403,22 @@ const submit = async (formEl: FormInstance | undefined) => {
     })
 }
 
+const { setting } = useSetting()
+watch(() => setting.value, (newVal) => {
+    if (newVal) {
+        console.log('setting', newVal)
+        if (!newVal.isGroupRegistrationOpen) {
+            router.push('/registration-fee')
+            ElNotification({
+                title: 'Notification',
+                message: 'Group registration is closed now.',
+                type: 'warning',
+                duration: 5000
+            })
+        }
+    }
+}, { immediate: true })
+
 /**---------------------- */
 onMounted(() => {
     getCaptcha()
@@ -315,6 +428,7 @@ onMounted(() => {
 <style lang="scss" scoped>
 .common-section {
     font-family: $common-section-font-family;
+    margin-top: 6rem;
 
     .banner-box {
         margin-top: 1rem;
@@ -336,6 +450,8 @@ onMounted(() => {
     }
 
 
+
+
     .content {
         margin: 1rem auto;
         text-align: center;
@@ -349,6 +465,17 @@ onMounted(() => {
         width: 80%;
         margin: 1rem auto;
         font-weight: 600;
+
+        .registration-notice {
+            margin-bottom: 1.5rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid #f1c4ca;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #fff8f9 0%, #fff2f4 100%);
+            color: #9e5060;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
         .option-btn {
             color: #DD6777;
@@ -502,7 +629,6 @@ onMounted(() => {
 
             img {
                 width: 15vw;
-                // height: 40px;
             }
         }
 

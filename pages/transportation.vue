@@ -778,6 +778,9 @@ const backToTop = () => {
 
         }
 
+        .tayouan-airport-mrt-line {
+            gap: 2rem;
+        }
     }
 
     .tayouan-airport-mrt-line {

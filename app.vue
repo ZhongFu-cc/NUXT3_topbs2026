@@ -28,6 +28,7 @@ import MobileMenu from './components/layout/MobileMenu.vue';
 import { ref } from 'vue';
 
 const { locale, setLocale, t } = useI18n();
+const { fetchSetting } = useSetting()
 
 
 //這邊注意只是獲取組件而已
@@ -71,6 +72,7 @@ const handleBannerHeight = () => {
 
 onMounted(() => {
   setLocale('en');
+  fetchSetting()
   // handleBannerHeight()
   // // 監聽滾動事件
   // window.addEventListener('scroll', handleScroll)

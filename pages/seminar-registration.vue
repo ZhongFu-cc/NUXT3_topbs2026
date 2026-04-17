@@ -4,10 +4,13 @@
             <Banner />
             <div class="main-section">
                 <Title :title="$t('registration')"></Title>
-                <RegistrationFee></RegistrationFee>
+                <!-- <RegistrationFee></RegistrationFee> -->
                 <el-form :model="formData" class="form" ref="form" :rules="formRules" labelPosition="top"
                     require-asterisk-position="right" :show-message="true" :scroll-to-error="true"
                     :validate-on-rule-change="false">
+                    <div class="registration-notice">
+                        {{ t.registrationReminder }}
+                    </div>
 
                     <div class="main-form">
                         <ClientOnly>
@@ -35,8 +38,7 @@
                                 </div>
 
 
-                                <el-form-item v-if="formData.country === 'Taiwan'" :label="t.idCard" prop="idCard"
-                                    :style="{ order: getOrder('idCard') }">
+                                <el-form-item :label="t.idCard" prop="idCard" :style="{ order: getOrder('idCard') }">
                                     <el-input v-model="formData.idCard" :placeholder="t.idCard"></el-input>
                                 </el-form-item>
 
@@ -68,9 +70,9 @@
 
                             </div>
                             <div class="right-section">
-                                <el-form-item v-if="formData.country !== 'Taiwan'" :label="t.idCard" prop="idCard">
+                                <!-- <el-form-item v-if="formData.country !== 'Taiwan'" :label="t.idCard" prop="idCard">
                                     <el-input v-model="formData.idCard" :placeholder="t.idCard"></el-input>
-                                </el-form-item>
+                                </el-form-item> -->
 
                                 <el-form-item class="required" :label="t.affiliation" prop="affiliation">
                                     <el-input v-model="formData.affiliation" :placeholder="t.affiliation"></el-input>
@@ -119,6 +121,16 @@
                                         <el-option :label="t.category1" :value="1"></el-option>
                                         <el-option :label="t.category2" :value="2"></el-option>
                                         <el-option :label="t.category3" :value="3"></el-option>
+                                    </el-select>
+                                </el-form-item>
+
+                                <el-form-item v-if="formData.category === 1 && formData.country !== 'Taiwan'"
+                                    prop="categoryExtra" :label="t.categoryExtra">
+                                    <el-select v-model="formData.categoryExtra" class="category-select">
+                                        <el-option label="JBCS" value="JBCS"></el-option>
+                                        <el-option label="JOPBS" value="JOPBS"></el-option>
+                                        <el-option label="KBCS" value="KBCS"></el-option>
+                                        <el-option label="HKSBS " value="HKSBS"></el-option>
                                     </el-select>
                                 </el-form-item>
 
@@ -442,15 +454,26 @@ const submit = async (formEl: FormInstance | undefined) => {
             if (res.code === 500) {
                 getCaptcha()
                 formData.verificationCode = ''
-                ElMessage.error(res.msg)
+                ElNotification.error({
+                    title: 'Failed',
+                    message: res.msg,
+                    type: 'error',
+                    duration: 3000,
+                });
+
             }
 
             if (res.data.isLogin) {
                 localStorage.setItem(res.data.tokenName, 'Bearer ' + res.data.tokenValue);
-                ElMessage.success(t.value.registrationSuccess)
+                ElNotification.success({
+                    title: 'Success',
+                    message: t.value.registrationSuccess,
+                    type: 'success',
+                    duration: 3000,
+                });
                 useAuth().checkLoginState();
 
-                router.push('/')
+                router.push('/member-center');
             }
 
             formEl.resetFields()
@@ -467,6 +490,19 @@ const listenKeydown = (event: KeyboardEvent) => {
     }
 }
 
+const { setting } = useSetting();
+watch(() => setting.value, () => {
+    if (setting.value && !setting.value.isRegistrationOpen) {
+        router.push("/registration-fee");
+        ElNotification({
+            title: 'Notice',
+            message: 'Registration is closed',
+            type: 'warning',
+            duration: 5000
+        });
+    }
+}, { immediate: true })
+
 
 
 
@@ -476,7 +512,12 @@ onMounted(() => {
     window.addEventListener('keydown', listenKeydown)
 
     if (isLogin.value) {
-        ElMessage.info(t.value.alreadyLogin)
+        ElNotification.info({
+            title: 'Info',
+            message: t.value.alreadyLogin,
+            type: 'info',
+            duration: 3000,
+        });
         router.push('/')
     }
 })
@@ -517,6 +558,17 @@ onUnmounted(() => {
         width: 60%;
         margin: 1rem auto;
         font-weight: 600;
+
+        .registration-notice {
+            margin-bottom: 1.5rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid #f1c4ca;
+            border-radius: 14px;
+            background: linear-gradient(180deg, #fff8f9 0%, #fff2f4 100%);
+            color: #9e5060;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
 
         :deep(.el-form-item__label) {
             font-size: 1.3rem;

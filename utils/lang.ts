@@ -45,6 +45,7 @@ export const label = {
         category1: '會員(台灣乳房腫瘤手術暨重建醫學會)',
         category2: '其他(包含護理人員、住院醫師、研究人員、學生... 等)',
         category3: '非會員',
+        categoryExtra: '會員類別',
         captcha: '驗證碼',
         remitAccountLast5Validate: '請輸入匯款帳號末五碼',
         remitAccountLast5Validate2: '匯款帳號末五碼必須為數字且為五碼',
@@ -67,6 +68,7 @@ export const label = {
         alreadyLogin: '您已經登入了',
         registrationSuccess: '註冊成功',
         pleaseEnterChineseName: '請輸入中文姓名',
+        registrationReminder: '提醒：本次註冊後，網站會留存您的註冊資訊，供後續其他年度會議使用。',
 
     },
     en: {
@@ -111,9 +113,10 @@ export const label = {
         phoneNumValidate: 'Please enter your phone number',
         categoryValidate: 'Please select a category',
         remitAccountLast5Validate: 'Please enter the last 5 digits of your remittance account',
-        category1: 'Member (Taiwan Society of Breast Surgery and Reconstruction)',
+        category1: 'Member',
         category2: 'Other (including nurses, resident doctors, researchers, students, etc.)',
         category3: 'Non-Member',
+        categoryExtra: 'Type of membership',
         captcha: 'Captcha',
         remitAccountLast5Validate2: 'The last 5 digits of the remittance account must be numeric and exactly 5 digits long',
         abstractType: 'Abstract Type',
@@ -135,6 +138,7 @@ export const label = {
         alreadyLogin: 'You are already logged in',
         registrationSuccess: 'Registration successful',
         pleaseEnterChineseName: 'Please enter your Chinese name',
+        registrationReminder: 'Reminder: Your registration information will be retained for use in future annual meetings.',
     }
 } as const
 

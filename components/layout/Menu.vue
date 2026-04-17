@@ -43,8 +43,23 @@
                 <!-- <nuxt-link class="menu-item" to="/" @click="setActiveItem('invitedSpeaker')"
                     :class="activeClass('invitedSpeaker')">受邀講者</nuxt-link> -->
 
-                <nuxt-link class="menu-item" to="/seminar-registration" @click="setActiveItem('seminarRegistration')"
-                    :class="activeClass('seminarRegistration')">{{ $t('registration') }}</nuxt-link>
+
+
+                <div class="submenu-box menu-item" @click="openSubMenuFunc('registration')">
+                    {{ $t('registration') }}
+                    <el-icon>
+                        <ElIconArrowDown />
+                    </el-icon>
+                    <div class="gallery-sub-menu" :class="openedSubMenu == 'registration' ? 'is-open' : ''"
+                        v-if="openedSubMenu == 'registration'">
+                        <nuxt-link class="sub-menu-item" to="/registration-fee"
+                            @click="setActiveItem('registrationFee')" :class="activeClass('registrationFee')">{{
+                                $t('registrationFee') }}</nuxt-link>
+                        <nuxt-link class="sub-menu-item" to="/seminar-registration"
+                            @click="setActiveItem('seminarRegistration')" :class="activeClass('seminarRegistration')">{{
+                                $t('onlineRegistration') }}</nuxt-link>
+                    </div>
+                </div>
 
                 <div class="submenu-box menu-item" @click="openSubMenuFunc('abstract')">
                     {{ $t('abstract') }}

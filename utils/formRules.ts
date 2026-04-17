@@ -1,7 +1,7 @@
 import type { FormRules } from "element-plus";
 import { useLang } from "@/composables/useLang";
 
-const { t } = useLang();
+// const { t } = useLang();
 
 /**-----------------------------------特殊校驗方法------------------------------ */
 
@@ -89,33 +89,37 @@ const validateAge = (rule: any, value: any, callback: any) => {
 
 
 
-const validateRemitAccount = (rule: any, value: string, callback: any) => {
-  if (!value) {
-    callback(new Error(t.value.remitAccountLast5Validate))
-  } else if (value.length !== 5) {
-    callback(new Error(t.value.remitAccountLast5Validate2))
-  } else if (!/^\d{5}$/.test(value)) {
-    callback(new Error(t.value.remitAccountLast5Validate2))
-  }
-  else {
-    callback()
-  }
-}
-
-
-const validateConfirmPassword = (password: string) => {
+const validateRemitAccount = (t: any) => {
   return (rule: any, value: string, callback: any) => {
     if (!value) {
-      callback(new Error(t.value.confirmPasswordValidate))
-    } else if (value !== password) {
-      callback(new Error(t.value.confirmPasswordValidate2))
-    } else {
+      callback(new Error(t.value.remitAccountLast5Validate))
+    } else if (value.length !== 5) {
+      callback(new Error(t.value.remitAccountLast5Validate2))
+    } else if (!/^\d{5}$/.test(value)) {
+      callback(new Error(t.value.remitAccountLast5Validate2))
+    }
+    else {
       callback()
     }
   }
 }
 
-const vaildConfirmEmail = (email: string) => {
+
+const validateConfirmPassword = (t: any) => {
+  return (password: string) => {
+    return (rule: any, value: string, callback: any) => {
+      if (!value) {
+        callback(new Error(t.value.confirmPasswordValidate))
+      } else if (value !== password) {
+        callback(new Error(t.value.confirmPasswordValidate2))
+      } else {
+        callback()
+      }
+    }
+  }
+}
+
+const vaildConfirmEmail = (email: string, t: any) => {
   return (rule: any, value: string, callback: any) => {
     if (!value) {
       callback(new Error(t.value.confirmEmailValidate))
@@ -156,6 +160,9 @@ export const formRulesEN = reactive<FormRules>({
   email: [
     { required: true, message: "Please input email", trigger: "blur" },
     { type: "email", message: "Please input correct email", trigger: "blur" },
+  ],
+  password: [
+    { required: true, message: "Please input password", trigger: "blur" },
   ],
   affiliation: [
     { required: true, message: "Please input affiliation", trigger: "blur" },
