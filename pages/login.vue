@@ -35,6 +35,9 @@
                             <img src="@/assets/img/lock.svg" alt="">
                         </template>
                     </el-input>
+                    <div class="forgot-password">
+                        <nuxt-link to="/retrieve-password">Forgot password?</nuxt-link>
+                    </div>
                 </el-form-item>
                 <div class="captcha-section">
                     <el-form-item class="captcha" label="Verification Code" prop="verificationCode">
@@ -51,9 +54,10 @@
                     <el-button class="sign-btn" @click="login(formRef)">Sign in</el-button>
                 </el-form-item>
                 <div class="btn-section">
-                    <nuxt-link :to="'retrieve-password'">Retrieve password</nuxt-link>
-                    <span>&nbsp /</span>
-                    <nuxt-link :to="'seminar-registration'">Sign up</nuxt-link>
+                    <!-- <nuxt-link :to="'retrieve-password'">Retrieve password</nuxt-link>
+                    <span>&nbsp /</span> -->
+                    <p>Don't have an account? &nbsp</p>
+                    <nuxt-link class="sign-text" to="/registration-fee">Sign up</nuxt-link>
                 </div>
             </el-form>
         </div>
@@ -276,7 +280,30 @@ onUnmounted(() => {
                         height: 100%;
                     }
                 }
+
+
+                .forgot-password {
+                    display: flex;
+                    justify-content: flex-end;
+                    width: 100%;
+
+                    a {
+                        color: #D86C7C;
+                        font-size: 0.875rem;
+                        transition: color 0.3s ease-in-out;
+
+                        &:hover {
+                            color: #D86C7C;
+                            filter: brightness(1.2);
+                            transform: scale(1.05);
+                            cursor: pointer;
+                        }
+                    }
+                }
+
             }
+
+
 
             .captcha-section {
                 display: flex;
@@ -361,10 +388,12 @@ onUnmounted(() => {
                 a {
                     filter: brightness(1);
                     transition: filter 0.3s ease-in-out;
+                    color: #D86C7C;
 
                     &:hover {
                         cursor: pointer;
                         filter: brightness(1.8);
+                        transform: scale(1.1);
                     }
                 }
             }

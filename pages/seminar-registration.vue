@@ -9,7 +9,8 @@
                     require-asterisk-position="right" :show-message="true" :scroll-to-error="true"
                     :validate-on-rule-change="false">
                     <div class="registration-notice">
-                        {{ t.registrationReminder }}
+                        <p>{{ t.registrationReminder }}</p>
+                        <p v-if="formData.country === 'Taiwan'">若未填寫匯款帳號末五碼請於註冊完成後補填。</p>
                     </div>
 
                     <div class="main-form">
@@ -183,7 +184,7 @@ const { isLogin } = useAuth()
 
 const validateRemitAccount = (rule: any, value: string, callback: any) => {
     if (!value) {
-        callback(new Error(t.value.remitAccountLast5Validate))
+        callback()
     } else if (value.length !== 5) {
         callback(new Error(t.value.remitAccountLast5Validate2))
     } else if (!/^\d{5}$/.test(value)) {
@@ -267,6 +268,10 @@ const codeMap: Record<string, number> = {
 };
 
 const checkCkDigit = (rule: any, value: string, callback: any) => {
+    if (formData.country !== 'Taiwan') {
+        callback()
+        return
+    }
     if (!value) callback(new Error(t.value.idCardValidate))
     if (value && formData.country === 'Taiwan') {
         console.log('checkCkDigit', value)
@@ -434,7 +439,7 @@ const formRules = computed<FormRules>(() => ({
     countryCode: [{ required: true, message: t.value.countryCodeValidate, trigger: 'blur' }],
     phoneNum: [{ required: true, message: t.value.phoneNumValidate, trigger: 'blur' }],
     category: [{ required: true, message: t.value.categoryValidate, trigger: 'change' }],
-    remitAccountLast5: [{ required: formData.country === 'Taiwan', validator: validateRemitAccount, trigger: 'blur' }],
+    remitAccountLast5: [{ required: false, validator: validateRemitAccount, trigger: 'blur' }],
     // categoryExtra: [{ validator: validCategoryExtra, trigger: 'change' }],
 }))
 
