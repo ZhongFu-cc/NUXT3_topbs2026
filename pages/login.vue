@@ -57,7 +57,7 @@
                     <!-- <nuxt-link :to="'retrieve-password'">Retrieve password</nuxt-link>
                     <span>&nbsp /</span> -->
                     <p>Don't have an account? &nbsp</p>
-                    <nuxt-link class="sign-text" to="/registration-fee">Sign up</nuxt-link>
+                    <nuxt-link class="sign-text" to="/seminar-registration">Sign up</nuxt-link>
                 </div>
             </el-form>
         </div>

@@ -7,27 +7,40 @@
             :close-on-press-escape="false" :show-close="false" class="remit-dialog">
             <template #header>
                 <div class="dialog-title-box">
-                    <h2>請先補上匯款帳號末五碼</h2>
-                    <p>台灣會員需先填寫匯款帳號末五碼，才能繼續確認付款資訊。</p>
+                    <h2>確認付款資訊</h2>
+                    <p>台灣會員送出付款確認前，需提供匯款帳號末五碼以利主辦單位核對。</p>
                 </div>
             </template>
 
             <div class="dialog-content">
-                <el-input v-model="remitAccountLast5Input" maxlength="5" placeholder="請輸入 5 碼數字" />
+                <div v-if="hasSavedRemitAccount" class="saved-remit-info">
+                    <p>已填寫的末五碼</p>
+                    <el-input v-model="memberInfo.remitAccountLast5"></el-input>
+                </div>
+                <template v-else>
+                    <p class="input-caption">請輸入匯款帳號末五碼</p>
+                    <el-input v-model="remitAccountLast5Input" maxlength="5" placeholder="請輸入 5 碼數字" />
+                </template>
                 <p v-if="remitDialogError" class="dialog-error">{{ remitDialogError }}</p>
             </div>
 
             <template #footer>
                 <div class="dialog-actions">
-                    <el-button @click="handleRemitDialogCancel">先不填，返回上一頁</el-button>
-                    <el-button type="primary" :loading="isSavingRemitAccount" @click="submitRemitAccountLast5">
-                        儲存末五碼
+                    <el-button @click="handleRemitDialogCancel">取消</el-button>
+                    <el-button type="primary" :loading="isSavingRemitAccount"
+                        :disabled="!canConfirmTaiwanPayment || isSavingRemitAccount" @click="confirmPayment">
+                        確認付款
                     </el-button>
                 </div>
             </template>
         </el-dialog>
 
-        <div class="table-section" v-if="!remitDialogVisible">
+        <div class="table-section">
+            <div v-if="memberInfo.country === 'Taiwan'" class="payment-info">
+                <p>*戶名 : 台灣乳房腫瘤手術暨重建學會</p>
+                <p>*合作金庫銀行 : 長庚分行 帳號:3638871000153</p>
+                <p>*請於匯款後點擊下方付款按鈕，並輸入帳戶末五碼以利主辦單位核對。</p>
+            </div>
             <div class="table-box">
                 <span class="info" v-if="memberInfo.groupRole == 'slave'">*The group registration fee must be paid by
                     the main registration member.</span>
@@ -36,8 +49,9 @@
                         <tr class="header-row">
                             <th>Item</th>
                             <th>Payment Amount {{ memberInfo.country === 'Taiwan' ? '(TWD)' : '(USD)' }}</th>
-                            <th>Payment Status</th>
-                            <th v-if="memberInfo.country === 'Taiwan'">Last 5 digits of account number</th>
+                            <th :colspan="2">Payment Status</th>
+                            <!-- <th></th> -->
+                            <!-- <th v-if="memberInfo.country === 'Taiwan'">Last 5 digits of account number</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -45,18 +59,23 @@
                             <td class="first-col">{{ item.itemsSummary }}</td>
                             <td>{{ memberInfo.country === 'Taiwan' ? item.totalAmount : (item.totalAmount /
                                 RATE).toFixed(2) }}</td>
-                            <td :class="memberInfo.country === 'Taiwan' ? 'none' : 'last-col'">{{
+                            <td class="last-col">{{
                                 enums.payMentStatus[item.status]
-                            }}</td>
-                            <td v-if="memberInfo.country === 'Taiwan'" class="last-col">
+                                }}</td>
+                            <!-- <td v-if="memberInfo.country === 'Taiwan'" class="last-col">
                                 {{ memberInfo.remitAccountLast5 }}
-                            </td>
+                            </td> -->
                             <td v-if="memberInfo.country !== 'Taiwan'" class="temp-col"></td>
                             <td v-if="memberInfo.country !== 'Taiwan' && (item.status === 0 || item.status === 3)"
                                 class="not-pay"
                                 :class="(memberInfo.groupRole == 'slave' && item.itemsSummary == 'Group Registration Fee') || isOverDeadline ? 'disabled' : ''"
                                 @click="getOrders(item.ordersId, (memberInfo.groupRole != 'slave' || item.itemsSummary != 'Group Registration Fee'))">
                                 <span>Pay now</span>
+                            </td>
+                            <td v-if="memberInfo.country === 'Taiwan' && (item.status === 0 || item.status === 3)"
+                                class="not-pay" :class="isOverDeadline ? 'disabled' : ''"
+                                @click="openTaiwanPaymentDialog(item.ordersId)">
+                                <span>付款</span>
                             </td>
                             <td v-if="memberInfo.country !== 'Taiwan' && item.status === 2" class="completed">
                                 <span><el-icon>
@@ -67,11 +86,7 @@
                     </tbody>
                 </table>
             </div>
-            <div v-if="memberInfo.country === 'Taiwan'" class="payment-info">
-                <p>*戶名 : 台灣乳房腫瘤手術暨重建學會</p>
-                <p>*合作金庫銀行 : 長庚分行 帳號:3638871000153</p>
-                <p>*經主辦單位確認後，會修改網站上付款狀態</p>
-            </div>
+
         </div>
         <!-- Bearer 7bedca56-c711-4559-af47-afd6d4224da8 -->
 
@@ -86,7 +101,6 @@ import Breadcrumbs from '@/components/layout/Breadcrumbs.vue';
 
 
 const orderListRef = ref<any>();
-const router = useRouter();
 
 const RATE = 32;
 
@@ -96,14 +110,29 @@ const remitDialogVisible = ref(false);
 const remitAccountLast5Input = ref('');
 const remitDialogError = ref('');
 const isSavingRemitAccount = ref(false);
-
-const openRemitDialogIfNeeded = () => {
-    console.log('Checking if remit dialog needs to be opened...', memberInfo.value);
-    if (memberInfo.value.country === 'Taiwan' && !memberInfo.value.remitAccountLast5) {
-        remitAccountLast5Input.value = '';
-        remitDialogError.value = '';
-        remitDialogVisible.value = true;
+const hasSavedRemitAccount = computed(() => {
+    const value = String(memberInfo.value?.remitAccountLast5 ?? '').trim();
+    return /^\d{5}$/.test(value);
+});
+const canConfirmTaiwanPayment = computed(() => {
+    if (hasSavedRemitAccount.value) {
+        return true;
     }
+
+    return /^\d{5}$/.test(remitAccountLast5Input.value.trim());
+});
+
+const targetOrderId = ref<string>('')
+const openTaiwanPaymentDialog = (ordersId: string) => {
+    if (isOverDeadline.value) {
+        return;
+    }
+
+    remitDialogError.value = '';
+    remitAccountLast5Input.value = hasSavedRemitAccount.value ? String(memberInfo.value.remitAccountLast5) : '';
+    remitDialogVisible.value = true;
+
+    targetOrderId.value = ordersId
 }
 
 const getMemberInfo = async () => {
@@ -111,7 +140,6 @@ const getMemberInfo = async () => {
 
     console.log(res)
     memberInfo.value = res.data;
-    openRemitDialogIfNeeded();
 }
 
 
@@ -120,7 +148,7 @@ interface Order {
     itemsSummary: string;
     totalAmount: number;
     status: number;
-    ordersId: number;
+    ordersId: string;
 }
 
 let orderList = reactive<Order[]>([])
@@ -152,72 +180,9 @@ const form = ref<any>()
 
 const handleRemitDialogCancel = () => {
     remitDialogVisible.value = false;
-
-    if (window.history.length > 1) {
-        router.back();
-        return;
-    }
-
-    router.push('/member-center');
 }
 
-const submitRemitAccountLast5 = async () => {
-    remitDialogError.value = '';
-    const value = remitAccountLast5Input.value.trim();
-
-    if (!/^\d{5}$/.test(value)) {
-        remitDialogError.value = '請輸入 5 碼數字';
-        return;
-    }
-
-    isSavingRemitAccount.value = true;
-
-    const payload = {
-        memberId: memberInfo.value.memberId,
-        title: memberInfo.value.title,
-        chineseName: memberInfo.value.chineseName,
-        firstName: memberInfo.value.firstName,
-        lastName: memberInfo.value.lastName,
-        email: memberInfo.value.email,
-        country: memberInfo.value.country,
-        remitAccountLast5: value,
-        affiliation: memberInfo.value.affiliation,
-        jobTitle: memberInfo.value.jobTitle,
-        phone: memberInfo.value.phone,
-        countryCode: memberInfo.value.countryCode,
-        receipt: memberInfo.value.receipt,
-        food: memberInfo.value.food,
-        foodTaboo: memberInfo.value.foodTaboo,
-    };
-
-    const res = await CSRrequest.put('/member/owner', {
-        body: payload,
-    });
-
-    isSavingRemitAccount.value = false;
-
-    if (res.code !== 200) {
-        remitDialogError.value = res.msg || '儲存失敗，請稍後再試';
-        return;
-    }
-
-    memberInfo.value = {
-        ...memberInfo.value,
-        ...payload,
-    };
-
-    if (useAuth().memberInfo.value) {
-        useAuth().memberInfo.value = {
-            ...useAuth().memberInfo.value,
-            ...payload,
-        };
-    }
-
-    remitDialogVisible.value = false;
-    ElMessage.success('匯款帳號末五碼已更新');
-}
-
-const getOrders = async (ordersId: number, isPayable: boolean) => {
+const getOrders = async (ordersId: string, isPayable: boolean) => {
     console.log(!isPayable)
     // console.log('isOverDeadline:', isOverDeadline.value)
     if (isOverDeadline.value) {
@@ -282,6 +247,50 @@ watch(() => setting.value, () => {
     }
 }, { immediate: true })
 
+interface orderStatusPayload {
+    orderId: string;
+    remitAccountLast5: string;
+}
+
+const confirmPayment = async () => {
+    if (!canConfirmTaiwanPayment.value) {
+        remitDialogError.value = 'Please enter the last 5 digits of the remittance account number.';
+        return;
+    }
+
+    if (targetOrderId.value === '') {
+        remitDialogError.value = 'Invalid order. Please try again.';
+        return;
+    }
+
+    const payload: orderStatusPayload = { orderId: targetOrderId.value, remitAccountLast5: remitAccountLast5Input.value.trim() }
+
+    try {
+        const res: any = await CSRrequest.put('/orders/offline-transfer', {
+            body: payload,
+        });
+
+        if (res.code !== 200) {
+            ElNotification.error({
+                title: 'Error',
+                message: res.msg || 'Failed to update payment information. Please try again later.',
+            });
+            return;
+        }
+        ElNotification.success({
+            title: 'Success',
+            message: 'Payment information updated successfully.',
+        });
+        remitDialogVisible.value = false;
+        getOrderListForOwner();
+    } catch (error) {
+        ElNotification.error({
+            title: 'Error',
+            message: 'Failed to update payment information. Please try again later.',
+        });
+    }
+}
+
 
 onMounted(() => {
     getOrderListForOwner()
@@ -315,6 +324,33 @@ onMounted(() => {
     }
 
     .dialog-content {
+        .input-caption {
+            margin: 0 0 0.5rem;
+            color: #6d5f65;
+            font-weight: 600;
+        }
+
+        .saved-remit-info {
+            padding: 0.75rem 0.85rem;
+            border: 1px solid #e5d3d7;
+            border-radius: 10px;
+            background-color: #faf6f7;
+
+            p {
+                margin: 0;
+                font-size: 0.92rem;
+                color: #7a646a;
+            }
+
+            .el-input {
+                display: block;
+                margin-top: 1rem;
+                font-size: 1.15rem;
+                letter-spacing: 0.08em;
+                color: #3f2f35;
+            }
+        }
+
         .dialog-error {
             margin: 0.75rem 0 0;
             color: #c45656;
@@ -353,10 +389,44 @@ onMounted(() => {
             border-radius: 15px;
             padding: 1rem;
             justify-content: center;
+            width: min(100%, 1120px);
+            box-sizing: border-box;
+            overflow-x: auto;
+
+            @media screen and (max-width: 640px) {
+                overflow-x: visible;
+                padding: 0.75rem;
+            }
 
             .info {
-                font-size: 1rem;
-                color: red;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: fit-content;
+                margin: 0 0 0.85rem;
+                padding: 0.55rem 0.8rem;
+                border-radius: 10px;
+                border: 1px solid #f2c9cf;
+                background-color: #fff5f6;
+                font-size: 0.95rem;
+                font-weight: 600;
+                color: #b94858;
+                line-height: 1.45;
+
+                &::before {
+                    content: '!';
+                    display: inline-flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 1.1rem;
+                    height: 1.1rem;
+                    border-radius: 999px;
+                    background-color: #b94858;
+                    color: #fff;
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                    flex-shrink: 0;
+                }
             }
 
             .taiwan {
@@ -388,49 +458,47 @@ onMounted(() => {
             .orders-table {
                 overflow: hidden;
                 background-color: white;
-                font-size: 1.3rem;
+                font-size: clamp(1rem, 1.4vw, 1.2rem);
                 border-collapse: separate;
-                border-spacing: 0 0.3rem;
-                width: 70vw;
+                border-spacing: 0 0.4rem;
+                width: 100%;
+                min-width: 760px;
 
                 @media screen and (max-width: 1048px) {
                     font-size: 1rem;
                 }
 
+                @media screen and (max-width: 768px) {
+                    min-width: 640px;
+                }
+
                 th {
-                    padding: 1rem;
-                    border-radius: 15px;
+                    padding: 0.95rem 1rem;
+                    border-radius: 12px;
                     text-align: start;
+                    font-weight: 700;
+                    color: #6b4b53;
+                    background-color: #fff5f7;
+                    white-space: nowrap;
+                    border-bottom: 1px solid #d6cdd1;
                 }
 
                 td {
-                    padding: 0.5rem 1rem;
-                }
-
-                .header-row {
-                    position: relative;
-
-                    &::after {
-                        position: absolute;
-                        bottom: 5px;
-                        right: 0;
-                        content: '';
-                        display: block;
-                        width: 100%;
-                        height: 0.1rem;
-                        background-color: #CACACA;
-                    }
+                    padding: 0.8rem 1rem;
+                    vertical-align: middle;
                 }
 
                 .first-col {
                     border-top-left-radius: 5px;
                     border-bottom-left-radius: 5px;
+                    min-width: 18ch;
                 }
 
                 .last-col {
                     border-top-right-radius: 5px;
                     border-bottom-right-radius: 5px;
                     border: none !important;
+                    white-space: nowrap;
                 }
 
 
@@ -478,6 +546,7 @@ onMounted(() => {
                     text-align: center;
                     border-radius: 5px;
                     cursor: default;
+                    min-width: 8.5rem;
 
                 }
 
@@ -493,35 +562,204 @@ onMounted(() => {
                     background-color: #26AE07 !important;
                     color: white !important;
                     border-radius: 5px;
-                    width: 13%;
+                    min-width: 8.5rem;
                     cursor: pointer;
+                    font-weight: 700;
+                    white-space: nowrap;
+                    transition: background-color 0.25s ease-in-out, box-shadow 0.25s ease-in-out;
 
                     &:hover {
-                        transform: scale(1.05);
-                        transition: all 0.3s ease-in-out;
+                        background-color: #229a06 !important;
+                        box-shadow: 0 6px 14px rgba(38, 174, 7, 0.25);
                     }
 
                     &.disabled {
                         background-color: #26AE07 !important;
                         opacity: 0.5;
                         cursor: not-allowed;
+                        pointer-events: none;
 
                     }
                 }
 
+                @media screen and (max-width: 768px) {
+                    th {
+                        padding: 0.75rem 0.8rem;
+                    }
+
+                    td {
+                        padding: 0.65rem 0.8rem;
+                    }
+                }
+
+                // Mobile card layout
+                @media screen and (max-width: 640px) {
+                    display: block;
+                    min-width: unset;
+                    width: 100%;
+                    border-spacing: 0;
+
+                    thead {
+                        display: none;
+                    }
+
+                    tbody {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 0.75rem;
+                    }
+
+                    tr {
+                        display: block;
+                        border-radius: 12px;
+                        overflow: hidden;
+                        border: 1px solid rgba(232, 151, 158, 0.3);
+
+                        // even row: value bg = soft pink, label bg = deeper pink
+                        &.even {
+                            background-color: #f9eced;
+
+                            td {
+                                background-color: transparent;
+                                text-align: center;
+                                color: rgb(85, 82, 82);
+                                font-weight: 600;
+                                border-bottom: 1px solid rgba(232, 151, 158, 0.25);
+
+                                &::before {
+                                    background-color: #E8979E;
+                                    color: #fff;
+                                }
+                            }
+                        }
+
+                        // odd row: value bg = white, label bg = light pink
+                        &.odd {
+                            background-color: #fff;
+
+                            td {
+                                background-color: transparent;
+                                color: #7a3d48;
+                                font-weight: 600;
+                                border-bottom: 1px solid rgba(232, 151, 158, 0.18);
+
+                                &::before {
+                                    background-color: #f2d6da;
+                                    color: #7a3d48;
+                                }
+                            }
+                        }
+
+                        td:last-child {
+                            border-bottom: none;
+                        }
+                    }
+
+                    td {
+                        display: flex !important;
+                        align-items: center;
+                        justify-content: flex-start;
+                        border-radius: 0 !important;
+                        padding: 0;
+                        gap: 0;
+                        min-height: 3rem;
+
+                        &::before {
+                            display: flex;
+                            align-items: center;
+                            align-self: stretch;
+                            min-width: 6rem;
+                            padding: 0.65rem 0.8rem;
+                            font-size: 0.82rem;
+                            font-weight: 700;
+                            letter-spacing: 0.03em;
+                            white-space: nowrap;
+                            flex-shrink: 0;
+                            margin-right: 1rem;
+                        }
+
+                        padding-right: 0.8rem;
+                        line-height: 1.4;
+
+                        &:nth-child(1)::before {
+                            content: 'Item';
+                        }
+
+                        &:nth-child(2)::before {
+                            content: 'Amount';
+                        }
+
+                        &:nth-child(3)::before {
+                            content: 'Status';
+                        }
+                    }
+
+                    .temp-col {
+                        display: none !important;
+                    }
+
+                    .not-pay,
+                    .completed {
+                        justify-content: center;
+                        border-radius: 0 !important;
+                        min-width: unset;
+                        padding: 0.75rem 0.9rem;
+                        border-bottom: none !important;
+
+                        &::before {
+                            content: none !important;
+                            min-width: 0;
+                            padding: 0;
+                        }
+                    }
+
+                    &.taiwan {
+                        td {
+                            border-right: none !important;
+                        }
+
+                        .odd td::after {
+                            display: none !important;
+                        }
+                    }
+                }
             }
 
         }
 
         .payment-info {
-            font-size: 1.3rem;
-            font-weight: bold;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1rem;
+            padding: 1rem 1.15rem;
+            border-radius: 14px;
+            border: 1px solid #f0d3d8;
+            background: linear-gradient(180deg, #fff7f8 0%, #fffefe 100%);
+            box-sizing: border-box;
+            font-size: 1.05rem;
+            font-weight: 600;
             text-align: start;
-            border-radius: 15px;
-            width: 70vw;
+            width: min(100%, 1120px);
+
+            p {
+                margin: 0;
+                color: #6a4d55;
+                line-height: 1.6;
+            }
+
+            p:first-child {
+                color: #8a3e4d;
+            }
 
             @media screen and (max-width: 1048px) {
                 font-size: 1rem;
+                padding: 0.85rem 0.9rem;
+                gap: 0.35rem;
+            }
+
+            @media screen and (max-width: 640px) {
+                font-size: 0.95rem;
             }
         }
     }

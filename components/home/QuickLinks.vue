@@ -13,7 +13,7 @@
                 </div>
                 <div class="link-item-text">{{ $t('conferenceInformation') }}</div>
             </nuxt-link>
-            <nuxt-link to="/seminar-registration" class="link-item item3">
+            <nuxt-link to="/registration-fee" class="link-item item3">
                 <div class="item-image-box">
                     <img class="link-item" src="@/assets/img/Online registration-01.svg">
                 </div>

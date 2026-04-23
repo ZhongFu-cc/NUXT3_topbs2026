@@ -63,7 +63,7 @@
             <p class="tips">*Online registration and payment are available until 11/7.
             </p>
             <p class="tips">*Late registration will only be accepted on-site on 11/14 and 11/15.</p>
-            <div class="btn-section"> <nuxt-link class="register-btn" to="/seminar-registration">Register Now
+            <div class="btn-section"> <nuxt-link class="register-btn" to="/login">Register Now
                 </nuxt-link>
             </div>
             <div class="shadow-divider"></div>
