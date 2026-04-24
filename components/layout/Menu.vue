@@ -55,7 +55,7 @@
                         <nuxt-link class="sub-menu-item" to="/registration-fee"
                             @click="setActiveItem('registrationFee')" :class="activeClass('registrationFee')">{{
                                 $t('registrationFee') }}</nuxt-link>
-                        <nuxt-link class="sub-menu-item" to="/seminar-registration"
+                        <nuxt-link class="sub-menu-item" to="/login"
                             @click="setActiveItem('seminarRegistration')" :class="activeClass('seminarRegistration')">{{
                                 $t('onlineRegistration') }}</nuxt-link>
                     </div>

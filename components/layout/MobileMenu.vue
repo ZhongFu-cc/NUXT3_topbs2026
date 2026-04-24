@@ -49,7 +49,7 @@ const menu = reactive([
     {
         title: t('registration'), path: '/registration-fee', isActive: false, submenu: [
             { title: t('registrationFee'), path: '/registration-fee' },
-            { title: t('onlineRegistration'), path: '/seminar-registration' },
+            { title: t('onlineRegistration'), path: '/login' },
         ]
     },
     {
