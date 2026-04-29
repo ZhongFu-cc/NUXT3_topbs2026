@@ -23,9 +23,9 @@ jobs:
           npm ci
           npm run build
         env:
-        NUXT_PUBLIC_DOMAIN: ${{ secrets.NUXT_PUBLIC_DOMAIN }}
-        NUXT_PUBLIC_MINIO: ${{ secrets.NUXT_PUBLIC_MINIO_BASE }}
-        NUXT_PUBLIC_API_BASE: ${{ secrets.NUXT_PUBLIC_API_BASE }}
+          NUXT_PUBLIC_DOMAIN: ${{ secrets.NUXT_PUBLIC_DOMAIN }}
+          NUXT_PUBLIC_MINIO: ${{ secrets.NUXT_PUBLIC_MINIO_BASE }}
+          NUXT_PUBLIC_API_BASE: ${{ secrets.NUXT_PUBLIC_API_BASE }}
 
       - name: Stop pm2
         if: github.ref == 'refs/heads/main'

@@ -15,7 +15,7 @@ export default defineNuxtConfig({
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE,
       domain: process.env.NUXT_PUBLIC_DOMAIN,
-      minio: process.env.NUXT_PUBLIC_MINIO_BASE
+      minio: process.env.NUXT_PUBLIC_MINIO
     }
   },
 
