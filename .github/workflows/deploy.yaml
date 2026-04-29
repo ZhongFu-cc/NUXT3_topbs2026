@@ -8,27 +8,24 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-    
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: './package-lock.json'
 
       - name: Build and Replace Env
         run: |
-          # 使用 sed 直接修改檔案內容
-          sed -i "s|__NUXT_PUBLIC_API_BASE__|${{ secrets.NUXT_PUBLIC_API_BASE }}|g" ecosystem.config.js
-          sed -i "s|__NUXT_PUBLIC_DOMAIN__|${{ secrets.NUXT_PUBLIC_DOMAIN }}|g" ecosystem.config.js
-          
-          # 順便也處理 .env 檔案以防萬一
-          export NUXT_PUBLIC_API_BASE='${{ secrets.NUXT_PUBLIC_API_BASE }}'
-          export NUXT_PUBLIC_DOMAIN='${{ secrets.NUXT_PUBLIC_DOMAIN }}'
-          envsubst < .env.production > .env
-
           npm ci
           npm run build
+        env:
+        NUXT_PUBLIC_DOMAIN: ${{ secrets.NUXT_PUBLIC_DOMAIN }}
+        NUXT_PUBLIC_MINIO: ${{ secrets.NUXT_PUBLIC_MINIO_BASE }}
+        NUXT_PUBLIC_API_BASE: ${{ secrets.NUXT_PUBLIC_API_BASE }}
 
       - name: Stop pm2
         if: github.ref == 'refs/heads/main'
