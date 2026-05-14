@@ -23,21 +23,13 @@
             </div>
 
             <div class="agenda-info">
-                <!-- <h1 class="title">Agenda</h1> -->
+                <Title class="title" title="Agenda"></Title>
                 <div class="agenda-info-box">
-                    <!-- <img src="../assets/img/2024-TICBCS-agenda.png" alt=""> -->
-                    <!-- <div class="download"> -->
-                    <!-- <a href="/files/TICBCS-Agenda.pdf" target="_blank" download class="agenda-download">
-                        TICBCS 議程下載
-                    </a>
-                    <a href="https://lihi2.com/StUJt" target="_blank" download class="agenda-download">
-                        TICBCS 手冊下載
-                    </a> -->
-                    <!-- </div> -->
+                    <img v-for="agenda in agendas" :key="agenda.publishFileId" :src="envMinio + agenda.path"
+                        :alt="agenda.alt" class="gallery-image" />
                 </div>
             </div>
-
-            <!-- <el-divider /> -->
+            <el-divider />
             <div class="location">
                 <h1 class="title">{{ $t('conferenceLocation') }}: <span class="location-info">{{ $t('ticc') }}</span>
                 </h1>
@@ -62,6 +54,23 @@ useSeoMeta({
     title: 'Conference Information - TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society',
     description: 'Explore the conference information for the TOPBS 2026 Taiwan Oncoplastic Breast Surgery Society. This page is currently under construction, but stay tuned for updates on the event details, schedule, and more.',
     keywords: 'Conference Information,TOPBS,TOPBS 2026,2026 TOPBS'
+})
+
+const envMinio = useRuntimeConfig().public.minio
+
+
+const agendas = ref<any[]>([])
+const fetchAgendaFile = async () => {
+    try {
+        const res: any = await CSRrequest.get(`/publish-file/agenda`)
+        agendas.value = res.data
+    } catch (error) {
+        console.error('Error fetching agenda file:', error);
+    }
+}
+
+onMounted(() => {
+    fetchAgendaFile()
 })
 
 </script>
@@ -103,7 +112,7 @@ useSeoMeta({
         justify-content: center;
 
         .meeting-info-box {
-            
+
             width: 100%;
             display: flex;
             flex-direction: column;
