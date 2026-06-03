@@ -20,6 +20,11 @@
             </div>
         </div>
 
+        <div class="video-box">
+            <iframe src="/video/2026_TOPBS _video_V2.mp4" title="YouTube video player" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen></iframe>
+        </div>
     </main>
 </template>
 <script lang="ts" setup>
@@ -123,6 +128,21 @@ onMounted(() => {
             }
         }
 
+
+    }
+
+    .video-box {
+        width: 80%;
+        margin: 5rem auto;
+
+        iframe {
+            width: 100%;
+            aspect-ratio: 16 / 9; // margin: 5rem auto;
+        }
+
+        @media screen and (max-width: 1024px) {
+            width: 100%;
+        }
     }
 
     // .news-section {
