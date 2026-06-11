@@ -21,7 +21,7 @@
         </div>
 
         <div class="video-box">
-            <iframe src="/video/2026_TOPBS _video_V2.mp4" title="YouTube video player" frameborder="0"
+            <iframe v-for="video in videos" :src="envMinio + video.path" title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen></iframe>
         </div>
@@ -54,11 +54,26 @@ const next = () => {
     carousel.value.next();
 };
 
+const envMinio = useRuntimeConfig().public.minio
 
 
+const videos = ref<any[]>([])
+const fetchVideos = async () => {
+    try {
+        const res: any = await CSRrequest.get(`/publish-file/video`)
+        console.log('Fetched videos:', res.data);
+        videos.value = res.data
+    } catch (error) {
+        console.error('Error fetching videos file:', error);
+    }
+}
 
 onMounted(() => {
-});
+    fetchVideos()
+})
+
+
+
 
 </script>
 <style lang="scss" scoped>
