@@ -40,8 +40,8 @@
                     @click="setActiveItem('conferenceInformation')" :class="activeClass('conferenceInformation')">{{
                         $t('conferenceInformation') }}</nuxt-link>
 
-                <!-- <nuxt-link class="menu-item" to="/" @click="setActiveItem('invitedSpeaker')"
-                    :class="activeClass('invitedSpeaker')">受邀講者</nuxt-link> -->
+                <nuxt-link class="menu-item" to="/invited-speakers" @click="setActiveItem('invitedSpeaker')"
+                    :class="activeClass('invitedSpeaker')">{{ $t('invitedSpeaker') }}</nuxt-link>
 
 
 
@@ -55,8 +55,8 @@
                         <nuxt-link class="sub-menu-item" to="/registration-fee"
                             @click="setActiveItem('registrationFee')" :class="activeClass('registrationFee')">{{
                                 $t('registrationFee') }}</nuxt-link>
-                        <nuxt-link class="sub-menu-item" to="/login"
-                            @click="setActiveItem('seminarRegistration')" :class="activeClass('seminarRegistration')">{{
+                        <nuxt-link class="sub-menu-item" to="/login" @click="setActiveItem('seminarRegistration')"
+                            :class="activeClass('seminarRegistration')">{{
                                 $t('onlineRegistration') }}</nuxt-link>
                     </div>
                 </div>
