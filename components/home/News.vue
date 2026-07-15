@@ -12,11 +12,11 @@
                 </div>
                 <h1 class="title">{{ $t('news') }}</h1>
             </div>
-            <nuxt-link class="more-link" to="/news">
+            <!-- <nuxt-link class="more-link" to="/news">
                 {{ $t('more') }}<el-icon>
                     <ElIconArrowRight />
                 </el-icon>
-            </nuxt-link>
+            </nuxt-link> -->
         </div>
 
         <!-- 最新消息內容盒子  -->
