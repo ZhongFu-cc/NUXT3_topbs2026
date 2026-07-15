@@ -334,4 +334,8 @@ const generateSponsorlogoList = () => {
 
     }
 }
+
+.el-divider {
+    border-width: 10px;
+}
 </style>
