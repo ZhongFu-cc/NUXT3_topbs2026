@@ -26,16 +26,17 @@
 
 
 
-                <div v-if="sponsorsList && sponsorsList.length > 0" v-for="sponsor in sponsorsList" class="level-box">
+                <div v-if="sponsorsList && sponsorsList.length > 0" v-for="(sponsor, index) in sponsorsList" class="level-box">
                     <div class="level-svg-box">
                         <img v-if="sponsor.imgSrc" :src="sponsor.imgSrc" alt="level">
                     </div>
-                    <div v-for="sponsorLogoList in sponsor.sponsorLogos" class="sponsor-logo-box">
-                        <div v-for="logo in sponsorLogoList" class="sponsor-logo-item">
+                    <div v-for="(sponsorLogoList, index) in sponsor.sponsorLogos" class="sponsor-logo-box">
+                        <div v-for="logo in sponsorLogoList" class="sponsor-logo-item"
+                            :class="sponsor.level === 'None Level Sponsor' ? 'none-level-sponsor-logo-item' : ''">
                             <img :src="logo" alt="logo">
                         </div>
                     </div>
-                    <el-divider></el-divider>
+                    <el-divider v-if="index < sponsorsList.length - 1"></el-divider>
                 </div>
             </div>
         </main>
@@ -124,6 +125,7 @@ const generateSponsorlogoList = () => {
                     break;
                 case 'none level Sponsor':
                     modules = import.meta.glob('@/assets/img/sponsors/none-level/*.{png,jpg,jpeg,svg}', { eager: true, query: '?url', import: 'default' });
+                    cols.value = 7;
                     break;
                 default:
                     modules = {};
@@ -251,6 +253,23 @@ const generateSponsorlogoList = () => {
                     }
                 }
 
+                .none-level-sponsor-logo-item {
+                    // margin-top: 7rem;
+                    width: calc(100% / 8 - 1rem) !important;
+                    
+                    @media screen and (max-width: 1024px) {
+                        width: calc(100% / 8 - 1rem) !important;
+                    }
+
+                    @media screen and (max-width: 810px) {
+                        width: calc(100% / 5 - 1rem) !important;
+                    }
+
+                    @media screen and (max-width: 425px) {
+                        width: calc(100% / 3 - 1rem) !important;
+                    }
+                }
+
 
             }
 
@@ -268,6 +287,8 @@ const generateSponsorlogoList = () => {
                 .sponsor-logo-item {
                     width: calc(100% / 1.7 - 1rem);
                     height: auto;
+
+
 
                     img {
                         width: 90%;
@@ -290,6 +311,9 @@ const generateSponsorlogoList = () => {
 
 
                 }
+
+
+
 
                 .sponsor2-logo-item {
                     width: calc(100% / 1.5 - 1rem);
