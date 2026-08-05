@@ -6,9 +6,6 @@
       <Breadcrumbs firstRoute="Program" secoundRoute="Invited Speakers"></Breadcrumbs>
       <Title title="Invited Speakers"></Title>
       <div class="content">
-        <speaker class="speaker" v-for="item in jbcsPresident" :speaker="item"></speaker>
-      </div>
-      <div class="content">
         <speaker class="speaker" v-for="item in internationalSpeakers" :speaker="item"></speaker>
       </div>
       <el-divider></el-divider>
@@ -30,7 +27,6 @@ import Title from '@/components/layout/Title.vue';
 const speakers = reactive<any>([]);
 const taiwaneseSpeakers = reactive<any>([]);
 const internationalSpeakers = reactive<any>([]);
-const jbcsPresident = reactive<any>([]);
 
 const getSpeakers = async () => {
   let res = await CSRrequest.get('/invited-speaker/pagination', {
@@ -61,16 +57,29 @@ const getSpeakers = async () => {
     })
 
 
-    // const internationalSpeakers =;
-    Object.assign(jbcsPresident, res.data.records.filter((speaker: any) => speaker.name === 'Kenzo Shimazu'));
 
-    Object.assign(internationalSpeakers, res.data.records.filter((speaker: any) => speaker.country !== 'Taiwan' && speaker.name !== 'Kenzo Shimazu'));
+    Object.assign(
+      internationalSpeakers,
+      res.data.records.filter(
+        (speaker: any) => speaker.country !== 'Taiwan'
+      )
+    );
 
     internationalSpeakers.sort((a: any, b: any) => {
+      // Kenzo Shimazu 永遠第一位
+      if (a.name === 'Kenzo Shimazu') return -1;
+      if (b.name === 'Kenzo Shimazu') return 1;
+
       const countryCompare = a.country.localeCompare(b.country);
       if (countryCompare !== 0) return countryCompare;
-      const nameCompare = a.name.split(' ').pop().localeCompare(b.name.split(' ').pop());
+
+      const nameCompare = a.name
+        .split(' ')
+        .pop()
+        .localeCompare(b.name.split(' ').pop());
+
       if (nameCompare !== 0) return nameCompare;
+
       return a.name.localeCompare(b.name);
     });
     speakers.splice(0, speakers.length, ...internationalSpeakers, ...taiwaneseSpeakers);
