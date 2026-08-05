@@ -66,19 +66,35 @@ const getSpeakers = async () => {
     );
 
     internationalSpeakers.sort((a: any, b: any) => {
-      // Kenzo Shimazu 永遠第一位
-      if (a.name === 'Kenzo Shimazu') return -1;
-      if (b.name === 'Kenzo Shimazu') return 1;
+      const priorityOrder = [
+        'Kenzo Shimazu',
+        'Jana de Boniface',
+        'Hisamitsu Zaha',
+        'Takashi Ishikawa',
+        'Hiroji Iwata',
+      ];
 
+      const aIndex = priorityOrder.indexOf(a.name);
+      const bIndex = priorityOrder.indexOf(b.name);
+
+      // 指定名單優先排序
+      if (aIndex !== -1 && bIndex !== -1) {
+        return aIndex - bIndex;
+      }
+
+      if (aIndex !== -1) return -1;
+      if (bIndex !== -1) return 1;
+
+      // 其餘維持原本排序
       const countryCompare = a.country.localeCompare(b.country);
       if (countryCompare !== 0) return countryCompare;
 
-      const nameCompare = a.name
+      const lastNameCompare = a.name
         .split(' ')
-        .pop()
-        .localeCompare(b.name.split(' ').pop());
+        .pop()!
+        .localeCompare(b.name.split(' ').pop()!);
 
-      if (nameCompare !== 0) return nameCompare;
+      if (lastNameCompare !== 0) return lastNameCompare;
 
       return a.name.localeCompare(b.name);
     });
