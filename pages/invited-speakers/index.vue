@@ -6,6 +6,9 @@
       <Breadcrumbs firstRoute="Program" secoundRoute="Invited Speakers"></Breadcrumbs>
       <Title title="Invited Speakers"></Title>
       <div class="content">
+        <speaker class="speaker" v-for="item in jbcsPresident" :speaker="item"></speaker>
+      </div>
+      <div class="content">
         <speaker class="speaker" v-for="item in internationalSpeakers" :speaker="item"></speaker>
       </div>
       <el-divider></el-divider>
@@ -27,6 +30,7 @@ import Title from '@/components/layout/Title.vue';
 const speakers = reactive<any>([]);
 const taiwaneseSpeakers = reactive<any>([]);
 const internationalSpeakers = reactive<any>([]);
+const jbcsPresident = reactive<any>([]);
 
 const getSpeakers = async () => {
   let res = await CSRrequest.get('/invited-speaker/pagination', {
@@ -58,8 +62,9 @@ const getSpeakers = async () => {
 
 
     // const internationalSpeakers =;
+    Object.assign(jbcsPresident, res.data.records.filter((speaker: any) => speaker.name === 'Kenzo Shimazu'));
 
-    Object.assign(internationalSpeakers, res.data.records.filter((speaker: any) => speaker.country !== 'Taiwan'));
+    Object.assign(internationalSpeakers, res.data.records.filter((speaker: any) => speaker.country !== 'Taiwan' && speaker.name !== 'Kenzo Shimazu'));
 
     internationalSpeakers.sort((a: any, b: any) => {
       const countryCompare = a.country.localeCompare(b.country);
