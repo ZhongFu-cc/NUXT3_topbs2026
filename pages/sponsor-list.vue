@@ -26,7 +26,8 @@
 
 
 
-                <div v-if="sponsorsList && sponsorsList.length > 0" v-for="(sponsor, index) in sponsorsList" class="level-box">
+                <div v-if="sponsorsList && sponsorsList.length > 0" v-for="(sponsor, index) in sponsorsList"
+                    class="level-box">
                     <div class="level-svg-box">
                         <img v-if="sponsor.imgSrc" :src="sponsor.imgSrc" alt="level">
                     </div>
@@ -106,7 +107,7 @@ const generateSponsorlogoList = () => {
 
 
             let modules: Record<string, string>;
-
+            let currentCols = cols.value
             switch (config.key) {
                 case 'diamond Sponsor':
                     modules = import.meta.glob('@/assets/img/sponsors/diamond/*.{png,jpg,jpeg,svg}', { eager: true, query: '?url', import: 'default' });
@@ -125,7 +126,7 @@ const generateSponsorlogoList = () => {
                     break;
                 case 'none level Sponsor':
                     modules = import.meta.glob('@/assets/img/sponsors/none-level/*.{png,jpg,jpeg,svg}', { eager: true, query: '?url', import: 'default' });
-                    cols.value = 7;
+                    currentCols = 7;
                     break;
                 default:
                     modules = {};
@@ -136,7 +137,7 @@ const generateSponsorlogoList = () => {
             const groupedList: string[][] = [];
 
             galleryImages.forEach((image, index) => {
-                const groupIndex = Math.floor(index / cols.value);
+                const groupIndex = Math.floor(index / currentCols);
                 if (!groupedList[groupIndex]) {
                     groupedList[groupIndex] = [];
                 }
@@ -229,14 +230,17 @@ const generateSponsorlogoList = () => {
 
                 .sponsor-logo-item {
                     width: calc(100% / 4 - 2rem);
-                    height: auto;
+                    aspect-ratio: 600 / 400;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
 
                     img {
-                        width: 90%;
-                        height: auto;
                         max-width: 100%;
                         max-height: 100%;
-                        object-fit: cover;
+                        width: auto;
+                        height: auto;
+                        object-fit: contain;
 
                     }
 
@@ -256,7 +260,7 @@ const generateSponsorlogoList = () => {
                 .none-level-sponsor-logo-item {
                     // margin-top: 7rem;
                     width: calc(100% / 8 - 1rem) !important;
-                    
+
                     @media screen and (max-width: 1024px) {
                         width: calc(100% / 8 - 1rem) !important;
                     }
