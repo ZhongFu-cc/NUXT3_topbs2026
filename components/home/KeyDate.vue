@@ -24,7 +24,7 @@
 
             <li class="key-date-item">
                 <div class="key-date-info">
-                    <p class="date-box"><span>21</span><span class="month">{{ $t('August') }}<span
+                    <p class="date-box"><span>18</span><span class="month">{{ $t('september') }}<span
                                 class="year">2026</span></span></p>
                     <p class="info">Abstract Submission Deadline</p>
                 </div>
@@ -47,7 +47,7 @@
 
             <li class="key-date-item">
                 <div class="key-date-info">
-                    <p class="date-box"><span>07</span><span class="month">{{ $t('september') }}<span
+                    <p class="date-box"><span>05</span><span class="month">{{ $t('october') }}<span
                                 class="year">2026</span></span>
                     </p>
                     <p class="info">Notification of Acceptance</p>

@@ -15,7 +15,7 @@
                     <p class="list-text">For accepted abstracts, authors must submit an e-poster via the official
                         website of the TOPBS 2026. E-posters will be displayed at the event venue. </p>
                     <ul class="disc-list">
-                        <li class="note-text">E-poster Submission Deadline: Friday, September 21, 2026, 23:59 (local
+                        <li class="note-text">E-poster Submission Deadline: Friday, October 19, 2026, 23:59 (local
                             time)
                         </li>
                         <li><b>Submission Method:</b> Please <nuxt-link class="link" to="/login">log in</nuxt-link> to
@@ -49,7 +49,7 @@
                             website of the TOPBS 2026. Videos will be displayed at the event venue. </b>
                     </p>
                     <ul class="disc-list">
-                        <li class="note-text"><b>Video Submission Deadline:</b> Monday, September 21, 2026, 23:59 (local
+                        <li class="note-text"><b>Video Submission Deadline:</b> Monday, October 19, 2026, 23:59 (local
                             time) </li>
                         <li><b>Submission Method: </b>Please log in to the official website of the TOPBS 2026 to upload
                             the video. </li>
@@ -76,7 +76,7 @@
                     <p class="list-text">Authors of awarded posters and videos are required to give an oral presentation
                         at the TOPBS 2026. </p>
                     <ul>
-                        <li class="note-text"><b>Date:</b> Saturday, November 14, 2026 </li>
+                        <li class="note-text"><b>Date:</b> Saturday, November 15, 2026 </li>
                         <li><b>Time:</b>Specific presentation times will be announced along with the list of awardees.
                         </li>
                         <li><b>Venue:</b>1st Floor, Taipei International Convention Center
