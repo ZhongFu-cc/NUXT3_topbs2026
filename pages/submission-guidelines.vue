@@ -10,9 +10,9 @@
 
                 <div class="important-date-info">
                     <ul class="disc-list">
-                        <li class="note-text">Abstract Submission Deadline: August 21, 2026 (Friday)</li>
-                        <li>Abstract Acceptance Notification: September 7, 2026 (Monday)</li>
-                        <li>Electronic Poster and Video Upload Deadline: September 21, 2026 (Monday)</li>
+                        <li class="note-text">Abstract Submission Deadline: September 18, 2026 (Friday)</li>
+                        <li>Abstract Acceptance Notification: October 5, 2026 (Monday)</li>
+                        <li>Electronic Poster and Video Upload Deadline: October 19, 2026 (Monday)</li>
                     </ul>
                 </div>
 
@@ -23,12 +23,12 @@
                         <tbody>
                             <tr>
                                 <td rowspan="2">Initial Review </td>
-                                <td>April 17 - August 21 </td>
+                                <td>April 17 - September 18 </td>
                                 <td>Submit abstracts online after complete registration on the official website </td>
                             </tr>
 
                             <tr>
-                                <td>August 22 - September 6 </td>
+                                <td>September 21 - October 2 </td>
                                 <td>Abstracts will be reviewed by the committee </td>
                             </tr>
                         </tbody>
@@ -38,21 +38,21 @@
                             <tr>
                                 <td rowspan="4">
                                     Final Review </td>
-                                <td>September 7 </td>
+                                <td>October 5 </td>
                                 <td>Notification of accepted abstracts</td>
                             </tr>
 
                             <tr>
-                                <td>September 7 - September 21</td>
+                                <td>October 5 - October 19</td>
                                 <td>E-poster & video upload to the official website. </td>
                             </tr>
 
                             <tr>
-                                <td>September 22 - October 6 </td>
+                                <td>October 20 - October 27 </td>
                                 <td>Committee reviews accepted e-posters and videos to select award winners </td>
                             </tr>
                             <tr>
-                                <td>October 8 </td>
+                                <td>October 28 </td>
                                 <td>Announcement of award winners</td>
                             </tr>
 
@@ -62,7 +62,7 @@
                         <tbody>
                             <tr>
                                 <td>Oral Presentation and Award Ceremony </td>
-                                <td>November 14 </td>
+                                <td>November 15 </td>
                                 <td>Award winners will give oral presentations and receive awards on the event day</td>
                             </tr>
                             <tr>
