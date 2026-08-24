@@ -118,11 +118,11 @@
                                 </el-form-item>
 
                                 <el-form-item :label="t.category" prop="category">
-                                    <el-select v-model="formData.category">
-                                        <el-option :label="t.category1" :value="1"></el-option>
-                                        <el-option :label="t.category2" :value="2"></el-option>
-                                        <el-option :label="t.category3" :value="3"></el-option>
-                                    </el-select>
+                                    <el-radio-group v-model="formData.category">
+                                        <el-radio :label="1" :value="1">{{ t.category1 }}</el-radio>
+                                        <el-radio :label="2" :value="2">{{ t.category2 }}</el-radio>
+                                        <el-radio :label="3" :value="3">{{ t.category3 }}</el-radio>
+                                    </el-radio-group>
                                 </el-form-item>
 
                                 <el-form-item v-if="formData.category === 1 && formData.country !== 'Taiwan'"
