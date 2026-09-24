@@ -24,9 +24,9 @@
                     </ul>
                     <p class="list-text"><b>E-Poster Preparation Guidelines:</b> </p>
                     <ul class="disc-list">
+                        <li>Please download and use the official <a class="link" href="/files/2026-TOPBS-poster-template.pptx" target="_blank"> e-poster template</a>, and upload the PPT file. </li>
                         <li>All e-posters must be written in English. </li>
                         <li>The topic and first author must be consistent with the accepted abstract. </li>
-                        <li>Please download and use the official e-poster template, and upload the PPT file. </li>
                     </ul>
 
                     <p class="list-text"><b>E-Poster Format Requirements: </b> </p>
