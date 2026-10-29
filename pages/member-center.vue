@@ -14,6 +14,10 @@
                         <h2 v-if="!isComplete" class="reminder-title">{{ t.profileIncomplete }}</h2>
                         <h2 v-else class="reminder-title">{{ t.memberInfo }}</h2>
                     </div>
+                    <button v-if="isComplete" type="button" class="reminder-action" :disabled="isDownloading"
+                        @click="downloadCertificate">
+                        {{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}
+                    </button>
                 </div>
 
                 <p v-if="!isComplete" class="reminder-description">
@@ -100,6 +104,40 @@ const getMemberInfo = async () => {
     }
     Object.assign(memberInfo, res.data);
     memberInfo.country === 'Taiwan' ? setLocale('zh') : setLocale('en');
+}
+
+// 下載參加證明,後端直接以 PDF 串流回應,所以要用 blob 接
+const isDownloading = ref(false);
+const downloadCertificate = async () => {
+    if (isDownloading.value) return;
+    isDownloading.value = true;
+    try {
+        const blob = await CSRrequest.get<Blob>('/member/certificate', { responseType: 'blob' });
+
+        // 後端若拋出業務例外,會回傳 JSON 而不是 PDF
+        if (blob.type.includes('application/json')) {
+            const res = JSON.parse(await blob.text());
+            ElMessage.error(res.msg || t.value.downloadCertificateFail);
+            return;
+        }
+        if (blob.size === 0) {
+            ElMessage.error(t.value.downloadCertificateFail);
+            return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'certificate.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isDownloading.value = false;
+    }
 }
 
 
@@ -189,11 +227,21 @@ onMounted(() => {
             font-weight: 600;
             text-decoration: none;
             white-space: nowrap;
+            border: none;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
             transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 
             &:hover {
                 background-color: #874757;
                 transform: translateY(-1px);
+            }
+
+            &:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+                transform: none;
             }
         }
 
