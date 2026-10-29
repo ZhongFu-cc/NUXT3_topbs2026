@@ -78,7 +78,10 @@ export const label = {
         memberInfo: '已具備與會資格',
         editProfile: '編輯資料',
         profileReminder: '以下事項尚未完成，請儘速完成相關資料更新，以免影響後續稿件發表及與會權益。',
-        resetForm: '還原資料'
+        resetForm: '還原資料',
+        downloadCertificate: '下載參加證明',
+        downloadingCertificate: '參加證明產生中...',
+        downloadCertificateFail: '參加證明下載失敗，請稍後再試'
 
     },
     en: {
@@ -157,7 +160,10 @@ export const label = {
         memberInfo: 'Qualified',
         editProfile: 'Edit Profile',
         profileReminder: 'The following items are incomplete. Please update your profile information as soon as possible to avoid affecting your manuscript submission and conference participation rights.',
-        resetForm: 'Reset'
+        resetForm: 'Reset',
+        downloadCertificate: 'Download Certificate',
+        downloadingCertificate: 'Generating certificate...',
+        downloadCertificateFail: 'Failed to download certificate, please try again later'
     }
 } as const
 
