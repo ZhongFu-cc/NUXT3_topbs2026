@@ -81,7 +81,9 @@ export const label = {
         resetForm: '還原資料',
         downloadCertificate: '下載參加證明',
         downloadingCertificate: '參加證明產生中...',
-        downloadCertificateFail: '參加證明下載失敗，請稍後再試'
+        downloadCertificateFail: '參加證明下載失敗，請稍後再試',
+        certificateTitle: '參加證明',
+        certificateDesc: '活動結束後可於此下載參加證明。'
 
     },
     en: {
@@ -163,7 +165,9 @@ export const label = {
         resetForm: 'Reset',
         downloadCertificate: 'Download Certificate',
         downloadingCertificate: 'Generating certificate...',
-        downloadCertificateFail: 'Failed to download certificate, please try again later'
+        downloadCertificateFail: 'Failed to download certificate, please try again later',
+        certificateTitle: 'Certificate of Attendance',
+        certificateDesc: 'You can download your certificate of attendance here after the event.'
     }
 } as const
 
