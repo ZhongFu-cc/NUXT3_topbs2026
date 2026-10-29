@@ -14,10 +14,6 @@
                         <h2 v-if="!isComplete" class="reminder-title">{{ t.profileIncomplete }}</h2>
                         <h2 v-else class="reminder-title">{{ t.memberInfo }}</h2>
                     </div>
-                    <button v-if="isComplete" type="button" class="reminder-action" :disabled="isDownloading"
-                        @click="downloadCertificate">
-                        {{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}
-                    </button>
                 </div>
 
                 <p v-if="!isComplete" class="reminder-description">
@@ -66,6 +62,17 @@
             </div>
 
         </div>
+
+        <section v-if="isAfterEvent" class="certificate-section">
+            <div class="certificate-card">
+                <h2 class="certificate-title">{{ t.certificateTitle }}</h2>
+                <p class="certificate-desc">{{ t.certificateDesc }}</p>
+                <button type="button" class="certificate-action" :disabled="isDownloading"
+                    @click="downloadCertificate">
+                    {{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}
+                </button>
+            </div>
+        </section>
     </main>
 </template>
 <script lang="ts" setup>
@@ -106,6 +113,10 @@ const getMemberInfo = async () => {
     memberInfo.country === 'Taiwan' ? setLocale('zh') : setLocale('en');
 }
 
+// 活動日期後(11/15 24:00)才顯示下載區塊;繳費與簽到資格由後端在下載時判斷並回傳錯誤訊息
+const CERTIFICATE_AVAILABLE_FROM = new Date('2026-10-16T00:00:00');
+const isAfterEvent = computed(() => Date.now() >= CERTIFICATE_AVAILABLE_FROM.getTime());
+
 // 下載參加證明,後端直接以 PDF 串流回應,所以要用 blob 接
 const isDownloading = ref(false);
 const downloadCertificate = async () => {
@@ -117,11 +128,12 @@ const downloadCertificate = async () => {
         // 後端若拋出業務例外,會回傳 JSON 而不是 PDF
         if (blob.type.includes('application/json')) {
             const res = JSON.parse(await blob.text());
-            ElMessage.error(res.msg || t.value.downloadCertificateFail);
+            console.log('downloadCertificate error:', res);
+            ElNotification.error(res.msg || t.value.downloadCertificateFail);
             return;
         }
         if (blob.size === 0) {
-            ElMessage.error(t.value.downloadCertificateFail);
+            ElNotification.error(t.value.downloadCertificateFail);
             return;
         }
 
@@ -177,14 +189,6 @@ onMounted(() => {
             .reminder-title {
                 color: #234330;
             }
-
-            .reminder-action {
-                background-color: #477e5c;
-
-                &:hover {
-                    background-color: #35654c;
-                }
-            }
         }
 
         .reminder-header {
@@ -213,36 +217,6 @@ onMounted(() => {
             margin: 0;
             font-size: clamp(1.35rem, 2vw, 1.8rem);
             color: #3c2b31;
-        }
-
-        .reminder-action {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 3rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 999px;
-            background-color: #a0586a;
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-            white-space: nowrap;
-            border: none;
-            font-size: 1rem;
-            font-family: inherit;
-            cursor: pointer;
-            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-
-            &:hover {
-                background-color: #874757;
-                transform: translateY(-1px);
-            }
-
-            &:disabled {
-                opacity: 0.7;
-                cursor: not-allowed;
-                transform: none;
-            }
         }
 
         .reminder-description {
@@ -274,6 +248,64 @@ onMounted(() => {
             color: #7a4452;
             font-weight: 600;
             box-sizing: border-box;
+        }
+    }
+
+    .certificate-section {
+        padding: 0 1rem 3rem;
+
+        .certificate-card {
+            width: min(100%, 1120px);
+            margin: 0 auto;
+            padding: clamp(1.25rem, 3vw, 2rem);
+            border: 1px solid rgba(160, 88, 106, 0.2);
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255, 245, 247, 0.98), rgba(255, 255, 255, 0.95));
+            box-shadow: 0 18px 40px rgba(110, 57, 70, 0.08);
+            box-sizing: border-box;
+        }
+
+        .certificate-title {
+            margin: 0 0 0.5rem;
+            font-size: clamp(1.35rem, 2vw, 1.8rem);
+            color: #3c2b31;
+        }
+
+        .certificate-desc {
+            margin: 0 0 1.5rem 0;
+            color: #5a4a50;
+            line-height: 1.7;
+        }
+
+        .certificate-action {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 3rem;
+            padding: 0.75rem 1.25rem;
+            border-radius: 999px;
+            background-color: #a0586a;
+            color: #fff;
+            font-weight: 600;
+            border: none;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+            &:hover:not(:disabled) {
+                background-color: #874757;
+                transform: translateY(-1px);
+            }
+
+            &:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            @media screen and (max-width: 640px) {
+                width: 100%;
+            }
         }
     }
 
