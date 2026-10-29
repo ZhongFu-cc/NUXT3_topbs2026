@@ -114,7 +114,7 @@ const getMemberInfo = async () => {
 }
 
 // 活動日期後(11/15 24:00)才顯示下載區塊;繳費與簽到資格由後端在下載時判斷並回傳錯誤訊息
-const CERTIFICATE_AVAILABLE_FROM = new Date('2026-10-16T00:00:00');
+const CERTIFICATE_AVAILABLE_FROM = new Date('2026-11-16T00:00:00');
 const isAfterEvent = computed(() => Date.now() >= CERTIFICATE_AVAILABLE_FROM.getTime());
 
 // 下載參加證明,後端直接以 PDF 串流回應,所以要用 blob 接
