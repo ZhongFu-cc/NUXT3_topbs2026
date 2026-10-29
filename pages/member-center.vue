@@ -6,6 +6,35 @@
             <h1 class="title">{{ $t('memberCenter') }}</h1>
         </div>
 
+        <section v-if="isAfterEvent"  class="certificate-section">
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 3v5h5" />
+                        <circle cx="12" cy="13" r="2.5" />
+                        <path d="M10.5 15.2 9.5 19l2.5-1.2 2.5 1.2-1-3.8" />
+                    </svg>
+                </div>
+                <div class="certificate-content">
+                    <p class="certificate-eyebrow">Certificate</p>
+                    <h2 class="certificate-title">{{ t.certificateTitle }}</h2>
+                    <p class="certificate-desc">{{ t.certificateDesc }}</p>
+                </div>
+                <button type="button" class="certificate-action" :disabled="isDownloading"
+                    @click="downloadCertificate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 4v11" />
+                        <path d="m7 10 5 5 5-5" />
+                        <path d="M5 20h14" />
+                    </svg>
+                    <span>{{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}</span>
+                </button>
+            </div>
+        </section>
+
         <section class="profile-reminder-section">
             <div class="profile-reminder-card" :class="{ 'is-complete': isComplete }">
                 <div class="reminder-header">
@@ -62,17 +91,6 @@
             </div>
 
         </div>
-
-        <section v-if="isAfterEvent" class="certificate-section">
-            <div class="certificate-card">
-                <h2 class="certificate-title">{{ t.certificateTitle }}</h2>
-                <p class="certificate-desc">{{ t.certificateDesc }}</p>
-                <button type="button" class="certificate-action" :disabled="isDownloading"
-                    @click="downloadCertificate">
-                    {{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}
-                </button>
-            </div>
-        </section>
     </main>
 </template>
 <script lang="ts" setup>
@@ -252,58 +270,106 @@ onMounted(() => {
     }
 
     .certificate-section {
-        padding: 0 1rem 3rem;
+        padding: 0 1rem;
+    }
 
-        .certificate-card {
-            width: min(100%, 1120px);
-            margin: 0 auto;
-            padding: clamp(1.25rem, 3vw, 2rem);
-            border: 1px solid rgba(160, 88, 106, 0.2);
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(255, 245, 247, 0.98), rgba(255, 255, 255, 0.95));
-            box-shadow: 0 18px 40px rgba(110, 57, 70, 0.08);
-            box-sizing: border-box;
+    .certificate-card {
+        width: min(100%, 1120px);
+        margin: 2rem auto 0;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        border-radius: 24px;
+        background: linear-gradient(135deg, #a0586a, #6e3946);
+        box-shadow: 0 18px 40px rgba(110, 57, 70, 0.25);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: clamp(1rem, 3vw, 2rem);
+        box-sizing: border-box;
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .certificate-icon {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+
+            svg {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+
+        .certificate-content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .certificate-eyebrow {
+            margin: 0 0 0.35rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #f5d9df;
         }
 
         .certificate-title {
             margin: 0 0 0.5rem;
             font-size: clamp(1.35rem, 2vw, 1.8rem);
-            color: #3c2b31;
         }
 
         .certificate-desc {
-            margin: 0 0 1.5rem 0;
-            color: #5a4a50;
+            margin: 0;
             line-height: 1.7;
+            color: rgba(255, 255, 255, 0.88);
         }
 
         .certificate-action {
+            flex: 0 0 auto;
             display: inline-flex;
             justify-content: center;
             align-items: center;
-            min-height: 3rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 999px;
-            background-color: #a0586a;
-            color: #fff;
-            font-weight: 600;
+            gap: 0.5rem;
+            min-height: 3.25rem;
+            padding: 0.75rem 1.5rem;
             border: none;
-            font-size: 1rem;
+            border-radius: 999px;
+            background-color: #fff;
+            color: #7a4452;
             font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 700;
+            white-space: nowrap;
             cursor: pointer;
-            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+            svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
 
             &:hover:not(:disabled) {
-                background-color: #874757;
-                transform: translateY(-1px);
+                transform: translateY(-2px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
             }
 
             &:disabled {
-                opacity: 0.5;
+                opacity: 0.75;
                 cursor: not-allowed;
+                transform: none;
             }
 
-            @media screen and (max-width: 640px) {
+            @media screen and (max-width: 768px) {
                 width: 100%;
             }
         }
