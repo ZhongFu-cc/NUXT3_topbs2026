@@ -6,6 +6,35 @@
             <h1 class="title">{{ $t('memberCenter') }}</h1>
         </div>
 
+        <section v-if="isAfterEvent"  class="certificate-section">
+            <div class="certificate-card">
+                <div class="certificate-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z" />
+                        <path d="M14 3v5h5" />
+                        <circle cx="12" cy="13" r="2.5" />
+                        <path d="M10.5 15.2 9.5 19l2.5-1.2 2.5 1.2-1-3.8" />
+                    </svg>
+                </div>
+                <div class="certificate-content">
+                    <p class="certificate-eyebrow">Certificate</p>
+                    <h2 class="certificate-title">{{ t.certificateTitle }}</h2>
+                    <p class="certificate-desc">{{ t.certificateDesc }}</p>
+                </div>
+                <button type="button" class="certificate-action" :disabled="isDownloading"
+                    @click="downloadCertificate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M12 4v11" />
+                        <path d="m7 10 5 5 5-5" />
+                        <path d="M5 20h14" />
+                    </svg>
+                    <span>{{ isDownloading ? t.downloadingCertificate : t.downloadCertificate }}</span>
+                </button>
+            </div>
+        </section>
+
         <section class="profile-reminder-section">
             <div class="profile-reminder-card" :class="{ 'is-complete': isComplete }">
                 <div class="reminder-header">
@@ -102,6 +131,45 @@ const getMemberInfo = async () => {
     memberInfo.country === 'Taiwan' ? setLocale('zh') : setLocale('en');
 }
 
+// 活動日期後(11/15 24:00)才顯示下載區塊;繳費與簽到資格由後端在下載時判斷並回傳錯誤訊息
+const CERTIFICATE_AVAILABLE_FROM = new Date('2026-11-16T00:00:00');
+const isAfterEvent = computed(() => Date.now() >= CERTIFICATE_AVAILABLE_FROM.getTime());
+
+// 下載參加證明,後端直接以 PDF 串流回應,所以要用 blob 接
+const isDownloading = ref(false);
+const downloadCertificate = async () => {
+    if (isDownloading.value) return;
+    isDownloading.value = true;
+    try {
+        const blob = await CSRrequest.get<Blob>('/member/certificate', { responseType: 'blob' });
+
+        // 後端若拋出業務例外,會回傳 JSON 而不是 PDF
+        if (blob.type.includes('application/json')) {
+            const res = JSON.parse(await blob.text());
+            console.log('downloadCertificate error:', res);
+            ElNotification.error(res.msg || t.value.downloadCertificateFail);
+            return;
+        }
+        if (blob.size === 0) {
+            ElNotification.error(t.value.downloadCertificateFail);
+            return;
+        }
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'certificate.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    } catch (error) {
+        console.error(error);
+    } finally {
+        isDownloading.value = false;
+    }
+}
+
 
 onMounted(() => {
     getMemberInfo();
@@ -139,14 +207,6 @@ onMounted(() => {
             .reminder-title {
                 color: #234330;
             }
-
-            .reminder-action {
-                background-color: #477e5c;
-
-                &:hover {
-                    background-color: #35654c;
-                }
-            }
         }
 
         .reminder-header {
@@ -175,26 +235,6 @@ onMounted(() => {
             margin: 0;
             font-size: clamp(1.35rem, 2vw, 1.8rem);
             color: #3c2b31;
-        }
-
-        .reminder-action {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 3rem;
-            padding: 0.75rem 1.25rem;
-            border-radius: 999px;
-            background-color: #a0586a;
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-            white-space: nowrap;
-            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
-
-            &:hover {
-                background-color: #874757;
-                transform: translateY(-1px);
-            }
         }
 
         .reminder-description {
@@ -226,6 +266,112 @@ onMounted(() => {
             color: #7a4452;
             font-weight: 600;
             box-sizing: border-box;
+        }
+    }
+
+    .certificate-section {
+        padding: 0 1rem;
+    }
+
+    .certificate-card {
+        width: min(100%, 1120px);
+        margin: 2rem auto 0;
+        padding: clamp(1.25rem, 3vw, 2rem);
+        border-radius: 24px;
+        background: linear-gradient(135deg, #a0586a, #6e3946);
+        box-shadow: 0 18px 40px rgba(110, 57, 70, 0.25);
+        color: #fff;
+        display: flex;
+        align-items: center;
+        gap: clamp(1rem, 3vw, 2rem);
+        box-sizing: border-box;
+
+        @media screen and (max-width: 768px) {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .certificate-icon {
+            flex: 0 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 4.5rem;
+            height: 4.5rem;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+
+            svg {
+                width: 2.4rem;
+                height: 2.4rem;
+            }
+        }
+
+        .certificate-content {
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
+        .certificate-eyebrow {
+            margin: 0 0 0.35rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #f5d9df;
+        }
+
+        .certificate-title {
+            margin: 0 0 0.5rem;
+            font-size: clamp(1.35rem, 2vw, 1.8rem);
+        }
+
+        .certificate-desc {
+            margin: 0;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.88);
+        }
+
+        .certificate-action {
+            flex: 0 0 auto;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0.5rem;
+            min-height: 3.25rem;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 999px;
+            background-color: #fff;
+            color: #7a4452;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 700;
+            white-space: nowrap;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+
+            svg {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+
+            &:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+            }
+
+            &:disabled {
+                opacity: 0.75;
+                cursor: not-allowed;
+                transform: none;
+            }
+
+            @media screen and (max-width: 768px) {
+                width: 100%;
+            }
         }
     }
 
