@@ -88,6 +88,9 @@
                         <li><b>Language:</b>English</li>
                         <li><b>Presentation Duration:</b>8 minutes</li>
                         <li><b>Presentation Order:</b> To be announced to selected presenters</li>
+                        <li><b>Presentation Slides:</b> Please download and use the official
+                            <a class="link" href="/files/2026-TOPBS-Slide-Template.pptx"
+                                target="_blank">presentation template</a> to prepare your slides.</li>
                     </ul>
                 </div>
             </div>
