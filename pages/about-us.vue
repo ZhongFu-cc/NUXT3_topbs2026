@@ -9,7 +9,7 @@
                     <img src="@/assets/img/YeHsiangTang.jpg" alt="">
 
                     <div class="people-infomation-box">
-                        <p class="name">Dr. Ye Hsiang Tang</p>
+                        <p class="name">Dr. Yeh Hsien Tang</p>
                         <p class="title">President of TOPBS</p>
                     </div>
                 </div>
